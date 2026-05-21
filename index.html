@@ -392,6 +392,71 @@ button:nth-child(2) {
   min-height: 300px;
 }
 
+#telaLogin {
+
+  max-width: 400px;
+
+  margin: 40px auto;
+
+  padding: 30px;
+
+  background: white;
+
+  border-radius: 20px;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+
+  text-align: center;
+}
+
+#telaLogin h1 {
+  margin-bottom: 20px;
+}
+
+#telaLogin input {
+
+  width: 100%;
+
+  padding: 12px;
+
+  margin-bottom: 12px;
+
+  border-radius: 10px;
+
+  border: 1px solid #ccc;
+
+  box-sizing: border-box;
+}
+
+#telaLogin button {
+
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #4CAF50;
+
+  color: white;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  margin-bottom: 10px;
+}
+
+#telaLogin hr {
+  margin: 20px 0;
+}
+
+#appPromptKeeper {
+  display: none;
+}
+
 </style>
 
   <link rel="manifest" href="manifest.json">
@@ -404,8 +469,62 @@ button:nth-child(2) {
 
 <body>
 
+  <div id="telaLogin"
+style="
+display:block !important;
+position:fixed;
+top:40px;
+left:50%;
+transform:translateX(-50%);
+z-index:99999;
+background:white;
+padding:20px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,0,0,0.3);
+width:400px;
+">
+
+  <h1>🔐 PromptKeeper Login</h1>
+
+  <input
+    type="text"
+    id="novoUsuario"
+    placeholder="👤 Criar usuário"
+  >
+
+  <input
+    type="password"
+    id="novaSenha"
+    placeholder="🔒 Criar senha"
+  >
+
+  <button onclick="criarConta()">
+    ✨ Criar Conta
+  </button>
+
+  <hr>
+
+  <input
+    type="text"
+    id="usuarioLogin"
+    placeholder="👤 Usuário"
+  >
+
+  <input
+    type="password"
+    id="senhaLogin"
+    placeholder="🔒 Senha"
+  >
+
+  <button onclick="fazerLogin()">
+    🚀 Entrar
+  </button>
+
+</div>
+
 <div id="toast"></div>
 
+<div id="appPromptKeeper">
 
 <div class="container">
 
@@ -424,6 +543,10 @@ button:nth-child(2) {
 </select>
 
   <div id="perfilUsuario"></div>
+
+  <button onclick="sairConta()">
+  🚪 Sair
+</button>
 
   <button onclick="alternarModo()">🌙 Modo Escuro</button>
 
@@ -1529,6 +1652,118 @@ function filtrarFavoritos() {
   }
 }
 
+function criarConta() {
+
+  const usuario =
+    document.getElementById("novoUsuario").value;
+
+  const senha =
+    document.getElementById("novaSenha").value;
+
+  if (!usuario || !senha) {
+
+    alert("Preencha usuário e senha 😄");
+    return;
+  }
+
+  const conta = {
+    usuario,
+    senha
+  };
+
+  localStorage.setItem(
+    "contaPromptKeeper",
+    JSON.stringify(conta)
+  );
+
+  alert("✅ Conta criada com sucesso!");
+}
+
+function fazerLogin() {
+
+  const usuario =
+    document.getElementById("usuarioLogin").value;
+
+  const senha =
+    document.getElementById("senhaLogin").value;
+
+  const contaSalva =
+    JSON.parse(
+      localStorage.getItem(
+        "contaPromptKeeper"
+      )
+    );
+
+  if (!contaSalva) {
+
+    alert("Crie uma conta primeiro 😄");
+    return;
+  }
+
+  if (
+    usuario === contaSalva.usuario &&
+    senha === contaSalva.senha
+  ) {
+
+    localStorage.setItem(
+      "usuarioLogado",
+      "true"
+    );
+
+    alert("🚀 Login realizado!");
+
+    verificarLogin();
+
+  } else {
+
+    alert("❌ Usuário ou senha incorretos");
+  }
+}
+
+  function verificarLogin() {
+
+  const logado =
+    localStorage.getItem(
+      "usuarioLogado"
+    );
+
+  if (logado === "true") {
+
+    document.getElementById(
+      "telaLogin"
+    ).style.display = "none";
+
+    document.getElementById(
+      "appPromptKeeper"
+    ).style.display = "block";
+
+  } else {
+
+    document.getElementById(
+      "telaLogin"
+    ).style.display = "block";
+
+    document.getElementById(
+      "appPromptKeeper"
+    ).style.display = "none";
+  }
+}
+
+verificarLogin();
+
+function sairConta() {
+
+  localStorage.removeItem(
+    "usuarioLogado"
+  );
+
+  verificarLogin();
+
+  mostrarToast(
+    "🚪 Você saiu da conta"
+  );
+}
+
 
 </script>
 
@@ -1542,6 +1777,6 @@ function filtrarFavoritos() {
 
 </div>
 
+</div>
 </body>
 </html>
-`;
