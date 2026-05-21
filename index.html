@@ -700,7 +700,13 @@ function normalizarTexto(texto) {
 
 
  function mostrarPrompts() {
+
+  const nomeUsuario =
+  localStorage.getItem(
+    "nomeUsuario"
+  );
   const perfil = document.getElementById("perfilUsuario");
+
 
 if (nomeUsuario) {
   perfil.innerHTML =
@@ -1710,9 +1716,34 @@ function fazerLogin() {
       "true"
     );
 
+    localStorage.setItem(
+  "usuarioLogado",
+  "true"
+);
+
+localStorage.setItem(
+  "nomeUsuario",
+  usuario
+);
+
+    
+
     alert("🚀 Login realizado!");
 
-    verificarLogin();
+    alert("🚀 Login realizado!");
+
+  document.getElementById(
+    "perfilUsuario"
+  ).innerHTML =
+    "👋 Olá, <strong>" +
+    usuario +
+    "</strong>";
+
+  verificarLogin();
+
+  mostrarPrompts();
+
+    
 
   } else {
 
@@ -1757,7 +1788,13 @@ function sairConta() {
     "usuarioLogado"
   );
 
+  localStorage.removeItem(
+  "nomeUsuario"
+);
+
   verificarLogin();
+
+  mostrarPrompts();
 
   mostrarToast(
     "🚪 Você saiu da conta"
