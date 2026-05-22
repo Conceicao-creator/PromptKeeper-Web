@@ -725,6 +725,9 @@ width:400px;
 <script>
 let editandoIndex = null;
 let mostrarSomenteFavoritos = false;
+let mostrarSomenteFixados = false;
+let categoriaSelecionada = "";
+let mostrarSomenteHoje = false;
 
 let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
 
@@ -853,17 +856,20 @@ onclick="filtrarDashboard('favoritos')">
   <div class="numeroDashboard">${favoritos}</div>
 </div>
 
-<div class="cardDashboard">
+<div class="cardDashboard"
+onclick="filtrarDashboard('fixados')">
   📌 FIXADOS
   <div class="numeroDashboard">${fixados}</div>
 </div>
 
-<div class="cardDashboard">
+<div class="cardDashboard"
+onclick="filtrarDashboard('categorias')">
   🏷️ CATEGORIAS
   <div class="numeroDashboard">${categorias}</div>
 </div>
 
-<div class="cardDashboard">
+<div class="cardDashboard"
+onclick="filtrarDashboard('hoje')">
   🚀 HOJE
   <div class="numeroDashboard">${criadosHoje}</div>
 </div>
@@ -903,6 +909,43 @@ onclick="filtrarDashboard('favoritos')">
   return;
 }
 
+if (
+  mostrarSomenteFixados &&
+  !p.fixado
+) {
+  return;
+}
+
+if (
+  categoriaSelecionada &&
+  !p.categoria
+    .toLowerCase()
+    .includes(
+      categoriaSelecionada
+    )
+) {
+  return;
+}
+
+
+if (
+  mostrarSomenteHoje &&
+  p.data !== hoje
+) {
+  return;
+}
+
+const hoje =
+  new Date().toLocaleDateString(
+    "sv-SE"
+  );
+
+if (
+  mostrarSomenteHoje &&
+  p.data !== hoje
+) {
+  return;
+}
     
 
   const conteudoBusca = (
@@ -1889,6 +1932,11 @@ function carregarFotoPerfil(event) {
 
 function filtrarDashboard(tipo) {
 
+  mostrarSomenteFavoritos = false;
+  mostrarSomenteFixados = false;
+  categoriaSelecionada = "";
+  mostrarSomenteHoje = false;
+
   if (tipo === "favoritos") {
 
     mostrarSomenteFavoritos = true;
@@ -1897,9 +1945,44 @@ function filtrarDashboard(tipo) {
       "⭐ Mostrando favoritos"
     );
 
-  } else {
+  } else if (tipo === "fixados") {
 
-    mostrarSomenteFavoritos = false;
+    mostrarSomenteFixados = true;
+
+    mostrarToast(
+      "📌 Mostrando fixados"
+    );
+
+  } else if (
+    tipo === "categorias"
+  ) {
+
+    const categoria =
+      prompt(
+        "🏷️ Digite a categoria:"
+      );
+
+    if (!categoria) return;
+
+    categoriaSelecionada =
+      categoria.toLowerCase();
+
+    mostrarToast(
+      "🏷️ Categoria: " +
+      categoria
+    );
+
+  } else if (
+    tipo === "hoje"
+  ) {
+
+    mostrarSomenteHoje = true;
+
+    mostrarToast(
+      "🚀 Prompts de hoje"
+    );
+
+  } else {
 
     mostrarToast(
       "📚 Mostrando todos"
@@ -1908,6 +1991,7 @@ function filtrarDashboard(tipo) {
 
   mostrarPrompts();
 }
+
 
 
 </script>
