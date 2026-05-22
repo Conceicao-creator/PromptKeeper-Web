@@ -457,6 +457,36 @@ button:nth-child(2) {
   display: none;
 }
 
+#perfilBox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 15px 0;
+}
+
+#avatarUsuario {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7B1FA2, #BA68C8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#fotoPerfil {
+
+  font-size: 12px;
+
+  max-width: 180px;
+
+  margin-top: 5px;
+}
+
 </style>
 
   <link rel="manifest" href="manifest.json">
@@ -542,7 +572,21 @@ width:400px;
 
 </select>
 
+  <div id="perfilBox">
+
+  <div id="avatarUsuario">
+    M
+  </div>
+  <input
+  type="file"
+  id="fotoPerfil"
+  accept="image/*"
+  onchange="carregarFotoPerfil(event)"
+>
+
   <div id="perfilUsuario"></div>
+
+</div>
 
   <button onclick="sairConta()">
   🚪 Sair
@@ -586,8 +630,13 @@ width:400px;
 
 </select>
 
-  <input type="text" id="titulo" placeholder="📝 Título do prompt"
   <input
+  type="text"
+  id="titulo"
+  placeholder="📝 Título do prompt"
+>
+
+<input
   type="date"
   id="data"
 >
@@ -705,6 +754,31 @@ function normalizarTexto(texto) {
   localStorage.getItem(
     "nomeUsuario"
   );
+  if (nomeUsuario) {
+
+  document.getElementById(
+    "avatarUsuario"
+  ).innerHTML =
+  
+    nomeUsuario.charAt(0).toUpperCase();
+}
+
+const fotoSalva =
+  localStorage.getItem(
+    "fotoPerfil"
+  );
+
+if (fotoSalva) {
+
+  document.getElementById(
+    "avatarUsuario"
+  ).innerHTML =
+
+    "<img src='" +
+    fotoSalva +
+    "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
+}
+
   const perfil = document.getElementById("perfilUsuario");
 
 
@@ -966,38 +1040,16 @@ botaoFixar.onclick = function() {
 
 if (rascunho) {
 
-document.getElementById("contadorCaracteres")
-  .innerHTML =
+  document.getElementById("contadorCaracteres")
+      .innerHTML =
     rascunho.length + " caracteres";
 
   document.getElementById("prompt").value =
     rascunho;
 }
+mostrarPrompts();
 
-function filtrarDashboard(tipo) {
-
-  if (tipo === "favoritos") {
-
-    mostrarSomenteFavoritos = true;
-
-    mostrarPrompts();
-
-    mostrarToast("⭐ Mostrando favoritos");
-  }
-
-  if (tipo === "todos") {
-
-    mostrarSomenteFavoritos = false;
-
-    mostrarPrompts();
-
-    mostrarToast("📚 Mostrando todos");
-  }
-}
-
-  mostrarPrompts();
 };
-
 
 
     let botaoFav = document.createElement("button");
@@ -1269,6 +1321,8 @@ botaoHistorico.onclick = function() {
     lista.appendChild(item);
   });
 }
+
+
   
 function melhorarPrompt() {
 
@@ -1799,6 +1853,60 @@ function sairConta() {
   mostrarToast(
     "🚪 Você saiu da conta"
   );
+}
+
+function carregarFotoPerfil(event) {
+
+  const arquivo =
+    event.target.files[0];
+
+  if (!arquivo) return;
+
+  const leitor =
+    new FileReader();
+
+  leitor.onload = function(e) {
+
+    const imagem =
+      e.target.result;
+
+    localStorage.setItem(
+      "fotoPerfil",
+      imagem
+    );
+
+    document.getElementById(
+      "avatarUsuario"
+    ).innerHTML =
+
+      "<img src='" +
+      imagem +
+      "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
+  };
+
+  leitor.readAsDataURL(arquivo);
+}
+
+function filtrarDashboard(tipo) {
+
+  if (tipo === "favoritos") {
+
+    mostrarSomenteFavoritos = true;
+
+    mostrarToast(
+      "⭐ Mostrando favoritos"
+    );
+
+  } else {
+
+    mostrarSomenteFavoritos = false;
+
+    mostrarToast(
+      "📚 Mostrando todos"
+    );
+  }
+
+  mostrarPrompts();
 }
 
 
