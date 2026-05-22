@@ -662,7 +662,12 @@ width:400px;
   <div id="mensagemSalva"></div>
 
 
-  <input type="text" id="filtro" placeholder="Filtrar por categoria" oninput="mostrarPrompts()">
+  <input
+  type="text"
+  id="filtro"
+  placeholder="🔎 Buscar qualquer coisa..."
+  oninput="mostrarPrompts()"
+>
   <button
   onclick="filtrarFavoritos()"
   style="
@@ -800,6 +805,8 @@ if (nomeUsuario) {
   const lista = document.getElementById("lista");
 
   lista.innerHTML = "";
+
+  let encontrouResultado = false;
 
 
   const contador = document.getElementById("contador");
@@ -949,16 +956,41 @@ if (
     
 
   const conteudoBusca = (
+
   p.categoria +
+
   " " +
+
   p.titulo +
+
   " " +
+
   p.texto +
+
   " " +
+
   (p.data || "") +
+
   " " +
-    (p.favorito ? "favorito favoritos estrela ⭐" : "")
-  
+
+  (p.colecao || "") +
+
+  " " +
+
+  (p.status || "") +
+
+  " " +
+
+  (p.favorito
+    ? "favorito favoritos estrela ⭐"
+    : "") +
+
+  " " +
+
+  (p.fixado
+    ? "fixado fixados pin 📌"
+    : "")
+
 ).toLowerCase();
 
 if (busca && !conteudoBusca.includes(busca)) {
@@ -1361,10 +1393,39 @@ botaoHistorico.onclick = function() {
     item.appendChild(texto);
     item.appendChild(botoesDiv);
 
-    lista.appendChild(item);
+lista.appendChild(item);
+
+encontrouResultado = true;
+
   });
+
+if (
+  !encontrouResultado &&
+  busca
+) {
+
+  lista.innerHTML = `
+
+  <li style="
+    text-align:center;
+    padding:30px;
+    font-size:20px;
+    font-weight:bold;
+    color:#999;
+  ">
+
+  🤔 Não encontrei
+  "<strong>${busca}</strong>"
+
+  <br><br>
+
+  Tente outra palavra 🔎
+
+  </li>
+  `;
 }
 
+}
 
   
 function melhorarPrompt() {
@@ -1952,27 +2013,71 @@ function filtrarDashboard(tipo) {
     mostrarToast(
       "📌 Mostrando fixados"
     );
+  }
 
-  } else if (
-    tipo === "categorias"
-  ) {
+  else if (
+  tipo === "categorias"
+) {
 
-    const categoria =
-      prompt(
-        "🏷️ Digite a categoria:"
-      );
+  const categoriasUnicas =
+    [...new Set(
+      prompts.map(
+        p => p.categoria
+      )
+    )];
 
-    if (!categoria) return;
+  let menu =
+    "🏷️ Escolha a categoria:\n\n";
 
-    categoriaSelecionada =
-      categoria.toLowerCase();
+  categoriasUnicas.forEach(
+    (cat, index) => {
+
+      const quantidade =
+        prompts.filter(
+          p =>
+            p.categoria === cat
+        ).length;
+
+      menu +=
+        (index + 1) +
+        " - " +
+        cat +
+        " (" +
+        quantidade +
+        ")\n";
+    }
+  );
+
+  const escolha =
+    prompt(menu);
+
+  if (!escolha) return;
+
+  const categoriaEscolhida =
+    categoriasUnicas[
+      parseInt(escolha) - 1
+    ];
+
+  if (!categoriaEscolhida) {
 
     mostrarToast(
-      "🏷️ Categoria: " +
-      categoria
+      "❌ Categoria inválida"
     );
 
-  } else if (
+    return;
+  }
+
+  categoriaSelecionada =
+    categoriaEscolhida
+      .toLowerCase();
+
+  mostrarToast(
+    "🏷️ " +
+    categoriaEscolhida
+  );
+}
+
+    else if (
     tipo === "hoje"
   ) {
 
@@ -1991,6 +2096,7 @@ function filtrarDashboard(tipo) {
 
   mostrarPrompts();
 }
+
 
 
 
