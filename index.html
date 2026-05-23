@@ -271,6 +271,24 @@ button:nth-child(2) {
   color: #2E7D32;
 }
 
+#nomePerfil {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2E7D32;
+}
+
+#cargoPerfil {
+  font-size: 14px;
+  color: #666;
+  margin-top: 4px;
+}
+
+#frasePerfil {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+  margin-top: 4px;
+}
 #barraContainer {
   width: 100%;
   height: 22px;
@@ -584,7 +602,26 @@ width:400px;
   onchange="carregarFotoPerfil(event)"
 >
 
-  <div id="perfilUsuario"></div>
+  <div id="perfilUsuario">
+
+  <div id="nomePerfil"></div>
+
+  <div id="cargoPerfil"></div>
+
+  <div id="frasePerfil"></div>
+  <button
+  onclick="editarCargo()"
+  style="
+    margin-top:10px;
+    font-size:14px;
+    padding:8px;
+  "
+>
+  ✏️ Editar Cargo
+</button>
+
+</div>
+
 
 </div>
 
@@ -791,12 +828,46 @@ if (fotoSalva) {
 
 
 if (nomeUsuario) {
-  perfil.innerHTML =
-    "👋 Olá, <strong>" +
-    nomeUsuario +
-    "</strong>";
+  document.getElementById(
+  "nomePerfil"
+).innerHTML =
+
+  "👋 Olá, <strong>" +
+  nomeUsuario +
+  "</strong>";
 }
 
+const cargoUsuario =
+
+  localStorage.getItem(
+    "cargoUsuario"
+  );
+
+if (cargoUsuario) {
+
+  document.getElementById(
+    "cargoPerfil"
+  ).innerHTML =
+
+    "💼 " +
+    cargoUsuario;
+}
+
+const fraseUsuario =
+
+  localStorage.getItem(
+    "fraseUsuario"
+  );
+
+if (fraseUsuario) {
+
+  document.getElementById(
+    "frasePerfil"
+  ).innerHTML =
+
+    "✨ " +
+    fraseUsuario;
+}
   const busca =
   normalizarTexto(
     document.getElementById("filtro").value
@@ -1884,22 +1955,66 @@ localStorage.setItem(
   usuario
 );
 
+if (
+  !localStorage.getItem(
+    "cargoUsuario"
+  )
+) {
+
+
+  const cargo =
+    prompt(
+      "💼 Qual seu cargo?"
+    );
+
+  if (cargo) {
+
+    localStorage.setItem(
+      "cargoUsuario",
+      cargo
+    );
+  }
+}
+
+if (
+  !localStorage.getItem(
+    "fraseUsuario"
+  )
+) {
+
+  const frase =
+    prompt(
+      "✨ Sua frase pessoal:"
+    );
+
+  if (frase) {
+
+    localStorage.setItem(
+      "fraseUsuario",
+      frase
+    );
+  }
+}
+
     
 
     alert("🚀 Login realizado!");
 
-    alert("🚀 Login realizado!");
-
   document.getElementById(
-    "perfilUsuario"
-  ).innerHTML =
-    "👋 Olá, <strong>" +
-    usuario +
-    "</strong>";
+  "nomePerfil"
+).innerHTML =
+
+  "👋 Olá, <strong>" +
+  usuario +
+  "</strong>";
 
   verificarLogin();
 
   mostrarPrompts();
+
+  setTimeout(() => {
+  mostrarPrompts();
+}, 100);
 
     
 
@@ -2097,6 +2212,31 @@ function filtrarDashboard(tipo) {
   mostrarPrompts();
 }
 
+function editarCargo() {
+
+  const novoCargo =
+    prompt(
+      "💼 Digite seu novo cargo:"
+    );
+
+  if (!novoCargo) return;
+
+  localStorage.setItem(
+    "cargoUsuario",
+    novoCargo
+  );
+
+  document.getElementById(
+    "cargoPerfil"
+  ).innerHTML =
+
+    "💼 " +
+    novoCargo;
+
+  mostrarToast(
+    "✅ Cargo atualizado!"
+  );
+}
 
 
 
