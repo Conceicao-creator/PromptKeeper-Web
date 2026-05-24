@@ -333,6 +333,90 @@
       color: #777;
     }
 
+    #badgesUsuario {
+  margin-top: 15px;
+  text-align: center;
+}
+
+#listaBadges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.badge {
+  background: linear-gradient(
+    135deg,
+    #FFD700,
+    #FFC107,
+    #FFEB3B
+  );
+
+  color: #fff;
+
+  padding: 10px 16px;
+
+  border-radius: 30px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  border: 2px solid rgba(255,255,255,0.7);
+
+  box-shadow:
+    0 0 10px rgba(255,215,0,0.5),
+    0 0 20px rgba(255,215,0,0.3),
+    0 6px 14px rgba(0,0,0,0.15);
+
+  animation:
+    badgePremium 2s infinite alternate;
+
+  transform: scale(1);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.badge:hover {
+
+  transform:
+    scale(1.08)
+    translateY(-2px);
+
+  box-shadow:
+    0 0 18px rgba(255,215,0,0.8),
+    0 0 35px rgba(255,215,0,0.5),
+    0 10px 20px rgba(0,0,0,0.2);
+}
+
+.badgeBloqueada {
+  background: #E0E0E0;
+  color: #777;
+
+  padding: 8px 12px;
+
+  border-radius: 30px;
+
+  font-size: 13px;
+  font-weight: bold;
+}
+
+@keyframes badgePremium {
+
+  from {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  to {
+    transform: scale(1.03);
+    filter: brightness(1.12);
+  }
+}
+
     #barraContainer {
       width: 100%;
       height: 22px;
@@ -715,6 +799,26 @@ width:400px;
             📈 0 prompts criados
           </div>
 
+          <div id="badgesUsuario">
+
+  <h4 style="
+    margin-top:15px;
+    color:#2E7D32;
+    font-size:15px;
+  ">
+    🏅 Conquistas
+  </h4>
+
+  <div id="listaBadges">
+
+    <span class="badgeBloqueada">
+      🔒 Sem badges ainda
+    </span>
+
+  </div>
+
+</div>
+
           <div id="nivelUsuario"></div>
 
           <div id="barraXPContainer">
@@ -1087,6 +1191,50 @@ width:400px;
             "📈 " +
             total +
             " prompts criados";
+
+            let badges = "";
+
+if (total >= 10) {
+
+  badges +=
+    "<span class='badge'>" +
+    "🚀 Explorador" +
+    "</span>";
+}
+
+if (total >= 30) {
+
+  badges +=
+    "<span class='badge'>" +
+    "🧠 Criador IA" +
+    "</span>";
+}
+
+if (total >= 50) {
+
+  badges +=
+    "<span class='badge'>" +
+    "🔥 Especialista" +
+    "</span>";
+}
+
+if (total >= 100) {
+
+  badges +=
+    "<span class='badge'>" +
+    "🏆 Mestre dos Prompts" +
+    "</span>";
+}
+
+document.getElementById(
+  "listaBadges"
+).innerHTML =
+
+  badges ||
+
+  "<span class='badgeBloqueada'>" +
+  "🔒 Sem badges ainda" +
+  "</span>";
 
 
 
