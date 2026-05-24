@@ -379,6 +379,38 @@
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
+.badgeBloqueada {
+
+  background: linear-gradient(
+    135deg,
+    #BDBDBD,
+    #9E9E9E
+  );
+
+  color: rgba(255,255,255,0.9);
+
+  padding: 10px 16px;
+
+  border-radius: 30px;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  border: 2px solid rgba(255,255,255,0.3);
+
+  opacity: 0.8;
+
+  filter: grayscale(0.3);
+
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.15);
+
+  display: inline-block;
+
+  margin-top: 8px;
+  margin-right: 8px;
+}
+
 
 .badge:hover {
 
@@ -801,6 +833,10 @@ width:400px;
 
           <div id="badgesUsuario">
 
+          </div>
+
+          <div id="badgesUsuario">
+
   <h4 style="
     margin-top:15px;
     color:#2E7D32;
@@ -1191,6 +1227,89 @@ width:400px;
             "📈 " +
             total +
             " prompts criados";
+
+            let badgesHTML = `
+<div class="badge">
+  🌱 Iniciante
+</div>
+`;
+
+if (total >= 10) {
+
+  badgesHTML += `
+  <div class="badge">
+    🚀 Explorador
+  </div>
+  `;
+
+} else {
+
+  badgesHTML += `
+  <div class="badgeBloqueada">
+    🔒 🚀 Explorador
+    (${10 - total} faltam)
+  </div>
+  `;
+}
+
+if (total >= 25) {
+
+  badgesHTML += `
+  <div class="badge">
+    🧠 Criador
+  </div>
+  `;
+
+} else {
+
+  badgesHTML += `
+  <div class="badgeBloqueada">
+    🔒 🧠 Criador
+    (${25 - total} faltam)
+  </div>
+  `;
+}
+
+if (total >= 50) {
+
+  badgesHTML += `
+  <div class="badge">
+    🔥 Especialista
+  </div>
+  `;
+
+} else {
+
+  badgesHTML += `
+  <div class="badgeBloqueada">
+    🔒 🔥 Especialista
+    (${50 - total} faltam)
+  </div>
+  `;
+}
+
+if (total >= 100) {
+
+  badgesHTML += `
+  <div class="badge">
+    🏆 Mestre IA
+  </div>
+  `;
+
+} else {
+
+  badgesHTML += `
+  <div class="badgeBloqueada">
+    🔒 🏆 Mestre IA
+    (${100 - total} faltam)
+  </div>
+  `;
+}
+
+document.getElementById(
+  "badgesUsuario"
+).innerHTML =
+  badgesHTML;
 
             let badges = "";
 
