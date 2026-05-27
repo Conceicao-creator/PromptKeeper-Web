@@ -725,14 +725,14 @@
     }
 
     #perfilBox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
 
-  gap: 15px;
-  margin: 25px auto;
-}
+      gap: 15px;
+      margin: 25px auto;
+    }
 
     #avatarUsuario {
       width: 85px;
@@ -1094,6 +1094,39 @@ width:400px;
 
     let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
 
+    const backupPrompts =
+      JSON.parse(
+        localStorage.getItem(
+          "backupPrompts"
+        )
+      ) || [];
+
+    if (
+      prompts.length === 0 &&
+      backupPrompts.length > 0
+    ) {
+
+      const restaurar =
+        confirm(
+          "⚠️ Encontrei um backup dos seus prompts.\n\nDeseja restaurar agora?"
+        );
+
+      if (restaurar) {
+
+        prompts =
+          backupPrompts;
+
+        localStorage.setItem(
+          "prompts",
+          JSON.stringify(prompts)
+        );
+
+        alert(
+          "😄 Backup restaurado com sucesso!"
+        );
+      }
+    }
+
     let nomeUsuario = localStorage.getItem("nomeUsuario");
 
     if (!nomeUsuario) {
@@ -1134,431 +1167,431 @@ width:400px;
           "fotoPerfil"
         );
 
-        if (fotoSalva) {
+      if (fotoSalva) {
 
-  document.getElementById(
-    "avatarUsuario"
-  ).innerHTML =
+        document.getElementById(
+          "avatarUsuario"
+        ).innerHTML =
 
-    `<img src="${fotoSalva}">`;
-}
+          `<img src="${fotoSalva}">`;
+      }
 
-        function carregarFotoPerfil(event) {
-
-
-          const perfil = document.getElementById("perfilUsuario");
+      function carregarFotoPerfil(event) {
 
 
-          if (nomeUsuario) {
-            document.getElementById(
-              "nomePerfil"
-            ).innerHTML =
+        const perfil = document.getElementById("perfilUsuario");
 
-              "👋 Olá, <strong>" +
-              nomeUsuario +
-              "</strong>";
-          }
+
+        if (nomeUsuario) {
+          document.getElementById(
+            "nomePerfil"
+          ).innerHTML =
+
+            "👋 Olá, <strong>" +
+            nomeUsuario +
+            "</strong>";
         }
       }
+    }
 
 
-      const cargoUsuario =
+    const cargoUsuario =
 
-        localStorage.getItem(
-          "cargoUsuario"
-        );
+      localStorage.getItem(
+        "cargoUsuario"
+      );
 
-      if (cargoUsuario) {
+    if (cargoUsuario) {
 
-        document.getElementById(
-          "cargoPerfil"
-        ).innerHTML =
+      document.getElementById(
+        "cargoPerfil"
+      ).innerHTML =
 
-          "💼 " +
-          cargoUsuario;
-      }
+        "💼 " +
+        cargoUsuario;
+    }
 
-      let nivel = "";
-      let emojiNivel = "";
+    let nivel = "";
+    let emojiNivel = "";
 
-      if (prompts.length >= 100) {
+    if (prompts.length >= 100) {
 
-        nivel = "Mestre dos Prompts";
-        emojiNivel = "🏆";
+      nivel = "Mestre dos Prompts";
+      emojiNivel = "🏆";
 
-      } else if (prompts.length >= 60) {
+    } else if (prompts.length >= 60) {
 
-        nivel = "Especialista";
-        emojiNivel = "👑";
+      nivel = "Especialista";
+      emojiNivel = "👑";
 
-      } else if (prompts.length >= 30) {
+    } else if (prompts.length >= 30) {
 
-        nivel = "Criador de Prompts";
-        emojiNivel = "💡";
+      nivel = "Criador de Prompts";
+      emojiNivel = "💡";
 
-      } else if (prompts.length >= 10) {
+    } else if (prompts.length >= 10) {
 
-        nivel = "Aprendiz IA";
-        emojiNivel = "🚀";
+      nivel = "Aprendiz IA";
+      emojiNivel = "🚀";
 
-      } else {
+    } else {
 
-        nivel = "Iniciante";
-        emojiNivel = "🌱";
-      }
+      nivel = "Iniciante";
+      emojiNivel = "🌱";
+    }
 
+    document.getElementById(
+      "nivelUsuario"
+    ).innerHTML =
+
+      emojiNivel +
+      " <strong>Nível:</strong> " +
+      nivel;
+
+    const fraseUsuario =
+
+      localStorage.getItem(
+        "fraseUsuario"
+      );
+
+    if (fraseUsuario) {
+
+      document.getElementById(
+        "frasePerfil"
+      ).innerHTML =
+
+        "✨ " +
+        fraseUsuario;
+    }
+    const busca =
+      normalizarTexto(
+        document.getElementById("filtro").value
+      );
+    const filtro = document.getElementById("filtro").value.toLowerCase();
+    const lista = document.getElementById("lista");
+
+    lista.innerHTML = "";
+
+    let encontrouResultado = false;
+
+
+    const contador = document.getElementById("contador");
+
+    const total = prompts.length;
+
+    // 🏆 SISTEMA DE NÍVEL XP
+
+    const nivelUsuario =
       document.getElementById(
         "nivelUsuario"
-      ).innerHTML =
+      );
 
-        emojiNivel +
-        " <strong>Nível:</strong> " +
-        nivel;
+    let nivelAtual =
+      "🌱 Iniciante";
 
-      const fraseUsuario =
+    let metaNivel = 10;
+    let inicioNivel = 0;
 
-        localStorage.getItem(
-          "fraseUsuario"
-        );
+    if (total >= 10) {
+      nivelAtual =
+        "🚀 Explorador";
+      metaNivel = 25;
+      inicioNivel = 10;
+    }
 
-      if (fraseUsuario) {
+    if (total >= 25) {
+      nivelAtual =
+        "🧠 Criador";
+      metaNivel = 50;
+      inicioNivel = 25;
+    }
 
-        document.getElementById(
-          "frasePerfil"
-        ).innerHTML =
+    if (total >= 50) {
+      nivelAtual =
+        "🔥 Especialista";
+      metaNivel = 100;
+      inicioNivel = 50;
+    }
 
-          "✨ " +
-          fraseUsuario;
-      }
-      const busca =
-        normalizarTexto(
-          document.getElementById("filtro").value
-        );
-      const filtro = document.getElementById("filtro").value.toLowerCase();
-      const lista = document.getElementById("lista");
+    if (total >= 100) {
+      nivelAtual =
+        "🏆 Mestre dos Prompts";
+      metaNivel = 200;
+      inicioNivel = 100;
+    }
 
-      lista.innerHTML = "";
+    if (total >= 200) {
+      nivelAtual =
+        "👑 Lenda dos Prompts";
+      metaNivel = total;
+      inicioNivel = total;
+    }
 
-      let encontrouResultado = false;
+    nivelUsuario.innerHTML =
+      nivelAtual;
 
+    const progressoNivel =
+      total - inicioNivel;
 
-      const contador = document.getElementById("contador");
+    const totalNivel =
+      metaNivel - inicioNivel;
 
-      const total = prompts.length;
+    const porcentagemXP =
+      Math.min(
+        (progressoNivel /
+          totalNivel) * 100,
+        100
+      );
 
-      // 🏆 SISTEMA DE NÍVEL XP
+    document.getElementById(
+      "barraXP"
+    ).style.width =
+      porcentagemXP + "%";
 
-      const nivelUsuario =
-        document.getElementById(
-          "nivelUsuario"
-        );
+    document.getElementById(
+      "textoXP"
+    ).innerHTML =
+      "📈 " +
+      total +
+      " prompts criados";
 
-      let nivelAtual =
-        "🌱 Iniciante";
-
-      let metaNivel = 10;
-      let inicioNivel = 0;
-
-      if (total >= 10) {
-        nivelAtual =
-          "🚀 Explorador";
-        metaNivel = 25;
-        inicioNivel = 10;
-      }
-
-      if (total >= 25) {
-        nivelAtual =
-          "🧠 Criador";
-        metaNivel = 50;
-        inicioNivel = 25;
-      }
-
-      if (total >= 50) {
-        nivelAtual =
-          "🔥 Especialista";
-        metaNivel = 100;
-        inicioNivel = 50;
-      }
-
-      if (total >= 100) {
-        nivelAtual =
-          "🏆 Mestre dos Prompts";
-        metaNivel = 200;
-        inicioNivel = 100;
-      }
-
-      if (total >= 200) {
-        nivelAtual =
-          "👑 Lenda dos Prompts";
-        metaNivel = total;
-        inicioNivel = total;
-      }
-
-      nivelUsuario.innerHTML =
-        nivelAtual;
-
-      const progressoNivel =
-        total - inicioNivel;
-
-      const totalNivel =
-        metaNivel - inicioNivel;
-
-      const porcentagemXP =
-        Math.min(
-          (progressoNivel /
-            totalNivel) * 100,
-          100
-        );
-
-      document.getElementById(
-        "barraXP"
-      ).style.width =
-        porcentagemXP + "%";
-
-      document.getElementById(
-        "textoXP"
-      ).innerHTML =
-        "📈 " +
-        total +
-        " prompts criados";
-
-      let badgesHTML = `
+    let badgesHTML = `
 <div class="badge badgeDesbloqueada">
   🌱 Iniciante
 </div>
 `;
 
-      if (total >= 10) {
+    if (total >= 10) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge badgeDesbloqueada">
     🚀 Explorador
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🚀 Explorador
     (${10 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      if (total >= 25) {
+    if (total >= 25) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge">
     🧠 Criador
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🧠 Criador
     (${25 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      if (total >= 50) {
+    if (total >= 50) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge">
     🔥 Especialista
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🔥 Especialista
     (${50 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      if (total >= 100) {
+    if (total >= 100) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge">
     🏆 Mestre IA
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🏆 Mestre IA
     (${100 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      document.getElementById(
-        "badgesUsuario"
-      ).innerHTML =
-        badgesHTML;
+    document.getElementById(
+      "badgesUsuario"
+    ).innerHTML =
+      badgesHTML;
 
 
-      const conquistaSalva =
-        JSON.parse(
-          localStorage.getItem(
-            "conquistasMostradas"
-          )
-        ) || {};
-
-      if (
-        total >= 10 &&
-        !conquistaSalva.explorador
-      ) {
-
-        mostrarPopupConquista(
-          "Explorador",
-          "🚀"
-        );
-
-        conquistaSalva.explorador =
-          true;
-      }
-
-      if (
-        total >= 25 &&
-        !conquistaSalva.criador
-      ) {
-
-        mostrarPopupConquista(
-          "Criador",
-          "🧠"
-        );
-
-        conquistaSalva.criador =
-          true;
-      }
-
-      if (
-        total >= 50 &&
-        !conquistaSalva.especialista
-      ) {
-
-        mostrarPopupConquista(
-          "Especialista",
-          "🔥"
-        );
-
-        conquistaSalva.especialista =
-          true;
-      }
-
-      if (
-        total >= 100 &&
-        !conquistaSalva.mestre
-      ) {
-
-        mostrarPopupConquista(
-          "Mestre IA",
-          "🏆"
-        );
-
-        conquistaSalva.mestre =
-          true;
-      }
-
-      localStorage.setItem(
-        "conquistasMostradas",
-        JSON.stringify(
-          conquistaSalva
+    const conquistaSalva =
+      JSON.parse(
+        localStorage.getItem(
+          "conquistasMostradas"
         )
+      ) || {};
+
+    if (
+      total >= 10 &&
+      !conquistaSalva.explorador
+    ) {
+
+      mostrarPopupConquista(
+        "Explorador",
+        "🚀"
       );
 
-      let badges = "";
+      conquistaSalva.explorador =
+        true;
+    }
 
-      if (total >= 10) {
+    if (
+      total >= 25 &&
+      !conquistaSalva.criador
+    ) {
 
-        badges +=
-          "<span class='badge'>" +
-          "🚀 Explorador" +
-          "</span>";
-      }
+      mostrarPopupConquista(
+        "Criador",
+        "🧠"
+      );
 
-      if (total >= 30) {
+      conquistaSalva.criador =
+        true;
+    }
 
-        badges +=
-          "<span class='badge'>" +
-          "🧠 Criador IA" +
-          "</span>";
-      }
+    if (
+      total >= 50 &&
+      !conquistaSalva.especialista
+    ) {
 
-      if (total >= 50) {
+      mostrarPopupConquista(
+        "Especialista",
+        "🔥"
+      );
 
-        badges +=
-          "<span class='badge'>" +
-          "🔥 Especialista" +
-          "</span>";
-      }
+      conquistaSalva.especialista =
+        true;
+    }
 
-      if (total >= 100) {
+    if (
+      total >= 100 &&
+      !conquistaSalva.mestre
+    ) {
 
-        badges +=
-          "<span class='badge'>" +
-          "🏆 Mestre dos Prompts" +
-          "</span>";
-      }
+      mostrarPopupConquista(
+        "Mestre IA",
+        "🏆"
+      );
 
-      document.getElementById(
-        "listaBadges"
-      ).innerHTML =
+      conquistaSalva.mestre =
+        true;
+    }
 
-        badges ||
+    localStorage.setItem(
+      "conquistasMostradas",
+      JSON.stringify(
+        conquistaSalva
+      )
+    );
 
-        "<span class='badgeBloqueada'>" +
-        "🔒 Sem badges ainda" +
+    let badges = "";
+
+    if (total >= 10) {
+
+      badges +=
+        "<span class='badge'>" +
+        "🚀 Explorador" +
         "</span>";
+    }
+
+    if (total >= 30) {
+
+      badges +=
+        "<span class='badge'>" +
+        "🧠 Criador IA" +
+        "</span>";
+    }
+
+    if (total >= 50) {
+
+      badges +=
+        "<span class='badge'>" +
+        "🔥 Especialista" +
+        "</span>";
+    }
+
+    if (total >= 100) {
+
+      badges +=
+        "<span class='badge'>" +
+        "🏆 Mestre dos Prompts" +
+        "</span>";
+    }
+
+    document.getElementById(
+      "listaBadges"
+    ).innerHTML =
+
+      badges ||
+
+      "<span class='badgeBloqueada'>" +
+      "🔒 Sem badges ainda" +
+      "</span>";
 
 
 
-      const meta = 50;
+    const meta = 50;
 
-      let progresso =
-        Math.min((total / meta) * 100, 100);
+    let progresso =
+      Math.min((total / meta) * 100, 100);
 
-      document.getElementById("barraProgresso")
-        .style.width = progresso + "%";
+    document.getElementById("barraProgresso")
+      .style.width = progresso + "%";
 
-      document.getElementById("textoProgresso")
-        .innerHTML =
-        "🚀 Você já criou " +
-        total +
-        " prompts";
+    document.getElementById("textoProgresso")
+      .innerHTML =
+      "🚀 Você já criou " +
+      total +
+      " prompts";
 
-      const favoritos = prompts.filter(p => p.favorito).length;
+    const favoritos = prompts.filter(p => p.favorito).length;
 
-      const hoje =
-        new Date().toLocaleDateString("sv-SE");
+    const hoje =
+      new Date().toLocaleDateString("sv-SE");
 
-      const criadosHoje =
-        prompts.filter(p => p.data === hoje).length;
-      const fixados = prompts.filter(p => p.fixado).length;
+    const criadosHoje =
+      prompts.filter(p => p.data === hoje).length;
+    const fixados = prompts.filter(p => p.fixado).length;
 
-      const categorias = [...new Set(prompts.map(p => p.categoria))].length;
+    const categorias = [...new Set(prompts.map(p => p.categoria))].length;
 
-      const porcentagemFav =
-        total > 0
-          ? Math.round((favoritos / total) * 100)
-          : 0;
+    const porcentagemFav =
+      total > 0
+        ? Math.round((favoritos / total) * 100)
+        : 0;
 
-      const ultimoPrompt =
-        prompts.length > 0
-          ? prompts[0].titulo || "Sem título"
-          : "Nenhum";
+    const ultimoPrompt =
+      prompts.length > 0
+        ? prompts[0].titulo || "Sem título"
+        : "Nenhum";
 
 
-      document.getElementById("dashboard").innerHTML = `
+    document.getElementById("dashboard").innerHTML = `
 
 <div class="cardDashboard"
 onclick="filtrarDashboard('todos')">
@@ -1593,520 +1626,524 @@ onclick="filtrarDashboard('hoje')">
 `;
 
 
-      prompts.sort((a, b) => {
+    prompts.sort((a, b) => {
 
-        // 📌 Fixados
-        const fixadoA = a.fixado ? 1 : 0;
-        const fixadoB = b.fixado ? 1 : 0;
+      // 📌 Fixados
+      const fixadoA = a.fixado ? 1 : 0;
+      const fixadoB = b.fixado ? 1 : 0;
 
-        if (fixadoB !== fixadoA) {
-          return fixadoB - fixadoA;
-        }
+      if (fixadoB !== fixadoA) {
+        return fixadoB - fixadoA;
+      }
 
-        // ⭐ Favoritos
-        const favA = a.favorito ? 1 : 0;
-        const favB = b.favorito ? 1 : 0;
+      // ⭐ Favoritos
+      const favA = a.favorito ? 1 : 0;
+      const favB = b.favorito ? 1 : 0;
 
-        if (favB !== favA) {
-          return favB - favA;
-        }
+      if (favB !== favA) {
+        return favB - favA;
+      }
 
-        // 📅 Datas
-        return new Date(b.data || 0) - new Date(a.data || 0);
+      // 📅 Datas
+      return new Date(b.data || 0) - new Date(a.data || 0);
 
-      });
+    });
 
-      prompts.forEach((p, index) => {
-
-        if (
-          mostrarSomenteFavoritos &&
-          !p.favorito
-        ) {
-          return;
-        }
-
-        if (
-          mostrarSomenteFixados &&
-          !p.fixado
-        ) {
-          return;
-        }
-
-
-        if (
-          categoriaSelecionada &&
-          !p.categoria
-            .toLowerCase()
-            .includes(
-              categoriaSelecionada
-            )
-        ) {
-          return;
-        }
-
-        const hoje =
-          new Date().toLocaleDateString(
-            "sv-SE"
-          );
-
-        if (
-          mostrarSomenteHoje &&
-          p.data !== hoje
-        ) {
-          return;
-        }
-
-
-        const conteudoBusca = (
-
-          p.categoria +
-
-          " " +
-
-          p.titulo +
-
-          " " +
-
-          p.texto +
-
-          " " +
-
-          (p.data || "") +
-
-          " " +
-
-          (p.colecao || "") +
-
-          " " +
-
-          (p.status || "") +
-
-          " " +
-
-          (p.favorito
-            ? "favorito favoritos estrela ⭐"
-            : "") +
-
-          " " +
-
-          (p.fixado
-            ? "fixado fixados pin 📌"
-            : "")
-
-        ).toLowerCase();
-
-        if (busca && !conteudoBusca.includes(busca)) {
-          return;
-        }
-
-
-
-        let item = document.createElement("li");
-
-        let texto = document.createElement("div");
-        let emoji = "📁";
-        let corCategoria = "#4CAF50";
-
-        if (p.categoria.toLowerCase().includes("imagem")) {
-          emoji = "🖼";
-          corCategoria = "#E91E63";
-
-        } else if (p.categoria.toLowerCase().includes("neg")) {
-          emoji = "💼";
-          corCategoria = "#FF9800";
-
-        } else if (p.categoria.toLowerCase().includes("ide")) {
-          emoji = "💡";
-          corCategoria = "#FFC107";
-
-        } else if (p.categoria.toLowerCase().includes("via")) {
-          emoji = "✈️";
-          corCategoria = "#9C27B0";
-
-        } else if (p.categoria.toLowerCase().includes("tec")) {
-          emoji = "💻";
-          corCategoria = "#2196F3";
-
-        } else if (p.categoria.toLowerCase().includes("sa")) {
-          emoji = "💚";
-          corCategoria = "#4CAF50";
-        }
-
-
-
-        let dataFormatada = "Sem data";
-
-        if (p.data) {
-          const partes = p.data.split("-");
-
-          dataFormatada =
-            partes[2] + "/" +
-            partes[1] + "/" +
-            partes[0];
-        }
-
-        texto.innerHTML =
-          "<div class='categoria' style='background:" + corCategoria + "'>" +
-
-          p.categoria
-            .split(",")
-            .map(tag =>
-              "🏷️ " + tag.trim()
-            )
-            .join(" ")
-
-          +
-
-          "</div>" +
-          "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
-
-          "📁 " + (p.colecao || "Sem coleção") +
-
-          "</div>" +
-
-          "<div style='margin-bottom:8px; font-size:14px;'>"
-
-          +
-
-          (
-            p.status === "ideias"
-              ? "💡 Ideias"
-
-              : p.status === "teste"
-                ? "🛠️ Em teste"
-
-                : p.status === "prontos"
-                  ? "✅ Prontos"
-
-                  : "💡 Ideias"
-          )
-
-          +
-
-          "</div>" +
-
-          "<div class='tituloPrompt'>" +
-
-          p.titulo +
-
-          "</div>" +
-
-          "<div class='textoPrompt' style='display:none'>" +
-
-          p.texto +
-
-          "</div>" +
-
-          "<div class='dataPrompt'>📅 " + dataFormatada + "</div>";
-
-        let botaoFixar = document.createElement("button");
-
-        botaoFixar.innerHTML = p.fixado ? "📌" : "📍";
-
-        botaoFixar.style.backgroundColor = "#795548";
-        botaoFixar.style.color = "white";
-        botaoFixar.style.fontWeight = "bold";
-
-        botaoFixar.onclick = function () {
-
-          prompts[index].fixado = !prompts[index].fixado;
-
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-          const rascunho =
-            localStorage.getItem("rascunhoPrompt");
-
-          if (rascunho) {
-
-            document.getElementById("contadorCaracteres")
-              .innerHTML =
-              rascunho.length + " caracteres";
-
-            document.getElementById("prompt").value =
-              rascunho;
-          }
-          mostrarPrompts();
-
-        };
-
-
-        let botaoFav = document.createElement("button");
-
-        botaoFav.textContent = p.favorito ? "⭐" : "☆";
-
-        botaoFav.style.backgroundColor =
-          p.favorito ? "#FFD54F" : "#BA68C8";
-
-        botaoFav.style.color =
-          p.favorito ? "#333" : "white";
-
-        botaoFav.style.fontWeight = "bold";
-
-        botaoFav.onclick = function () {
-          prompts[index].favorito = !prompts[index].favorito;
-
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-          mostrarPrompts();
-
-        };
-
-        let botao = document.createElement("button");
-
-        botao.innerHTML = "🗑️ Excluir";
-
-
-        botao.style.backgroundColor = "#f44336";
-        botao.style.color = "white";
-
-
-
-        botaoFav.onclick = function () {
-          prompts[index].favorito = !prompts[index].favorito;
-
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-          mostrarPrompts();
-        };
-
-
-        botao.onclick = function () {
-          item.classList.add("removendo");
-
-          setTimeout(() => {
-            prompts.splice(index, 1);
-            localStorage.setItem("prompts", JSON.stringify(prompts));
-            mostrarPrompts();
-          }, 400);
-        };
-
-        let botaoSubir = document.createElement("button");
-
-        botaoSubir.innerHTML = "⬆️";
-
-        botaoSubir.style.backgroundColor = "#607D8B";
-        botaoSubir.style.color = "white";
-
-        botaoSubir.onclick = function () {
-
-          if (index > 0) {
-
-            [prompts[index], prompts[index - 1]] =
-              [prompts[index - 1], prompts[index]];
-
-            localStorage.setItem("prompts", JSON.stringify(prompts));
-
-            mostrarPrompts();
-          }
-        };
-
-        let botaoDescer = document.createElement("button");
-
-        botaoDescer.innerHTML = "⬇️";
-
-        botaoDescer.style.backgroundColor = "#607D8B";
-        botaoDescer.style.color = "white";
-
-        botaoDescer.onclick = function () {
-
-          if (index < prompts.length - 1) {
-
-            [prompts[index], prompts[index + 1]] =
-              [prompts[index + 1], prompts[index]];
-
-            localStorage.setItem("prompts", JSON.stringify(prompts));
-
-            mostrarPrompts();
-          }
-        };
-
-        let botaoExpandir = document.createElement("button");
-
-        botaoExpandir.innerHTML = "▼ Mostrar";
-
-        botaoExpandir.style.backgroundColor = "#607D8B";
-        botaoExpandir.style.color = "white";
-
-        botaoExpandir.onclick = function () {
-
-          const textoPrompt =
-            item.querySelector(".textoPrompt");
-
-          if (textoPrompt.style.display === "none") {
-
-            textoPrompt.style.display = "block";
-
-            botaoExpandir.innerHTML = "▲ Ocultar";
-
-          } else {
-
-            textoPrompt.style.display = "none";
-
-            botaoExpandir.innerHTML = "▼ Mostrar";
-          }
-        };
-
-        let botaoOuvir = document.createElement("button");
-
-        botaoOuvir.innerHTML = "🔊 Ouvir";
-
-        botaoOuvir.style.backgroundColor = "#009688";
-        botaoOuvir.style.color = "white";
-
-        botaoOuvir.onclick = function () {
-
-          falarTexto(p.texto);
-
-        };
-
-        let botaoFoco = document.createElement("button");
-
-        botaoFoco.innerHTML = "🎯 Foco";
-
-        botaoFoco.style.backgroundColor = "#3F51B5";
-        botaoFoco.style.color = "white";
-
-        botaoFoco.onclick = function () {
-
-          abrirFoco(p.texto);
-
-        };
-        let botaoCopiar = document.createElement("button");
-
-        botaoCopiar.textContent = "📋 Copiar";
-
-        botaoCopiar.onclick = function () {
-          navigator.clipboard.writeText(p.texto);
-
-          mostrarToast("📋 Prompt copiado!");
-
-        };
-
-        let botaoDuplicar = document.createElement("button");
-
-        botaoDuplicar.innerHTML = "📋 Duplicar";
-
-        botaoDuplicar.style.backgroundColor = "#00BCD4";
-        botaoDuplicar.style.color = "white";
-
-        botaoDuplicar.onclick = function () {
-
-          let copia = {
-            ...p,
-            titulo: p.titulo + " (Cópia)"
-          };
-
-          prompts.unshift(copia);
-
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-
-          mostrarPrompts();
-
-          mostrarToast("📋 Prompt duplicado!");
-        };
-
-        let botaoHistorico =
-          document.createElement("button");
-
-        botaoHistorico.innerHTML = "🕘 Histórico";
-
-        botaoHistorico.style.backgroundColor =
-          "#607D8B";
-
-        botaoHistorico.style.color = "white";
-
-        botaoHistorico.onclick = function () {
-
-          let historico =
-            prompts[index].historico || [];
-
-          if (historico.length === 0) {
-
-            mostrarToast("Sem histórico 😄");
-            return;
-          }
-
-          let textoHistorico = "";
-
-          historico.forEach((h, i) => {
-
-            textoHistorico +=
-
-              "VERSÃO " + (i + 1) + "\n\n" +
-
-              h.texto +
-
-              "\n\n📅 " +
-
-              h.dataEdicao +
-
-              "\n\n-------------------\n\n";
-          });
-
-          alert(textoHistorico);
-        };
-        let botaoEditar = document.createElement("button");
-        botaoEditar.innerHTML = "✏️ Editar";
-
-        botaoEditar.style.backgroundColor = "#2196F3";
-
-        botaoEditar.style.color = "white";
-
-        botaoEditar.onclick = function () {
-          document.getElementById("categoria").value = p.categoria;
-          document.getElementById("titulo").value = p.titulo;
-          document.getElementById("prompt").value = p.texto;
-          document.getElementById("dataPrompt").value = p.data || "";
-
-
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
-
-          editandoIndex = index;
-        };
-
-        let botoesDiv = document.createElement("div");
-        botoesDiv.className = "botoes";
-
-        botoesDiv.appendChild(botaoFixar);
-
-        botoesDiv.appendChild(botaoFav);
-
-        botoesDiv.appendChild(botaoSubir);
-        botoesDiv.appendChild(botaoDescer);
-
-        botoesDiv.appendChild(botaoExpandir);
-
-        botoesDiv.appendChild(botaoOuvir);
-
-        botoesDiv.appendChild(botaoFoco);
-
-        botoesDiv.appendChild(botaoCopiar);
-
-        botoesDiv.appendChild(botaoDuplicar);
-
-        botoesDiv.appendChild(botaoHistorico);
-
-        botoesDiv.appendChild(botaoEditar);
-
-        botoesDiv.appendChild(botao);
-
-
-
-        item.appendChild(texto);
-        item.appendChild(botoesDiv);
-
-        lista.appendChild(item);
-
-        encontrouResultado = true;
-
-      });
+    prompts.forEach((p, index) => {
 
       if (
-        !encontrouResultado &&
-        busca
+        mostrarSomenteFavoritos &&
+        !p.favorito
       ) {
+        return;
+      }
 
-        lista.innerHTML = `
+      if (
+        mostrarSomenteFixados &&
+        !p.fixado
+      ) {
+        return;
+      }
+
+
+      if (
+        categoriaSelecionada &&
+        !p.categoria
+          .toLowerCase()
+          .includes(
+            categoriaSelecionada
+          )
+      ) {
+        return;
+      }
+
+      const hoje =
+        new Date().toLocaleDateString(
+          "sv-SE"
+        );
+
+      if (
+        mostrarSomenteHoje &&
+        p.data !== hoje
+      ) {
+        return;
+      }
+
+
+      const conteudoBusca = (
+
+        p.categoria +
+
+        " " +
+
+        p.titulo +
+
+        " " +
+
+        p.texto +
+
+        " " +
+
+        (p.data || "") +
+
+        " " +
+
+        (p.colecao || "") +
+
+        " " +
+
+        (p.status || "") +
+
+        " " +
+
+        (p.favorito
+          ? "favorito favoritos estrela ⭐"
+          : "") +
+
+        " " +
+
+        (p.fixado
+          ? "fixado fixados pin 📌"
+          : "")
+
+      ).toLowerCase();
+
+      if (busca && !conteudoBusca.includes(busca)) {
+        return;
+      }
+
+
+
+      let item = document.createElement("li");
+
+      let texto = document.createElement("div");
+      let emoji = "📁";
+      let corCategoria = "#4CAF50";
+
+      if (p.categoria.toLowerCase().includes("imagem")) {
+        emoji = "🖼";
+        corCategoria = "#E91E63";
+
+      } else if (p.categoria.toLowerCase().includes("neg")) {
+        emoji = "💼";
+        corCategoria = "#FF9800";
+
+      } else if (p.categoria.toLowerCase().includes("ide")) {
+        emoji = "💡";
+        corCategoria = "#FFC107";
+
+      } else if (p.categoria.toLowerCase().includes("via")) {
+        emoji = "✈️";
+        corCategoria = "#9C27B0";
+
+      } else if (p.categoria.toLowerCase().includes("tec")) {
+        emoji = "💻";
+        corCategoria = "#2196F3";
+
+      } else if (p.categoria.toLowerCase().includes("sa")) {
+        emoji = "💚";
+        corCategoria = "#4CAF50";
+      }
+
+
+
+      let dataFormatada = "Sem data";
+
+      if (p.data) {
+        const partes = p.data.split("-");
+
+        dataFormatada =
+          partes[2] + "/" +
+          partes[1] + "/" +
+          partes[0];
+      }
+
+      texto.innerHTML =
+        "<div class='categoria' style='background:" + corCategoria + "'>" +
+
+        p.categoria
+          .split(",")
+          .map(tag =>
+            "🏷️ " + tag.trim()
+          )
+          .join(" ")
+
+        +
+
+        "</div>" +
+        "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
+
+        "📁 " + (p.colecao || "Sem coleção") +
+
+        "</div>" +
+
+        "<div style='margin-bottom:8px; font-size:14px;'>"
+
+        +
+
+        (
+          p.status === "ideias"
+            ? "💡 Ideias"
+
+            : p.status === "teste"
+              ? "🛠️ Em teste"
+
+              : p.status === "prontos"
+                ? "✅ Prontos"
+
+                : "💡 Ideias"
+        )
+
+        +
+
+        "</div>" +
+
+        "<div class='tituloPrompt'>" +
+
+        p.titulo +
+
+        "</div>" +
+
+        "<div class='textoPrompt' style='display:none'>" +
+
+        p.texto +
+
+        "</div>" +
+
+        "<div class='dataPrompt'>📅 " + dataFormatada + "</div>";
+
+      let botaoFixar = document.createElement("button");
+
+      botaoFixar.innerHTML = p.fixado ? "📌" : "📍";
+
+      botaoFixar.style.backgroundColor = "#795548";
+      botaoFixar.style.color = "white";
+      botaoFixar.style.fontWeight = "bold";
+
+      botaoFixar.onclick = function () {
+
+        prompts[index].fixado = !prompts[index].fixado;
+
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+        localStorage.setItem(
+          "backupPrompts",
+          JSON.stringify(prompts)
+        );
+        const rascunho =
+          localStorage.getItem("rascunhoPrompt");
+
+        if (rascunho) {
+
+          document.getElementById("contadorCaracteres")
+            .innerHTML =
+            rascunho.length + " caracteres";
+
+          document.getElementById("prompt").value =
+            rascunho;
+        }
+        mostrarPrompts();
+
+      };
+
+
+      let botaoFav = document.createElement("button");
+
+      botaoFav.textContent = p.favorito ? "⭐" : "☆";
+
+      botaoFav.style.backgroundColor =
+        p.favorito ? "#FFD54F" : "#BA68C8";
+
+      botaoFav.style.color =
+        p.favorito ? "#333" : "white";
+
+      botaoFav.style.fontWeight = "bold";
+
+      botaoFav.onclick = function () {
+        prompts[index].favorito = !prompts[index].favorito;
+
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+        mostrarPrompts();
+
+      };
+
+      let botao = document.createElement("button");
+
+      botao.innerHTML = "🗑️ Excluir";
+
+
+      botao.style.backgroundColor = "#f44336";
+      botao.style.color = "white";
+
+
+
+      botaoFav.onclick = function () {
+        prompts[index].favorito = !prompts[index].favorito;
+
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+        mostrarPrompts();
+      };
+
+
+      botao.onclick = function () {
+        item.classList.add("removendo");
+
+        setTimeout(() => {
+          prompts.splice(index, 1);
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+          mostrarPrompts();
+        }, 400);
+      };
+
+      let botaoSubir = document.createElement("button");
+
+      botaoSubir.innerHTML = "⬆️";
+
+      botaoSubir.style.backgroundColor = "#607D8B";
+      botaoSubir.style.color = "white";
+
+      botaoSubir.onclick = function () {
+
+        if (index > 0) {
+
+          [prompts[index], prompts[index - 1]] =
+            [prompts[index - 1], prompts[index]];
+
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+
+          mostrarPrompts();
+        }
+      };
+
+      let botaoDescer = document.createElement("button");
+
+      botaoDescer.innerHTML = "⬇️";
+
+      botaoDescer.style.backgroundColor = "#607D8B";
+      botaoDescer.style.color = "white";
+
+      botaoDescer.onclick = function () {
+
+        if (index < prompts.length - 1) {
+
+          [prompts[index], prompts[index + 1]] =
+            [prompts[index + 1], prompts[index]];
+
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+
+          mostrarPrompts();
+        }
+      };
+
+      let botaoExpandir = document.createElement("button");
+
+      botaoExpandir.innerHTML = "▼ Mostrar";
+
+      botaoExpandir.style.backgroundColor = "#607D8B";
+      botaoExpandir.style.color = "white";
+
+      botaoExpandir.onclick = function () {
+
+        const textoPrompt =
+          item.querySelector(".textoPrompt");
+
+        if (textoPrompt.style.display === "none") {
+
+          textoPrompt.style.display = "block";
+
+          botaoExpandir.innerHTML = "▲ Ocultar";
+
+        } else {
+
+          textoPrompt.style.display = "none";
+
+          botaoExpandir.innerHTML = "▼ Mostrar";
+        }
+      };
+
+      let botaoOuvir = document.createElement("button");
+
+      botaoOuvir.innerHTML = "🔊 Ouvir";
+
+      botaoOuvir.style.backgroundColor = "#009688";
+      botaoOuvir.style.color = "white";
+
+      botaoOuvir.onclick = function () {
+
+        falarTexto(p.texto);
+
+      };
+
+      let botaoFoco = document.createElement("button");
+
+      botaoFoco.innerHTML = "🎯 Foco";
+
+      botaoFoco.style.backgroundColor = "#3F51B5";
+      botaoFoco.style.color = "white";
+
+      botaoFoco.onclick = function () {
+
+        abrirFoco(p.texto);
+
+      };
+      let botaoCopiar = document.createElement("button");
+
+      botaoCopiar.textContent = "📋 Copiar";
+
+      botaoCopiar.onclick = function () {
+        navigator.clipboard.writeText(p.texto);
+
+        mostrarToast("📋 Prompt copiado!");
+
+      };
+
+      let botaoDuplicar = document.createElement("button");
+
+      botaoDuplicar.innerHTML = "📋 Duplicar";
+
+      botaoDuplicar.style.backgroundColor = "#00BCD4";
+      botaoDuplicar.style.color = "white";
+
+      botaoDuplicar.onclick = function () {
+
+        let copia = {
+          ...p,
+          titulo: p.titulo + " (Cópia)"
+        };
+
+        prompts.unshift(copia);
+
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+
+        mostrarPrompts();
+
+        mostrarToast("📋 Prompt duplicado!");
+      };
+
+      let botaoHistorico =
+        document.createElement("button");
+
+      botaoHistorico.innerHTML = "🕘 Histórico";
+
+      botaoHistorico.style.backgroundColor =
+        "#607D8B";
+
+      botaoHistorico.style.color = "white";
+
+      botaoHistorico.onclick = function () {
+
+        let historico =
+          prompts[index].historico || [];
+
+        if (historico.length === 0) {
+
+          mostrarToast("Sem histórico 😄");
+          return;
+        }
+
+        let textoHistorico = "";
+
+        historico.forEach((h, i) => {
+
+          textoHistorico +=
+
+            "VERSÃO " + (i + 1) + "\n\n" +
+
+            h.texto +
+
+            "\n\n📅 " +
+
+            h.dataEdicao +
+
+            "\n\n-------------------\n\n";
+        });
+
+        alert(textoHistorico);
+      };
+      let botaoEditar = document.createElement("button");
+      botaoEditar.innerHTML = "✏️ Editar";
+
+      botaoEditar.style.backgroundColor = "#2196F3";
+
+      botaoEditar.style.color = "white";
+
+      botaoEditar.onclick = function () {
+        document.getElementById("categoria").value = p.categoria;
+        document.getElementById("titulo").value = p.titulo;
+        document.getElementById("prompt").value = p.texto;
+        document.getElementById("dataPrompt").value = p.data || "";
+
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+        editandoIndex = index;
+      };
+
+      let botoesDiv = document.createElement("div");
+      botoesDiv.className = "botoes";
+
+      botoesDiv.appendChild(botaoFixar);
+
+      botoesDiv.appendChild(botaoFav);
+
+      botoesDiv.appendChild(botaoSubir);
+      botoesDiv.appendChild(botaoDescer);
+
+      botoesDiv.appendChild(botaoExpandir);
+
+      botoesDiv.appendChild(botaoOuvir);
+
+      botoesDiv.appendChild(botaoFoco);
+
+      botoesDiv.appendChild(botaoCopiar);
+
+      botoesDiv.appendChild(botaoDuplicar);
+
+      botoesDiv.appendChild(botaoHistorico);
+
+      botoesDiv.appendChild(botaoEditar);
+
+      botoesDiv.appendChild(botao);
+
+
+
+      item.appendChild(texto);
+      item.appendChild(botoesDiv);
+
+      lista.appendChild(item);
+
+      encontrouResultado = true;
+
+    });
+
+    if (
+      !encontrouResultado &&
+      busca
+    ) {
+
+      lista.innerHTML = `
 
   <li style="
     text-align:center;
@@ -2243,6 +2280,11 @@ onclick="filtrarDashboard('hoje')">
       }
 
       localStorage.setItem("prompts", JSON.stringify(prompts));
+
+      localStorage.setItem(
+        "backupPrompts",
+        JSON.stringify(prompts)
+      );
       localStorage.removeItem("rascunhoPrompt");
 
       document.getElementById("categoria").value = "";
@@ -2420,18 +2462,18 @@ onclick="filtrarDashboard('hoje')">
     }
 
     const dataHoje =
-  new Date()
-    .toLocaleDateString(
-      "sv-SE"
-    );
+      new Date()
+        .toLocaleDateString(
+          "sv-SE"
+        );
 
-document.getElementById(
-  "dataPrompt"
-).max = dataHoje;
+    document.getElementById(
+      "dataPrompt"
+    ).max = dataHoje;
 
-document.getElementById(
-  "dataPrompt"
-).value = dataHoje;
+    document.getElementById(
+      "dataPrompt"
+    ).value = dataHoje;
 
     function mostrarToast(mensagem) {
       console.log("Toast funcionando!");
@@ -2484,98 +2526,98 @@ document.getElementById(
 
     function verificarConquistas() {
 
-  const totalPrompts =
-    prompts.length;
+      const totalPrompts =
+        prompts.length;
 
-  const conquistas =
-    JSON.parse(
-      localStorage.getItem(
-        "conquistas"
-      )
-    ) || {};
+      const conquistas =
+        JSON.parse(
+          localStorage.getItem(
+            "conquistas"
+          )
+        ) || {};
 
-  // 🌱 Iniciante
-  if (
-    totalPrompts >= 1 &&
-    !conquistas.iniciante
-  ) {
+      // 🌱 Iniciante
+      if (
+        totalPrompts >= 1 &&
+        !conquistas.iniciante
+      ) {
 
-    mostrarPopupConquista(
-      "Iniciante",
-      "🌱"
-    );
+        mostrarPopupConquista(
+          "Iniciante",
+          "🌱"
+        );
 
-    conquistas.iniciante =
-      true;
-  }
+        conquistas.iniciante =
+          true;
+      }
 
-  // 🚀 Explorador
-  if (
-    totalPrompts >= 10 &&
-    !conquistas.explorador
-  ) {
+      // 🚀 Explorador
+      if (
+        totalPrompts >= 10 &&
+        !conquistas.explorador
+      ) {
 
-    mostrarPopupConquista(
-      "Explorador",
-      "🚀"
-    );
+        mostrarPopupConquista(
+          "Explorador",
+          "🚀"
+        );
 
-    conquistas.explorador =
-      true;
-  }
+        conquistas.explorador =
+          true;
+      }
 
-  // 🧠 Criador
-  if (
-    totalPrompts >= 25 &&
-    !conquistas.criador
-  ) {
+      // 🧠 Criador
+      if (
+        totalPrompts >= 25 &&
+        !conquistas.criador
+      ) {
 
-    mostrarPopupConquista(
-      "Criador",
-      "🧠"
-    );
+        mostrarPopupConquista(
+          "Criador",
+          "🧠"
+        );
 
-    conquistas.criador =
-      true;
-  }
+        conquistas.criador =
+          true;
+      }
 
-  // 🔥 Especialista
-  if (
-    totalPrompts >= 50 &&
-    !conquistas.especialista
-  ) {
+      // 🔥 Especialista
+      if (
+        totalPrompts >= 50 &&
+        !conquistas.especialista
+      ) {
 
-    mostrarPopupConquista(
-      "Especialista",
-      "🔥"
-    );
+        mostrarPopupConquista(
+          "Especialista",
+          "🔥"
+        );
 
-    conquistas.especialista =
-      true;
-  }
+        conquistas.especialista =
+          true;
+      }
 
-  // 👑 Mestre IA
-  if (
-    totalPrompts >= 100 &&
-    !conquistas.mestre
-  ) {
+      // 👑 Mestre IA
+      if (
+        totalPrompts >= 100 &&
+        !conquistas.mestre
+      ) {
 
-    mostrarPopupConquista(
-      "Mestre IA",
-      "👑"
-    );
+        mostrarPopupConquista(
+          "Mestre IA",
+          "👑"
+        );
 
-    conquistas.mestre =
-      true;
-  }
-mostrarSugestoes
-  localStorage.setItem(
-    "conquistas",
-    JSON.stringify(
-      conquistas
-    )
-  );
-}
+        conquistas.mestre =
+          true;
+      }
+      mostrarSugestoes
+      localStorage.setItem(
+        "conquistas",
+        JSON.stringify(
+          conquistas
+        )
+      );
+    }
 
 
 
