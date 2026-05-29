@@ -3,6 +3,65 @@
 
 <head>
   <style>
+    .card-autenticacao {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 99999;
+      width: 400px;
+      padding: 35px;
+      background: rgba(255, 255, 255, 0.96);
+      border-radius: 28px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.20);
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-autenticacao h1 {
+      color: #2E7D32;
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+
+    .card-autenticacao input {
+      width: 92%;
+      padding: 14px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 15px;
+      background: #f4f4f4;
+      font-size: 15px;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    .card-autenticacao input:focus {
+      box-shadow: 0 0 12px rgba(76, 175, 80, 0.35);
+    }
+
+    .card-autenticacao button {
+      width: 96%;
+      padding: 14px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 15px;
+      background: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .card-autenticacao button:hover {
+      transform: scale(1.02);
+    }
+
+    .card-autenticacao hr {
+      margin: 25px 0;
+      border: 1px solid #ddd;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: #4CAF50;
@@ -826,6 +885,18 @@
       color: #2E7D32;
       text-align: center;
     }
+
+    #tituloConquistas {
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      color: #2E7D32 !important;
+      text-align: center !important;
+      font-size: 22px !important;
+      margin: 15px 0 !important;
+      background: yellow !important;
+      border: 2px solid red !important;
+    }
   </style>
 
   <link rel="manifest" href="manifest.json">
@@ -838,41 +909,26 @@
 
 <body>
 
-  <div id="telaLogin" style="
-display:block !important;
-position:fixed;
-top:40px;
-left:50%;
-transform:translateX(-50%);
-z-index:99999;
-background:white;
-padding:20px;
-border-radius:20px;
-box-shadow:0 0 20px rgba(0,0,0,0.3);
-width:400px;
-">
-
-    <h1>🔐 PromptKeeper Login</h1>
-
-    <input type="text" id="novoUsuario" placeholder="👤 Criar usuário">
-
-    <input type="password" id="novaSenha" placeholder="🔒 Criar senha">
-
-    <button onclick="criarConta()">
-      ✨ Criar Conta
-    </button>
-
+  <!-- Bloco de LOGIN -->
+  <div id="telaLogin" class="card-autenticacao">
+    <h1>🔒 PromptKeeper Login</h1>
+    <input type="text" placeholder="Usuário">
+    <input type="password" placeholder="Senha">
+    <button id="btnEntrar">✨ Entrar</button>
     <hr>
-
-    <input type="text" id="usuarioLogin" placeholder="👤 Usuário">
-
-    <input type="password" id="senhaLogin" placeholder="🔒 Senha">
-
-    <button onclick="fazerLogin()">
-      🚀 Entrar
-    </button>
-
+    <p>Não tem conta? <a href="#" id="linkIrParaCadastro">Criar Conta</a></p>
   </div>
+
+  <!-- Bloco de CADASTRO (Começa escondido) -->
+  <div id="telaCadastro" class="card-autenticacao" style="display: none;">
+    <h1>📝 Criar Conta</h1>
+    <input type="text" placeholder="Escolha um Usuário">
+    <input type="password" placeholder="Escolha uma Senha">
+    <button id="btnCadastrar">✨ Cadastrar</button>
+    <hr>
+    <p>Já tem conta? <a href="#" id="linkIrParaLogin">Fazer Login</a></p>
+  </div>
+
 
   <div id="toast"></div>
 
@@ -924,17 +980,9 @@ width:400px;
 
           <div id="badgesUsuario">
 
-          </div>
-
-          <div id="badgesUsuario">
-
-            <h4 style="
-    margin-top:15px;
-    color:#2E7D32;
-    font-size:15px;
-  ">
+            <h2 id="tituloConquistas">
               🏅 Conquistas
-            </h4>
+            </h2>
 
             <div id="listaBadges">
 
@@ -945,16 +993,6 @@ width:400px;
             </div>
 
           </div>
-
-          <div id="nivelUsuario"></div>
-
-          <div id="barraXPContainer">
-
-            <div id="barraXP"></div>
-
-          </div>
-
-          <div id="textoXP"></div>
 
           <button onclick="editarCargo()" style="
     margin-top:10px;
@@ -1093,39 +1131,6 @@ width:400px;
     let mostrarSomenteHoje = false;
 
     let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
-
-    const backupPrompts =
-      JSON.parse(
-        localStorage.getItem(
-          "backupPrompts"
-        )
-      ) || [];
-
-    if (
-      prompts.length === 0 &&
-      backupPrompts.length > 0
-    ) {
-
-      const restaurar =
-        confirm(
-          "⚠️ Encontrei um backup dos seus prompts.\n\nDeseja restaurar agora?"
-        );
-
-      if (restaurar) {
-
-        prompts =
-          backupPrompts;
-
-        localStorage.setItem(
-          "prompts",
-          JSON.stringify(prompts)
-        );
-
-        alert(
-          "😄 Backup restaurado com sucesso!"
-        );
-      }
-    }
 
     let nomeUsuario = localStorage.getItem("nomeUsuario");
 
@@ -1330,18 +1335,31 @@ width:400px;
     nivelUsuario.innerHTML =
       nivelAtual;
 
-    const progressoNivel =
-      total - inicioNivel;
+    let porcentagemXP = 0;
 
-    const totalNivel =
-      metaNivel - inicioNivel;
+    if (total < 10) {
+      porcentagemXP =
+        (total / 10) * 100;
+    }
 
-    const porcentagemXP =
-      Math.min(
-        (progressoNivel /
-          totalNivel) * 100,
-        100
-      );
+    else if (total < 25) {
+      porcentagemXP =
+        (total / 25) * 100;
+    }
+
+    else if (total < 50) {
+      porcentagemXP =
+        (total / 50) * 100;
+    }
+
+    else if (total < 100) {
+      porcentagemXP =
+        (total / 100) * 100;
+    }
+
+    else {
+      porcentagemXP = 100;
+    }
 
     document.getElementById(
       "barraXP"
@@ -1543,6 +1561,7 @@ width:400px;
         "</span>";
     }
 
+
     document.getElementById(
       "listaBadges"
     ).innerHTML =
@@ -1553,6 +1572,35 @@ width:400px;
       "🔒 Sem badges ainda" +
       "</span>";
 
+
+    // ===== BARRA DE CONQUISTAS =====
+
+    let totalBadges = 5;
+    let badgesDesbloqueadas = 0;
+
+    if (total >= 1)
+      badgesDesbloqueadas++;
+
+    if (total >= 10)
+      badgesDesbloqueadas++;
+
+    if (total >= 25)
+      badgesDesbloqueadas++;
+
+    if (total >= 50)
+      badgesDesbloqueadas++;
+
+    if (total >= 100)
+      badgesDesbloqueadas++;
+
+    const porcentagemBadge =
+      (badgesDesbloqueadas /
+        totalBadges) * 100;
+
+    document.getElementById(
+      "barraConquista"
+    ).style.width =
+      porcentagemBadge + "%";
 
 
     const meta = 50;
@@ -1845,10 +1893,6 @@ onclick="filtrarDashboard('hoje')">
         prompts[index].fixado = !prompts[index].fixado;
 
         localStorage.setItem("prompts", JSON.stringify(prompts));
-        localStorage.setItem(
-          "backupPrompts",
-          JSON.stringify(prompts)
-        );
         const rascunho =
           localStorage.getItem("rascunhoPrompt");
 
@@ -2280,11 +2324,6 @@ onclick="filtrarDashboard('hoje')">
       }
 
       localStorage.setItem("prompts", JSON.stringify(prompts));
-
-      localStorage.setItem(
-        "backupPrompts",
-        JSON.stringify(prompts)
-      );
       localStorage.removeItem("rascunhoPrompt");
 
       document.getElementById("categoria").value = "";
