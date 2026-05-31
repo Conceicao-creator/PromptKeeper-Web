@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #4CAF50;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2E7D32;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      width: 100%;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 14px;
+      border-radius: 12px;
+
+    }
+
+    button:ho<ver> {
+      background: #388E3C;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: linear-gradient(135deg, #ffffff, #f1f8f4);
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+      opacity: 0;
+      transform: translateY(20px);
+      animation: aparecer 0.5s forwards;
+    }
+
+    /* Efeito ao passar o mouse */
+    li:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    li button {
+      width: auto;
+      margin-top: 5px;
+      margin-right: 5px;
+    }
+
+    .categoria {
+      font-size: 12px;
+      color: #777;
+    }
+
+
+    /* Transições gerais */
+    * {
+      transition: all 0.3s ease;
+    }
+
+    /* Inputs e textarea */
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border: 1px solid #4CAF50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+    }
+
+    /* Botões */
+    button {
+      transform: scale(1);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    /* Cards (lista de prompts) */
+    li {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: aparecer 0.5s forwards;
+    }
+
+    /* Animação */
+    @keyframes aparecer {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .removendo {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.4s ease;
+    }
+
+    .categoria {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .tituloPrompt {
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .textoPrompt {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #444;
+    }
+
+    .botoes {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .botoes button {
+      flex: 1;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    button:nth-child(2) {
+      background: #ff9800;
+    }
+
+    #contador {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #2E7D32;
+      line-height: 1.8;
+    }
+
+    .dark-mode {
+      background: #121212;
+      color: white;
+    }
+
+    .dark-mode .container {
+      background: #1E1E1E;
+      color: white;
+    }
+
+    .dark-mode input,
+    .dark-mode textarea {
+      background: #2A2A2A;
+      color: white;
+      border: 1px solid #555;
+    }
+
+    .dark-mode li {
+      background: #2A2A2A;
+      color: white;
+    }
+
+    .dark-mode .tituloPrompt {
+      color: white;
+    }
+
+    .dark-mode .textoPrompt {
+      color: #ddd;
+    }
+
+    #mensagemSalva {
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.5s ease;
+      background: #4CAF50;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #mensagemSalva.mostrar {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-weight: bold;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.4s ease;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #toast.mostrar {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #perfilUsuario {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      color: #2E7D32;
+    }
+
+    #barraContainer {
+      width: 100%;
+      height: 22px;
+      background: #ddd;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+
+    #barraProgresso {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      transition: width 0.5s ease;
+    }
+
+    #textoProgresso {
+      margin-top: 8px;
+      font-weight: bold;
+      text-align: center;
+      color: #2E7D32;
+    }
+
+    #contadorCaracteres {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #4CAF50;
+      text-align: right;
+    }
+
+    .tema-verde {
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+    }
+
+    .tema-azul {
+      background: linear-gradient(135deg, #2196F3, #0D47A1);
+    }
+
+    .tema-roxo {
+      background: linear-gradient(135deg, #9C27B0, #4A148C);
+    }
+
+    .tema-vermelho {
+      background: linear-gradient(135deg, #F44336, #B71C1C);
+    }
+
+    #dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .cardDashboard {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    .numeroDashboard {
+      font-size: 28px;
+      margin-top: 8px;
+    }
+
+    #modoFoco {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 99999;
+      display: none;
+      overflow-y: auto;
+      padding: 50px;
+      box-sizing: border-box;
+    }
+
+    #textoFoco {
+      max-width: 900px;
+      margin: auto;
+      color: white;
+      font-size: 24px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+  </style>
+
+  <link rel="manifest" href="manifest.json">
+
+  <meta charset="UTF-8">
+  <title>PromptKeeper</title>
+
+
+</head>
+
+<body>
+
+  <div id="toast"></div>
+
+
+  <div class="container">
+
+    <h1>PromptKeeper</h1>
+
+    <select onchange="trocarTema(this.value)">
+
+      <option value="verde">🟢 Verde</option>
+
+      <option value="azul">🔵 Azul</option>
+
+      <option value="roxo">🟣 Roxo</option>
+
+      <option value="vermelho">🔴 Vermelho</option>
+
+    </select>
+
+    <div id="perfilUsuario"></div>
+
+    <button onclick="alternarModo()">🌙 Modo Escuro</button>
+
+
+
+    <ul id="sugestoes"></ul>
+
+    <input type="text" id="colecao" placeholder="📁 Coleção / Pasta">
+
+    <input type="text" id="categoria" placeholder="🏷️ Tags (IA, Marketing...)" oninput="mostrarSugestoes()" onkeypress="if(event.key === 'Enter'){
+    document.getElementById('titulo').focus();
+  }">
+
+    <select id="status">
+
+      <option value="ideias">
+        💡 Ideias
+      </option>
+
+      <option value="teste">
+        🛠️ Em teste
+      </option>
+
+      <option value="prontos">
+        ✅ Prontos
+      </option>
+
+    </select>
+
+    <input type="text" id="titulo" placeholder="📝 Título do prompt" <input type="date" id="data">
+
+    <input type="date" id="dataPrompt" max="">
+
+
+    <textarea id="prompt" oninput="autoSalvarRascunho(); sugerirCategoriaAutomatica()"
+      placeholder="📄 Digite seu prompt aqui..." rows="5"></textarea>
+
+    <div id="contadorCaracteres">
+      0 caracteres
+    </div>
+
+
+
+    <button onclick="salvarPrompt()">Salvar</button>
+    <button onclick="melhorarPrompt()">✨ Melhorar Prompt</button>
+
+    <div id="mensagemSalva"></div>
+
+
+    <input type="text" id="filtro" placeholder="Filtrar por categoria" oninput="mostrarPrompts()">
+    <button onclick="filtrarFavoritos()" style="
+    width:auto;
+    padding:10px 18px;
+    margin-top:10px;
+    background:#FFD54F;
+    color:#333;
+    font-size:15px;
+  ">
+      ⭐ Favoritos
+    </button>
+
+
+    <button onclick="fazerBackup()">Fazer Backup</button>
+
+    <button onclick="exportarPDF()">📄 Exportar PDF</button>
+
+    <input type="file" onchange="restaurarBackup(event)">
+
+    <button onclick="document.getElementById('importarTXT').click()">
+      📄 Importar TXT
+    </button>
+
+    <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
+
+    <div id="contador"></div>
+
+    <div id="dashboard"></div>
+
+    <div id="barraContainer">
+
+      <div id="barraProgresso"></div>
+
+    </div>
+
+    <div id="textoProgresso"></div>
+
+
+    <h2>Seus Prompts:</h2>
+    <ul id="lista"></ul>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    let editandoIndex = null;
+    let mostrarSomenteFavoritos = false;
+
+    let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
+
+    let nomeUsuario = localStorage.getItem("nomeUsuario");
+
+    if (!nomeUsuario) {
+      nomeUsuario = prompt("👤 Qual é o seu nome?");
+
+      if (nomeUsuario) {
+        localStorage.setItem("nomeUsuario", nomeUsuario);
+      }
+    }
+
+    function normalizarTexto(texto) {
+
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+    }
+
+    function mostrarPrompts() {
+      const perfil = document.getElementById("perfilUsuario");
+
+      if (nomeUsuario) {
+        perfil.innerHTML =
+          "👋 Olá, <strong>" +
+          nomeUsuario +
+          "</strong>";
+      }
+
+      const busca =
+        normalizarTexto(
+          document.getElementById("filtro").value
+        );
+      const filtro = document.getElementById("filtro").value.toLowerCase();
+      const lista = document.getElementById("lista");
+
+      lista.innerHTML = "";
+
+      const contador = document.getElementById("contador");
+
+      const total = prompts.length;
+
+      const meta = 50;
+
+      let progresso =
+        Math.min((total / meta) * 100, 100);
+
+      document.getElementById("barraProgresso")
+        .style.width = progresso + "%";
+
+      document.getElementById("textoProgresso")
+        .innerHTML =
+        "🚀 Você já criou " +
+        total +
+        " prompts";
+
+      const favoritos = prompts.filter(p => p.favorito).length;
+
+      const hoje =
+        new Date().toLocaleDateString("sv-SE");
+
+      const criadosHoje =
+        prompts.filter(p => p.data === hoje).length;
+      const fixados = prompts.filter(p => p.fixado).length;
+
+      const categorias = [...new Set(prompts.map(p => p.categoria))].length;
+
+      const porcentagemFav =
+        total > 0
+          ? Math.round((favoritos / total) * 100)
+          : 0;
+
+      const ultimoPrompt =
+        prompts.length > 0
+          ? prompts[0].titulo || "Sem título"
+          : "Nenhum";
+
+
+      contador.innerHTML =
+        document.getElementById("dashboard").innerHTML =
+
+        `
+<div class="cardDashboard">
+  📚 TOTAL
+  <div class="numeroDashboard">${total}</div>
+</div>
+
+<div class="cardDashboard">
+  ⭐ FAVORITOS
+  <div class="numeroDashboard">${favoritos}</div>
+</div>
+
+<div class="cardDashboard">
+  📌 FIXADOS
+  <div class="numeroDashboard">${fixados}</div>
+</div>
+
+<div class="cardDashboard">
+  🏷️ CATEGORIAS
+  <div class="numeroDashboard">${categorias}</div>
+</div>
+
+<div class="cardDashboard">
+  🚀 HOJE
+  <div class="numeroDashboard">${criadosHoje}</div>
+</div>
+`;
+      "📚 Total: <strong>" + total + "</strong><br>" +
+
+        "⭐ Favoritos: <strong>" + favoritos +
+        "</strong> (" + porcentagemFav + "%)<br>" +
+
+        "📌 Fixados: <strong>" + fixados + "</strong><br>" +
+
+        "🏷️ Categorias: <strong>" + categorias + "</strong><br>" +
+
+        "🕒 Último prompt: <strong>" + ultimoPrompt + "</strong>";
+
+
+
+      prompts.sort((a, b) => {
+
+        // 📌 Fixados
+        const fixadoA = a.fixado ? 1 : 0;
+        const fixadoB = b.fixado ? 1 : 0;
+
+        if (fixadoB !== fixadoA) {
+          return fixadoB - fixadoA;
+        }
+
+        // ⭐ Favoritos
+        const favA = a.favorito ? 1 : 0;
+        const favB = b.favorito ? 1 : 0;
+
+        if (favB !== favA) {
+          return favB - favA;
+        }
+
+        // 📅 Datas
+        return new Date(b.data || 0) - new Date(a.data || 0);
+
+      });
+
+      prompts.forEach((p, index) => {
+
+        if (
+          mostrarSomenteFavoritos &&
+          !p.favorito
+        ) {
+          return;
+        }
+
+
+
+        const conteudoBusca = (
+          p.categoria +
+          " " +
+          p.titulo +
+          " " +
+          p.texto +
+          " " +
+          (p.data || "") +
+          " " +
+          (p.favorito ? "favorito favoritos estrela ⭐" : "")
+
+        ).toLowerCase();
+
+        if (busca && !conteudoBusca.includes(busca)) {
+          return;
+        }
+
+
+
+        let item = document.createElement("li");
+
+        let texto = document.createElement("div");
+        let emoji = "📁";
+        let corCategoria = "#4CAF50";
+
+        if (p.categoria.toLowerCase().includes("imagem")) {
+          emoji = "🖼";
+          corCategoria = "#E91E63";
+
+        } else if (p.categoria.toLowerCase().includes("neg")) {
+          emoji = "💼";
+          corCategoria = "#FF9800";
+
+        } else if (p.categoria.toLowerCase().includes("ide")) {
+          emoji = "💡";
+          corCategoria = "#FFC107";
+
+        } else if (p.categoria.toLowerCase().includes("via")) {
+          emoji = "✈️";
+          corCategoria = "#9C27B0";
+
+        } else if (p.categoria.toLowerCase().includes("tec")) {
+          emoji = "💻";
+          corCategoria = "#2196F3";
+
+        } else if (p.categoria.toLowerCase().includes("sa")) {
+          emoji = "💚";
+          corCategoria = "#4CAF50";
+        }
+
+
+
+        let dataFormatada = "Sem data";
+
+        if (p.data) {
+          const partes = p.data.split("-");
+
+          dataFormatada =
+            partes[2] + "/" +
+            partes[1] + "/" +
+            partes[0];
+        }
+
+        texto.innerHTML =
+          "<div class='categoria' style='background:" + corCategoria + "'>" +
+
+          p.categoria
+            .split(",")
+            .map(tag =>
+              "🏷️ " + tag.trim()
+            )
+            .join(" ")
+
+          +
+
+          "</div>" +
+          "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
+
+          "📁 " + (p.colecao || "Sem coleção") +
+
+          "</div>" +
+
+          "<div style='margin-bottom:8px; font-size:14px;'>"
+
+          +
+
+          (p.status === "ideias"
+            ? "💡 Ideias"
+            : p.status === "teste"
+              ? "🛠️ Em teste"
+              : "✅ Prontos")
+
+          +
+
+          "</div>" +
+
+          "<div style='margin-bottom:8px; font-size:14px;'>"
+
+          +
+
+
+          "</div>" +
+
+          "<div class='tituloPrompt'>" +
+
+          p.titulo +
+
+          "</div>" +
+
+          "<div class='textoPrompt' style='display:none'>" +
+
+          p.texto +
+
+          "</div>" +
+
+          "<div class='dataPrompt'>📅 " + dataFormatada + "</div>";
+
+        let botaoFixar = document.createElement("button");
+
+        botaoFixar.innerHTML = p.fixado ? "📌" : "📍";
+
+        botaoFixar.style.backgroundColor = "#795548";
+        botaoFixar.style.color = "white";
+        botaoFixar.style.fontWeight = "bold";
+
+        botaoFixar.onclick = function () {
+
+          prompts[index].fixado = !prompts[index].fixado;
+
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+          const rascunho =
+            localStorage.getItem("rascunhoPrompt");
+
+          if (rascunho) {
+
+            document.getElementById("contadorCaracteres")
+              .innerHTML =
+              rascunho.length + " caracteres";
+
+            document.getElementById("prompt").value =
+              rascunho;
+          }
+
+          mostrarPrompts();
+        };
+
+
+
+        let botaoFav = document.createElement("button");
+
+        botaoFav.textContent = p.favorito ? "⭐" : "☆";
+
+        botaoFav.style.backgroundColor =
+          p.favorito ? "#FFD54F" : "#BA68C8";
+
+        botaoFav.style.color =
+          p.favorito ? "#333" : "white";
+
+        botaoFav.style.fontWeight = "bold";
+
+        botaoFav.onclick = function () {
+          prompts[index].favorito = !prompts[index].favorito;
+
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+          mostrarPrompts();
+
+        };
+
+        let botao = document.createElement("button");
+
+        botao.innerHTML = "🗑️ Excluir";
+
+
+        botao.style.backgroundColor = "#f44336";
+        botao.style.color = "white";
+
+
+
+        botaoFav.onclick = function () {
+          prompts[index].favorito = !prompts[index].favorito;
+
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+          mostrarPrompts();
+        };
+
+
+        botao.onclick = function () {
+          item.classList.add("removendo");
+
+          setTimeout(() => {
+            prompts.splice(index, 1);
+            localStorage.setItem("prompts", JSON.stringify(prompts));
+            mostrarPrompts();
+          }, 400);
+        };
+
+        let botaoSubir = document.createElement("button");
+
+        botaoSubir.innerHTML = "⬆️";
+
+        botaoSubir.style.backgroundColor = "#607D8B";
+        botaoSubir.style.color = "white";
+
+        botaoSubir.onclick = function () {
+
+          if (index > 0) {
+
+            [prompts[index], prompts[index - 1]] =
+              [prompts[index - 1], prompts[index]];
+
+            localStorage.setItem("prompts", JSON.stringify(prompts));
+
+            mostrarPrompts();
+          }
+        };
+
+        let botaoDescer = document.createElement("button");
+
+        botaoDescer.innerHTML = "⬇️";
+
+        botaoDescer.style.backgroundColor = "#607D8B";
+        botaoDescer.style.color = "white";
+
+        botaoDescer.onclick = function () {
+
+          if (index < prompts.length - 1) {
+
+            [prompts[index], prompts[index + 1]] =
+              [prompts[index + 1], prompts[index]];
+
+            localStorage.setItem("prompts", JSON.stringify(prompts));
+
+            mostrarPrompts();
+          }
+        };
+
+        let botaoExpandir = document.createElement("button");
+
+        botaoExpandir.innerHTML = "▼ Mostrar";
+
+        botaoExpandir.style.backgroundColor = "#607D8B";
+        botaoExpandir.style.color = "white";
+
+        botaoExpandir.onclick = function () {
+
+          const textoPrompt =
+            item.querySelector(".textoPrompt");
+
+          if (textoPrompt.style.display === "none") {
+
+            textoPrompt.style.display = "block";
+
+            botaoExpandir.innerHTML = "▲ Ocultar";
+
+          } else {
+
+            textoPrompt.style.display = "none";
+
+            botaoExpandir.innerHTML = "▼ Mostrar";
+          }
+        };
+
+        let botaoOuvir = document.createElement("button");
+
+        botaoOuvir.innerHTML = "🔊 Ouvir";
+
+        botaoOuvir.style.backgroundColor = "#009688";
+        botaoOuvir.style.color = "white";
+
+        botaoOuvir.onclick = function () {
+
+          falarTexto(p.texto);
+
+        };
+
+        let botaoFoco = document.createElement("button");
+
+        botaoFoco.innerHTML = "🎯 Foco";
+
+        botaoFoco.style.backgroundColor = "#3F51B5";
+        botaoFoco.style.color = "white";
+
+        botaoFoco.onclick = function () {
+
+          abrirFoco(p.texto);
+
+        };
+        let botaoCopiar = document.createElement("button");
+
+        botaoCopiar.textContent = "📋 Copiar";
+
+        botaoCopiar.onclick = function () {
+          navigator.clipboard.writeText(p.texto);
+
+          mostrarToast("📋 Prompt copiado!");
+
+        };
+
+        let botaoDuplicar = document.createElement("button");
+
+        botaoDuplicar.innerHTML = "📋 Duplicar";
+
+        botaoDuplicar.style.backgroundColor = "#00BCD4";
+        botaoDuplicar.style.color = "white";
+
+        botaoDuplicar.onclick = function () {
+
+          let copia = {
+            ...p,
+            titulo: p.titulo + " (Cópia)"
+          };
+
+          prompts.unshift(copia);
+
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+
+          mostrarPrompts();
+
+          mostrarToast("📋 Prompt duplicado!");
+        };
+
+        let botaoHistorico =
+          document.createElement("button");
+
+        botaoHistorico.innerHTML = "🕘 Histórico";
+
+        botaoHistorico.style.backgroundColor =
+          "#607D8B";
+
+        botaoHistorico.style.color = "white";
+
+        botaoHistorico.onclick = function () {
+
+          let historico =
+            prompts[index].historico || [];
+
+          if (historico.length === 0) {
+
+            mostrarToast("Sem histórico 😄");
+            return;
+          }
+
+          let textoHistorico = "";
+
+          historico.forEach((h, i) => {
+
+            textoHistorico +=
+
+              "VERSÃO " + (i + 1) + "\n\n" +
+
+              h.texto +
+
+              "\n\n📅 " +
+
+              h.dataEdicao +
+
+              "\n\n-------------------\n\n";
+          });
+
+          alert(textoHistorico);
+        };
+        let botaoEditar = document.createElement("button");
+        botaoEditar.innerHTML = "✏️ Editar";
+
+        botaoEditar.style.backgroundColor = "#2196F3";
+
+        botaoEditar.style.color = "white";
+
+        botaoEditar.onclick = function () {
+          document.getElementById("categoria").value = p.categoria;
+          document.getElementById("titulo").value = p.titulo;
+          document.getElementById("prompt").value = p.texto;
+          document.getElementById("dataPrompt").value = p.data || "";
+
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+          editandoIndex = index;
+        };
+
+        let botoesDiv = document.createElement("div");
+        botoesDiv.className = "botoes";
+
+        botoesDiv.appendChild(botaoFixar);
+
+        botoesDiv.appendChild(botaoFav);
+
+        botoesDiv.appendChild(botaoSubir);
+        botoesDiv.appendChild(botaoDescer);
+
+        botoesDiv.appendChild(botaoExpandir);
+
+        botoesDiv.appendChild(botaoOuvir);
+
+        botoesDiv.appendChild(botaoFoco);
+
+        botoesDiv.appendChild(botaoCopiar);
+
+        botoesDiv.appendChild(botaoDuplicar);
+
+        botoesDiv.appendChild(botaoHistorico);
+
+        botoesDiv.appendChild(botaoEditar);
+
+        botoesDiv.appendChild(botao);
+
+
+
+        item.appendChild(texto);
+        item.appendChild(botoesDiv);
+
+        lista.appendChild(item);
+      });
+    }
+
+    function melhorarPrompt() {
+
+      let textarea =
+        document.getElementById("prompt");
+
+      let texto = textarea.value;
+
+      if (!texto.trim()) {
+
+        mostrarToast("❌ Digite um prompt primeiro!");
+
+        return;
+      }
+
+      let melhorado =
+
+        "✨ Prompt otimizado:\n\n" +
+
+        "Seja extremamente detalhado, " +
+
+        "profissional, criativo e envolvente.\n\n" +
+
+        texto +
+
+        "\n\nInclua exemplos práticos, " +
+
+        "descrições avançadas, " +
+
+        "estrutura clara, tom profissional " +
+
+        "e respostas completas.";
+
+      textarea.value = melhorado;
+
+      mostrarToast("✨ Prompt melhorado!");
+    }
+
+    function salvarPrompt() {
+      const categoria =
+        document.getElementById("categoria").value;
+
+      const colecao =
+        document.getElementById("colecao").value;
+
+      const status =
+        document.getElementById("status").value;
+
+      const titulo =
+        document.getElementById("titulo").value;
+
+      const texto = document.getElementById("prompt").value;
+
+      const dataInput = document.getElementById("dataPrompt").value;
+
+      const hoje = new Date().toLocaleDateString("sv-SE");
+
+
+      if (dataInput > hoje) {
+        alert("❌ Não é permitido usar data futura!");
+        return;
+      }
+
+
+      let data = document.getElementById("dataPrompt").value;
+
+      if (!data) {
+        const hoje = new Date().toLocaleDateString("sv-SE");
+
+      }
+
+      if (texto.trim() === "") return;
+
+      if (editandoIndex !== null) {
+
+        if (!prompts[editandoIndex].historico) {
+          prompts[editandoIndex].historico = [];
+        }
+
+        prompts[editandoIndex].historico.push({
+
+          texto: prompts[editandoIndex].texto,
+
+          dataEdicao:
+            new Date().toLocaleString("pt-BR")
+
+        });
+        prompts[editandoIndex] = {
+
+          categoria,
+          colecao,
+          status,
+          titulo,
+          texto,
+
+          historico:
+            prompts[editandoIndex].historico || [],
+
+          favorito:
+            prompts[editandoIndex].favorito || false,
+
+          data: data
+        };
+
+
+
+        editandoIndex = null;
+      } else {
+        prompts.push({
+          categoria,
+          colecao,
+          status,
+          titulo,
+          texto,
+          favorito: false,
+          fixado: false,
+          data: data
+        });
+
+      }
+
+      localStorage.setItem("prompts", JSON.stringify(prompts));
+      localStorage.removeItem("rascunhoPrompt");
+
+      document.getElementById("categoria").value = "";
+      document.getElementById("titulo").value = "";
+      document.getElementById("prompt").value = "";
+      document.getElementById("dataPrompt").value = "";
+
+      mostrarPrompts();
+
+      mostrarToast("✅ Prompt salvo com sucesso!");
+
+
+    }
+
+    mostrarPrompts();
+    async function exportarPDF() {
+
+      const { jsPDF } = window.jspdf;
+
+      const doc = new jsPDF();
+
+      let y = 20;
+
+      doc.setFontSize(20);
+      doc.text("PromptKeeper", 20, y);
+
+      y += 15;
+
+      prompts.forEach((p, index) => {
+
+        if (y > 260) {
+          doc.addPage();
+          y = 20;
+        }
+
+        doc.setFontSize(14);
+
+        doc.text(
+          (index + 1) + ". " + p.titulo,
+          20,
+          y
+        );
+
+        y += 8;
+
+        doc.setFontSize(11);
+
+        doc.text(
+          "Categoria: " + p.categoria,
+          20,
+          y
+        );
+
+        y += 8;
+
+        const textoQuebrado =
+          doc.splitTextToSize(p.texto, 170);
+
+        doc.text(textoQuebrado, 20, y);
+
+        y += textoQuebrado.length * 7;
+
+        y += 10;
+      });
+
+      window.open(doc.output("bloburl"));
+
+
+      mostrarToast("📄 PDF exportado!");
+    }
+
+    function fazerBackup() {
+      const dados = JSON.stringify(prompts, null, 2);
+
+      const blob = new Blob([dados], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "promptkeeper_backup.json";
+
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function restaurarBackup(event) {
+      const arquivo = event.target.files[0];
+
+      if (!arquivo) return;
+
+      const leitor = new FileReader();
+
+      leitor.onload = function (e) {
+        const dados = JSON.parse(e.target.result);
+
+        prompts = dados;
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+
+        mostrarPrompts();
+      };
+
+      leitor.readAsText(arquivo);
+    }
+
+
+    function mostrarSugestoes() {
+      const input = document.getElementById("categoria").value.toLowerCase();
+      const lista = document.getElementById("sugestoes");
+
+      lista.innerHTML = "";
+
+      if (!input) return;
+
+      // pegar categorias já existentes
+      const categorias = [...new Set(prompts.map(p => p.categoria))];
+
+      categorias.forEach(cat => {
+        if (cat.toLowerCase().startsWith(input)) {
+
+          let item = document.createElement("li");
+          item.textContent = cat;
+
+          item.onclick = function () {
+            document.getElementById("categoria").value = cat;
+            lista.innerHTML = "";
+          };
+
+          lista.appendChild(item);
+        }
+      });
+    }
+
+    function autoSalvarRascunho() {
+
+      const texto =
+        document.getElementById("prompt").value;
+
+      localStorage.setItem(
+        "rascunhoPrompt",
+        texto
+      );
+
+      document.getElementById("contadorCaracteres")
+        .innerHTML =
+        texto.length + " caracteres";
+    }
+
+
+    function sugerirCategoriaAutomatica() {
+      const texto = document.getElementById("prompt").value.toLowerCase();
+
+      let categoria = "";
+
+      if (texto.includes("imagem")) categoria = "IMAGENS";
+      else if (texto.includes("negócio") || texto.includes("marketing")) categoria = "NEGOCIOS";
+      else if (texto.includes("ideia")) categoria = "IDEIAS";
+
+      if (categoria) {
+        document.getElementById("categoria").value = categoria;
+      }
+    }
+
+    function alternarModo() {
+
+      document.body.classList.toggle(
+        "dark-mode"
+      );
+
+      if (
+        document.body.classList.contains(
+          "dark-mode"
+        )
+      ) {
+
+        localStorage.setItem(
+          "modoEscuro",
+          "true"
+        );
+
+      } else {
+
+        localStorage.setItem(
+          "modoEscuro",
+          "false"
+        );
+      }
+    }
+    document.getElementById("dataPrompt").max =
+      data = new Date().toLocaleDateString("sv-SE");
+
+
+
+    function mostrarToast(mensagem) {
+      console.log("Toast funcionando!");
+
+      const toast = document.getElementById("toast");
+
+      toast.textContent = mensagem;
+
+      toast.classList.add("mostrar");
+
+      setTimeout(() => {
+        toast.classList.remove("mostrar");
+      }, 2500);
+    }
+
+    function trocarTema(cor) {
+
+      document.body.classList.remove(
+        "tema-verde",
+        "tema-azul",
+        "tema-roxo",
+        "tema-vermelho"
+      );
+
+      document.body.classList.add(
+        "tema-" + cor
+      );
+
+      localStorage.setItem(
+        "temaPromptKeeper",
+        cor
+      );
+    }
+
+    const temaSalvo =
+      localStorage.getItem("temaPromptKeeper");
+
+    if (temaSalvo) {
+
+      document.body.classList.add(
+        "tema-" + temaSalvo
+      );
+    }
+
+    function falarTexto(texto) {
+
+      const fala =
+        new SpeechSynthesisUtterance(texto);
+
+      fala.lang = "pt-BR";
+
+      speechSynthesis.speak(fala);
+    }
+
+    function abrirFoco(texto) {
+
+      document.getElementById("modoFoco")
+        .style.display = "block";
+
+      document.getElementById("textoFoco")
+        .textContent = texto;
+    }
+
+    function fecharFoco() {
+
+      document.getElementById("modoFoco")
+        .style.display = "none";
+    }
+
+    function filtrarFavoritos() {
+
+      mostrarSomenteFavoritos =
+        !mostrarSomenteFavoritos;
+
+      mostrarPrompts();
+
+      if (mostrarSomenteFavoritos) {
+
+        mostrarToast("⭐ Mostrando favoritos");
+
+      } else {
+
+        mostrarToast("📚 Mostrando todos");
+      }
+    }
+
+
+  </script>
+
+  <div id="modoFoco">
+
+    <button onclick="fecharFoco()">
+      ❌ Fechar
+    </button>
+
+    <div id="textoFoco"></div>
+
+  </div>
+
+</body>
+
+</html>

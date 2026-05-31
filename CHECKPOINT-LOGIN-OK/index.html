@@ -936,143 +936,144 @@
 
   <div id="appPromptKeeper" style="display:block !important; border:4px solid red;"></div>
 
-  <div class="container">
+    <div class="container">
 
-    <h1>PromptKeeper</h1>
+      <h1>PromptKeeper</h1>
 
-    <select onchange="trocarTema(this.value)">
+      <select onchange="trocarTema(this.value)">
 
-      <option value="verde">🟢 Verde</option>
+        <option value="verde">🟢 Verde</option>
 
-      <option value="azul">🔵 Azul</option>
+        <option value="azul">🔵 Azul</option>
 
-      <option value="roxo">🟣 Roxo</option>
+        <option value="roxo">🟣 Roxo</option>
 
-      <option value="vermelho">🔴 Vermelho</option>
+        <option value="vermelho">🔴 Vermelho</option>
 
-    </select>
+      </select>
 
-    <div id="perfilBox">
+      <div id="perfilBox">
 
-      <div id="avatarUsuario">
-        M
-      </div>
-
-      <div id="perfilUsuario">
-
-        <div id="nomePerfil"></div>
-
-        <div id="cargoPerfil"></div>
-
-        <div id="frasePerfil"></div>
-
-        <div id="nivelUsuario">
-          🌱 Iniciante
+        <div id="avatarUsuario">
+          M
         </div>
 
-        <div id="barraXPContainer">
-          <div id="barraXP"></div>
-        </div>
+        <div id="perfilUsuario">
 
-        <div id="textoXP">
-          📈 0 prompts criados
-        </div>
+          <div id="nomePerfil"></div>
 
-        <div id="badgesUsuario">
+          <div id="cargoPerfil"></div>
 
-          <h2 id="tituloConquistas">
-            🏅 Conquistas
-          </h2>
+          <div id="frasePerfil"></div>
 
-          <div id="listaBadges">
+          <div id="nivelUsuario">
+            🌱 Iniciante
+          </div>
 
-            <span class="badgeBloqueada">
-              🔒 Sem badges ainda
-            </span>
+          <div id="barraXPContainer">
+            <div id="barraXP"></div>
+          </div>
+
+          <div id="textoXP">
+            📈 0 prompts criados
+          </div>
+
+          <div id="badgesUsuario">
+
+            <h2 id="tituloConquistas">
+              🏅 Conquistas
+            </h2>
+
+            <div id="listaBadges">
+
+              <span class="badgeBloqueada">
+                🔒 Sem badges ainda
+              </span>
+
+            </div>
 
           </div>
 
+          <button onclick="editarCargo()" style="
+    margin-top:10px;
+    font-size:14px;
+    padding:8px;
+  ">
+            ✏️ Editar Cargo
+          </button>
+
+          <button onclick="editarFrase()" style="
+    margin-top:10px;
+    font-size:14px;
+    padding:8px;
+  ">
+            ✨ Editar Frase
+          </button>
+
+          <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)">
+
+
+
         </div>
-
-        <button onclick="editarCargo()" style="
-    margin-top:10px;
-    font-size:14px;
-    padding:8px;
-  ">
-          ✏️ Editar Cargo
-        </button>
-
-        <button onclick="editarFrase()" style="
-    margin-top:10px;
-    font-size:14px;
-    padding:8px;
-  ">
-          ✨ Editar Frase
-        </button>
-
-        <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)">
-
 
 
       </div>
 
+      <button onclick="sairConta()">
+        🚪 Sair
+      </button>
 
-    </div>
-
-    <button onclick="sairConta()">
-      🚪 Sair
-    </button>
-
-    <button onclick="alternarModo()">🌙 Modo Escuro</button>
+      <button onclick="alternarModo()">🌙 Modo Escuro</button>
 
 
 
-    <ul id="sugestoes"></ul>
+      <ul id="sugestoes"></ul>
 
-    <input type="text" id="colecao" placeholder="📁 Coleção / Pasta">
+      <input type="text" id="colecao" placeholder="📁 Coleção / Pasta">
 
-    <input type="text" id="categoria" placeholder="🏷️ Tags (IA, Marketing...)" oninput="mostrarSugestoes()" onkeypress="if(event.key === 'Enter'){
+      <input type="text" id="categoria" placeholder="🏷️ Tags (IA, Marketing...)" oninput="mostrarSugestoes()"
+        onkeypress="if(event.key === 'Enter'){
     document.getElementById('titulo').focus();
   }">
 
-    <select id="status">
+      <select id="status">
 
-      <option value="ideias">
-        💡 Ideias
-      </option>
+        <option value="ideias">
+          💡 Ideias
+        </option>
 
-      <option value="teste">
-        🛠️ Em teste
-      </option>
+        <option value="teste">
+          🛠️ Em teste
+        </option>
 
-      <option value="prontos">
-        ✅ Prontos
-      </option>
+        <option value="prontos">
+          ✅ Prontos
+        </option>
 
-    </select>
+      </select>
 
-    <input type="text" id="titulo" placeholder="📝 Título do prompt">
+      <input type="text" id="titulo" placeholder="📝 Título do prompt">
 
-    <input type="date" id="dataPrompt" max="">
-
-
-    <textarea id="prompt" oninput="autoSalvarRascunho(); sugerirCategoriaAutomatica()"
-      placeholder="📄 Digite seu prompt aqui..." rows="5"></textarea>
-
-    <div id="contadorCaracteres">
-      0 caracteres
-    </div>
+      <input type="date" id="dataPrompt" max="">
 
 
+      <textarea id="prompt" oninput="autoSalvarRascunho(); sugerirCategoriaAutomatica()"
+        placeholder="📄 Digite seu prompt aqui..." rows="5"></textarea>
 
-    <button onclick="salvarPrompt()">Salvar</button>
-    <button onclick="melhorarPrompt()">✨ Melhorar Prompt</button>
+      <div id="contadorCaracteres">
+        0 caracteres
+      </div>
 
-    <div id="mensagemSalva"></div>
 
 
-    <input type="text" id="filtro" placeholder="🔎 Buscar qualquer coisa..." oninput="mostrarPrompts()">
-    <button onclick="filtrarFavoritos()" style="
+      <button onclick="salvarPrompt()">Salvar</button>
+      <button onclick="melhorarPrompt()">✨ Melhorar Prompt</button>
+
+      <div id="mensagemSalva"></div>
+
+
+      <input type="text" id="filtro" placeholder="🔎 Buscar qualquer coisa..." oninput="mostrarPrompts()">
+      <button onclick="filtrarFavoritos()" style="
     width:auto;
     padding:10px 18px;
     margin-top:10px;
@@ -1080,42 +1081,42 @@
     color:#333;
     font-size:15px;
   ">
-      ⭐ Favoritos
-    </button>
+        ⭐ Favoritos
+      </button>
 
 
 
 
-    <button onclick="fazerBackup()">Fazer Backup</button>
+      <button onclick="fazerBackup()">Fazer Backup</button>
 
-    <button onclick="exportarPDF()">📄 Exportar PDF</button>
+      <button onclick="exportarPDF()">📄 Exportar PDF</button>
 
-    <input type="file" onchange="restaurarBackup(event)">
+      <input type="file" onchange="restaurarBackup(event)">
 
-    <button onclick="document.getElementById('importarTXT').click()">
-      📄 Importar TXT
-    </button>
+      <button onclick="document.getElementById('importarTXT').click()">
+        📄 Importar TXT
+      </button>
 
-    <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
+      <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
 
-    <div id="contador"></div>
+      <div id="contador"></div>
 
-    <div id="dashboard"></div>
+      <div id="dashboard"></div>
 
-    <div id="barraContainer">
+      <div id="barraContainer">
 
-      <div id="barraProgresso"></div>
+        <div id="barraProgresso"></div>
+
+      </div>
+
+      <div id="textoProgresso"></div>
+
+
+      <h2>Seus Prompts:</h2>
+
+      <ul id="lista"></ul>
 
     </div>
-
-    <div id="textoProgresso"></div>
-
-
-    <h2>Seus Prompts:</h2>
-
-    <ul id="lista"></ul>
-
-  </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -2865,17 +2866,6 @@ onclick="filtrarDashboard('hoje')">
 
     function verificarLogin() {
 
-      if (
-        localStorage.getItem(
-          "modoEscuro"
-        ) === "true"
-      ) {
-
-        document.body.classList.add(
-          "dark-mode"
-        );
-      }
-
       const logado =
         localStorage.getItem(
           "usuarioLogado"
@@ -3117,7 +3107,7 @@ onclick="filtrarDashboard('hoje')">
     }
 
 
-    <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
+  <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
   </script>
 
   <!-- O seu bloco Modo Foco continua aqui normalmente -->
@@ -3169,3 +3159,6 @@ onclick="filtrarDashboard('hoje')">
 </body>
 
 </html>
+
+
+
