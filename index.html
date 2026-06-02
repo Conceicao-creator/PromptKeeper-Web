@@ -897,6 +897,29 @@
       background: yellow !important;
       border: 2px solid red !important;
     }
+
+    #boasVindas {
+
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      background: #2E7D32;
+      color: white;
+
+      padding: 14px 25px;
+      border-radius: 14px;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.3);
+
+      display: none;
+      z-index: 999999;
+    }
   </style>
 
   <link rel="manifest" href="manifest.json">
@@ -933,6 +956,8 @@
   <div id="toast"></div>
 
   <div id="popupConquista"></div>
+
+  <div id="boasVindas"></div>
 
   <div id="appPromptKeeper" style="display:block !important; border:4px solid red;"></div>
 
@@ -1157,6 +1182,17 @@
         localStorage.getItem(
           "nomeUsuario"
         );
+
+      if (nomeUsuario) {
+        document.getElementById(
+          "nomePerfil"
+        ).innerHTML =
+
+          "👋 Olá, <strong>" +
+          nomeUsuario +
+          "</strong>";
+      }
+
       if (nomeUsuario) {
 
         document.getElementById(
@@ -1186,15 +1222,6 @@
         const perfil = document.getElementById("perfilUsuario");
 
 
-        if (nomeUsuario) {
-          document.getElementById(
-            "nomePerfil"
-          ).innerHTML =
-
-            "👋 Olá, <strong>" +
-            nomeUsuario +
-            "</strong>";
-        }
       }
     }
 
@@ -1450,10 +1477,10 @@
   `;
     }
 
-    document.getElementById(
-      "badgesUsuario"
-    ).innerHTML =
-      badgesHTML;
+    //document.getElementById(
+    // "badgesUsuario"
+    //).innerHTML =
+    // badgesHTML;
 
 
     const conquistaSalva =
@@ -1596,10 +1623,16 @@
       (badgesDesbloqueadas /
         totalBadges) * 100;
 
-    document.getElementById(
-      "barraConquista"
-    ).style.width =
-      porcentagemBadge + "%";
+    const barraConquista =
+      document.getElementById(
+        "barraConquista"
+      );
+
+    if (barraConquista) {
+
+      barraConquista.style.width =
+        porcentagemBadge + "%";
+    }
 
 
     const meta = 50;
@@ -2783,6 +2816,8 @@ onclick="filtrarDashboard('hoje')">
         senha === contaSalva.senha
       ) {
 
+        alert("TESTE LOGIN");
+
         localStorage.setItem(
           "usuarioLogado",
           "true"
@@ -2793,6 +2828,19 @@ onclick="filtrarDashboard('hoje')">
           "nomeUsuario",
           usuario
         );
+
+        console.log(
+          "Maria entrou 😄"
+        );
+        setTimeout(() => {
+
+          alert(
+            "🎉 Bem-vinda de volta, " +
+            usuario +
+            "!"
+          );
+
+        }, 300);
 
         if (
           !localStorage.getItem(
@@ -2836,9 +2884,6 @@ onclick="filtrarDashboard('hoje')">
         }
 
 
-
-        alert("🚀 Login realizado!");
-
         document.getElementById(
           "nomePerfil"
         ).innerHTML =
@@ -2847,13 +2892,29 @@ onclick="filtrarDashboard('hoje')">
           usuario +
           "</strong>";
 
+        const popup =
+          document.getElementById(
+            "boasVindas"
+          );
+
+        popup.innerHTML =
+          "🎉 Bem-vinda de volta, " +
+          usuario +
+          "!";
+
+        popup.style.display =
+          "block";
+
+        setTimeout(() => {
+
+          popup.style.display =
+            "none";
+
+        }, 3000);
+
         verificarLogin();
 
         mostrarPrompts();
-
-        setTimeout(() => {
-          mostrarPrompts();
-        }, 100);
 
 
 
@@ -3160,7 +3221,6 @@ onclick="filtrarDashboard('hoje')">
       if (botaoEntrar && loginCard) {
         botaoEntrar.onclick = () => {
           loginCard.style.setProperty('display', 'none', 'important');
-          alert('Login efetuado com sucesso!');
         };
       }
     });
