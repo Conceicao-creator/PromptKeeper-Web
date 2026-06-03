@@ -1555,49 +1555,34 @@
 
     let badges = "";
 
-    if (total >= 10) {
+    badges +=
+      total >= 1
+        ? "<span class='badge'>⌛ Iniciante</span>"
+        : "<span class='badgeBloqueada'>🔒 Iniciante</span>";
 
-      badges +=
-        "<span class='badge'>" +
-        "🚀 Explorador" +
-        "</span>";
-    }
+    badges +=
+      total >= 10
+        ? "<span class='badge'>🚀 Explorador</span>"
+        : "<span class='badgeBloqueada'>🔒 Explorador</span>";
 
-    if (total >= 30) {
+    badges +=
+      total >= 25
+        ? "<span class='badge'>🧠 Criador</span>"
+        : "<span class='badgeBloqueada'>🔒 Criador</span>";
 
-      badges +=
-        "<span class='badge'>" +
-        "🧠 Criador IA" +
-        "</span>";
-    }
+    badges +=
+      total >= 50
+        ? "<span class='badge'>🔥 Especialista</span>"
+        : "<span class='badgeBloqueada'>🔒 Especialista</span>";
 
-    if (total >= 50) {
-
-      badges +=
-        "<span class='badge'>" +
-        "🔥 Especialista" +
-        "</span>";
-    }
-
-    if (total >= 100) {
-
-      badges +=
-        "<span class='badge'>" +
-        "🏆 Mestre dos Prompts" +
-        "</span>";
-    }
-
+    badges +=
+      total >= 100
+        ? "<span class='badge'>🏆 Mestre IA</span>"
+        : "<span class='badgeBloqueada'>🔒 Mestre IA</span>";
 
     document.getElementById(
       "listaBadges"
-    ).innerHTML =
-
-      badges ||
-
-      "<span class='badgeBloqueada'>" +
-      "🔒 Sem badges ainda" +
-      "</span>";
-
+    ).innerHTML = badges;
 
     // ===== BARRA DE CONQUISTAS =====
 
