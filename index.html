@@ -933,23 +933,58 @@
 <body>
 
   <!-- Bloco de LOGIN -->
-  <div id="telaLogin" class="card-autenticacao">
-    <h1>🔒 PromptKeeper Login</h1>
-    <input type="text" placeholder="Usuário">
-    <input type="password" placeholder="Senha">
-    <button id="btnEntrar">✨ Entrar</button>
-    <hr>
-    <p>Não tem conta? <a href="#" id="linkIrParaCadastro">Criar Conta</a></p>
-  </div>
+<div id="telaLogin" class="card-autenticacao">
 
-  <!-- Bloco de CADASTRO (Começa escondido) -->
+  <h1>🔒 PromptKeeper Login</h1>
+
+  <input
+    id="usuarioLogin"
+    type="text"
+    placeholder="Usuário"
+  >
+
+  <input
+    id="senhaLogin"
+    type="password"
+    placeholder="Senha"
+  >
+
+  <button onclick="fazerLogin()">
+    ✨ Entrar
+  </button>
+
+  <hr>
+
+  <p>
+    Não tem conta?
+    <a href="#" id="linkIrParaCadastro">
+      Criar Conta
+    </a>
+  </p>
+
+</div>
+    
+<!-- Bloco de CADASTRO (Começa escondido) -->
   <div id="telaCadastro" class="card-autenticacao" style="display: none;">
     <h1>📝 Criar Conta</h1>
-    <input type="text" placeholder="Escolha um Usuário">
-    <input type="password" placeholder="Escolha uma Senha">
-    <button id="btnCadastrar">✨ Cadastrar</button>
+
+    <input id="novoUsuario" type="text" placeholder="Escolha um Usuário">
+
+    <input id="novaSenha" type="password" placeholder="Escolha uma Senha">
+
+    <button id="btnCadastrar" onclick="criarConta()">
+      ✨ Cadastrar
+    </button>
+
     <hr>
-    <p>Já tem conta? <a href="#" id="linkIrParaLogin">Fazer Login</a></p>
+
+    <p>
+      Já tem conta?
+      <a href="#" id="linkIrParaLogin">
+        Fazer Login
+      </a>
+    </p>
+  </div>
   </div>
 
 
@@ -2774,6 +2809,13 @@ onclick="filtrarDashboard('hoje')">
 
       alert("✅ Conta criada com sucesso!");
     }
+    document.getElementById(
+      "telaCadastro"
+    ).style.display = "none";
+
+    document.getElementById(
+      "telaLogin"
+    ).style.display = "block";
 
     function fazerLogin() {
 
@@ -2801,8 +2843,7 @@ onclick="filtrarDashboard('hoje')">
         senha === contaSalva.senha
       ) {
 
-        alert("TESTE LOGIN");
-
+      
         localStorage.setItem(
           "usuarioLogado",
           "true"
