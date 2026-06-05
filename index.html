@@ -933,38 +933,30 @@
 <body>
 
   <!-- Bloco de LOGIN -->
-<div id="telaLogin" class="card-autenticacao">
+  <div id="telaLogin" class="card-autenticacao">
 
-  <h1>🔒 PromptKeeper Login</h1>
+    <h1>🔒 PromptKeeper Login</h1>
 
-  <input
-    id="usuarioLogin"
-    type="text"
-    placeholder="Usuário"
-  >
+    <input id="usuarioLogin" type="text" placeholder="Usuário">
 
-  <input
-    id="senhaLogin"
-    type="password"
-    placeholder="Senha"
-  >
+    <input id="senhaLogin" type="password" placeholder="Senha">
 
-  <button onclick="fazerLogin()">
-    ✨ Entrar
-  </button>
+    <button onclick="fazerLogin()">
+      ✨ Entrar
+    </button>
 
-  <hr>
+    <hr>
 
-  <p>
-    Não tem conta?
-    <a href="#" id="linkIrParaCadastro">
-      Criar Conta
-    </a>
-  </p>
+    <p>
+      Não tem conta?
+      <a href="#" id="linkIrParaCadastro">
+        Criar Conta
+      </a>
+    </p>
 
-</div>
-    
-<!-- Bloco de CADASTRO (Começa escondido) -->
+  </div>
+
+  <!-- Bloco de CADASTRO (Começa escondido) -->
   <div id="telaCadastro" class="card-autenticacao" style="display: none;">
     <h1>📝 Criar Conta</h1>
 
@@ -1237,9 +1229,16 @@
           nomeUsuario.charAt(0).toUpperCase();
       }
 
+      const usuarioAtual =
+        localStorage.getItem(
+          "nomeUsuario"
+        );
+
+
       const fotoSalva =
         localStorage.getItem(
-          "fotoPerfil"
+          "fotoPerfil_" +
+          usuarioAtual
         );
 
       if (fotoSalva) {
@@ -1248,16 +1247,12 @@
           "avatarUsuario"
         ).innerHTML =
 
-          `<img src="${fotoSalva}">`;
+          "<img src='" +
+          fotoSalva +
+          "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
       }
 
-      function carregarFotoPerfil(event) {
 
-
-        const perfil = document.getElementById("perfilUsuario");
-
-
-      }
     }
 
 
@@ -2843,7 +2838,7 @@ onclick="filtrarDashboard('hoje')">
         senha === contaSalva.senha
       ) {
 
-      
+
         localStorage.setItem(
           "usuarioLogado",
           "true"
@@ -3026,9 +3021,21 @@ onclick="filtrarDashboard('hoje')">
         const imagem =
           e.target.result;
 
+        const usuarioAtual =
+          localStorage.getItem(
+            "nomeUsuario"
+          );
+
         localStorage.setItem(
-          "fotoPerfil",
+          "fotoPerfil_" +
+          usuarioAtual,
           imagem
+        );
+
+        console.log(
+          "SALVOU FOTO:",
+          "fotoPerfil_" +
+          usuarioAtual
         );
 
         document.getElementById(
