@@ -120,21 +120,44 @@
     }
 
     li {
-      background: linear-gradient(135deg, #ffffff, #f1f8f4);
-      margin-top: 15px;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 
-      opacity: 0;
-      transform: translateY(20px);
-      animation: aparecer 0.5s forwards;
+      background:
+        linear-gradient(145deg,
+          rgba(35, 35, 35, 0.96),
+          rgba(22, 22, 22, 0.98));
+
+      border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+      margin-top: 22px;
+
+      padding: 22px;
+
+      border-radius: 26px;
+
+      box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35);
+
+      backdrop-filter:
+        blur(12px);
+
+      transition:
+        transform .35s ease,
+        box-shadow .35s ease,
+        border .35s ease;
     }
 
     /* Efeito ao passar o mouse */
     li:hover {
-      transform: scale(1.02);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+      transform:
+        translateY(-4px);
+
+      border:
+        1px solid rgba(76, 175, 80, 0.35);
+
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.45);
     }
 
     li button {
@@ -197,23 +220,48 @@
     }
 
     .categoria {
-      display: inline-block;
-      background: #4CAF50;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      padding: 8px 18px;
+
+      border-radius: 999px;
+
+      background:
+        linear-gradient(135deg,
+          #43A047,
+          #2E7D32);
+
       color: white;
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      box-shadow:
+        0 4px 14px rgba(76, 175, 80, 0.25);
     }
 
     .tituloPrompt {
-      font-size: 20px;
-      font-weight: bold;
-      color: #222;
-      margin-top: 10px;
-      margin-bottom: 10px;
+
+      font-size: 30px;
+
+      font-weight: 800;
+
+      color: #ffffff;
+
+      letter-spacing: -0.5px;
+
+      margin-top: 14px;
+
+      margin-bottom: 16px;
+
+      text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
     .textoPrompt {
@@ -1220,20 +1268,18 @@
           "</strong>";
       }
 
-      if (nomeUsuario) {
-
-        document.getElementById(
-          "avatarUsuario"
-        ).innerHTML =
-
-          nomeUsuario.charAt(0).toUpperCase();
-      }
-
       const usuarioAtual =
         localStorage.getItem(
           "nomeUsuario"
         );
 
+      const avatar =
+        document.getElementById(
+          "avatarUsuario"
+        );
+
+      // limpa avatar anterior
+      avatar.innerHTML = "";
 
       const fotoSalva =
         localStorage.getItem(
@@ -1243,15 +1289,18 @@
 
       if (fotoSalva) {
 
-        document.getElementById(
-          "avatarUsuario"
-        ).innerHTML =
-
+        avatar.innerHTML =
           "<img src='" +
           fotoSalva +
           "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
-      }
 
+      } else {
+
+        avatar.innerHTML =
+          usuarioAtual
+            .charAt(0)
+            .toUpperCase();
+      }
 
     }
 
@@ -3016,40 +3065,37 @@ onclick="filtrarDashboard('hoje')">
       const leitor =
         new FileReader();
 
-      leitor.onload = function (e) {
+      leitor.onload =
+        function (e) {
 
-        const imagem =
-          e.target.result;
+          const foto =
+            e.target.result;
 
-        const usuarioAtual =
-          localStorage.getItem(
-            "nomeUsuario"
+          // pega SEMPRE o usuário atual
+          const usuarioAtual =
+            localStorage.getItem(
+              "nomeUsuario"
+            );
+
+          // salva a foto do usuário certo
+          localStorage.setItem(
+            "fotoPerfil_" +
+            usuarioAtual,
+            foto
           );
 
-        localStorage.setItem(
-          "fotoPerfil_" +
-          usuarioAtual,
-          imagem
-        );
+          // mostra a foto
+          document.getElementById(
+            "avatarUsuario"
+          ).innerHTML =
+            `<img src="${foto}">`;
+        };
 
-        console.log(
-          "SALVOU FOTO:",
-          "fotoPerfil_" +
-          usuarioAtual
-        );
-
-        document.getElementById(
-          "avatarUsuario"
-        ).innerHTML =
-
-          "<img src='" +
-          imagem +
-          "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
-      };
-
-
-      leitor.readAsDataURL(arquivo);
+      leitor.readAsDataURL(
+        arquivo
+      );
     }
+
 
     function filtrarDashboard(tipo) {
 
