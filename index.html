@@ -1134,6 +1134,13 @@
       ✨ Entrar
     </button>
 
+    <p style="text-align:center; margin-top:10px;">
+  <a href="#"
+     onclick="recuperarSenha()">
+     🔑 Esqueceu sua senha?
+  </a>
+</p>
+
     <hr>
 
     <p>
@@ -1399,7 +1406,7 @@
 
   <script>
 
-    let filtroAtual = "todos"; 
+    let filtroAtual = "todos";
 
     let editandoIndex = null;
     let mostrarSomenteFavoritos = false;
@@ -1470,486 +1477,486 @@ onclick="filtrarDashboard('favoritos')">
         );
 
 
-        if (nomeUsuario) {
-          document.getElementById(
-            "nomePerfil"
-          ).innerHTML =
-
-            "👋 Olá, <strong>" +
-            nomeUsuario +
-            "</strong>";
-        }
-
-        const usuarioAtual =
-          localStorage.getItem(
-            "nomeUsuario"
-          );
-
-        const avatar =
-          document.getElementById(
-            "avatarUsuario"
-          );
-
-        // limpa avatar anterior
-        avatar.innerHTML = "";
-
-        const fotoSalva =
-          localStorage.getItem(
-            "fotoPerfil_" +
-            usuarioAtual
-          );
-
-        if (fotoSalva) {
-
-          avatar.innerHTML =
-            "<img src='" +
-            fotoSalva +
-            "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
-
-        } else {
-
-          avatar.innerHTML =
-            usuarioAtual
-              .charAt(0)
-              .toUpperCase();
-        }
-      }
-
-
-      const cargoUsuario =
-
-        localStorage.getItem(
-          "cargoUsuario"
-        );
-
-      if (cargoUsuario) {
-
+      if (nomeUsuario) {
         document.getElementById(
-          "cargoPerfil"
+          "nomePerfil"
         ).innerHTML =
 
-          "💼 " +
-          cargoUsuario;
+          "👋 Olá, <strong>" +
+          nomeUsuario +
+          "</strong>";
       }
 
-      let nivel = "";
-      let emojiNivel = "";
+      const usuarioAtual =
+        localStorage.getItem(
+          "nomeUsuario"
+        );
 
-      if (prompts.length >= 100) {
+      const avatar =
+        document.getElementById(
+          "avatarUsuario"
+        );
 
-        nivel = "Mestre dos Prompts";
-        emojiNivel = "🏆";
+      // limpa avatar anterior
+      avatar.innerHTML = "";
 
-      } else if (prompts.length >= 60) {
+      const fotoSalva =
+        localStorage.getItem(
+          "fotoPerfil_" +
+          usuarioAtual
+        );
 
-        nivel = "Especialista";
-        emojiNivel = "👑";
+      if (fotoSalva) {
 
-      } else if (prompts.length >= 30) {
-
-        nivel = "Criador de Prompts";
-        emojiNivel = "💡";
-
-      } else if (prompts.length >= 10) {
-
-        nivel = "Aprendiz IA";
-        emojiNivel = "🚀";
+        avatar.innerHTML =
+          "<img src='" +
+          fotoSalva +
+          "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
 
       } else {
 
-        nivel = "Iniciante";
-        emojiNivel = "🌱";
+        avatar.innerHTML =
+          usuarioAtual
+            .charAt(0)
+            .toUpperCase();
       }
+    }
 
+
+    const cargoUsuario =
+
+      localStorage.getItem(
+        "cargoUsuario"
+      );
+
+    if (cargoUsuario) {
+
+      document.getElementById(
+        "cargoPerfil"
+      ).innerHTML =
+
+        "💼 " +
+        cargoUsuario;
+    }
+
+    let nivel = "";
+    let emojiNivel = "";
+
+    if (prompts.length >= 100) {
+
+      nivel = "Mestre dos Prompts";
+      emojiNivel = "🏆";
+
+    } else if (prompts.length >= 60) {
+
+      nivel = "Especialista";
+      emojiNivel = "👑";
+
+    } else if (prompts.length >= 30) {
+
+      nivel = "Criador de Prompts";
+      emojiNivel = "💡";
+
+    } else if (prompts.length >= 10) {
+
+      nivel = "Aprendiz IA";
+      emojiNivel = "🚀";
+
+    } else {
+
+      nivel = "Iniciante";
+      emojiNivel = "🌱";
+    }
+
+    document.getElementById(
+      "nivelUsuario"
+    ).innerHTML =
+
+      emojiNivel +
+      " <strong>Nível:</strong> " +
+      nivel;
+
+    const fraseUsuario =
+
+      localStorage.getItem(
+        "fraseUsuario"
+      );
+
+    if (fraseUsuario) {
+
+      document.getElementById(
+        "frasePerfil"
+      ).innerHTML =
+
+        "✨ " +
+        fraseUsuario;
+    }
+    const busca =
+      normalizarTexto(
+        document.getElementById("filtro").value
+      );
+    const filtro = document.getElementById("filtro").value.toLowerCase();
+    const lista = document.getElementById("lista");
+
+    lista.innerHTML = "";
+
+    let encontrouResultado = false;
+
+
+    const contador = document.getElementById("contador");
+
+    const total = prompts.length;
+
+    // 🏆 SISTEMA DE NÍVEL XP
+
+    const nivelUsuario =
       document.getElementById(
         "nivelUsuario"
-      ).innerHTML =
+      );
 
-        emojiNivel +
-        " <strong>Nível:</strong> " +
-        nivel;
+    let nivelAtual =
+      "🌱 Iniciante";
 
-      const fraseUsuario =
+    let metaNivel = 10;
+    let inicioNivel = 0;
 
-        localStorage.getItem(
-          "fraseUsuario"
-        );
+    if (total >= 10) {
+      nivelAtual =
+        "🚀 Explorador";
+      metaNivel = 25;
+      inicioNivel = 10;
+    }
 
-      if (fraseUsuario) {
+    if (total >= 25) {
+      nivelAtual =
+        "🧠 Criador";
+      metaNivel = 50;
+      inicioNivel = 25;
+    }
 
-        document.getElementById(
-          "frasePerfil"
-        ).innerHTML =
+    if (total >= 50) {
+      nivelAtual =
+        "🔥 Especialista";
+      metaNivel = 100;
+      inicioNivel = 50;
+    }
 
-          "✨ " +
-          fraseUsuario;
-      }
-      const busca =
-        normalizarTexto(
-          document.getElementById("filtro").value
-        );
-      const filtro = document.getElementById("filtro").value.toLowerCase();
-      const lista = document.getElementById("lista");
+    if (total >= 100) {
+      nivelAtual =
+        "🏆 Mestre dos Prompts";
+      metaNivel = 200;
+      inicioNivel = 100;
+    }
 
-      lista.innerHTML = "";
+    if (total >= 200) {
+      nivelAtual =
+        "👑 Lenda dos Prompts";
+      metaNivel = total;
+      inicioNivel = total;
+    }
 
-      let encontrouResultado = false;
+    nivelUsuario.innerHTML =
+      nivelAtual;
 
+    let porcentagemXP = 0;
 
-      const contador = document.getElementById("contador");
+    if (total < 10) {
+      porcentagemXP =
+        (total / 10) * 100;
+    }
 
-      const total = prompts.length;
+    else if (total < 25) {
+      porcentagemXP =
+        (total / 25) * 100;
+    }
 
-      // 🏆 SISTEMA DE NÍVEL XP
+    else if (total < 50) {
+      porcentagemXP =
+        (total / 50) * 100;
+    }
 
-      const nivelUsuario =
-        document.getElementById(
-          "nivelUsuario"
-        );
+    else if (total < 100) {
+      porcentagemXP =
+        (total / 100) * 100;
+    }
 
-      let nivelAtual =
-        "🌱 Iniciante";
+    else {
+      porcentagemXP = 100;
+    }
 
-      let metaNivel = 10;
-      let inicioNivel = 0;
+    document.getElementById(
+      "barraXP"
+    ).style.width =
+      porcentagemXP + "%";
 
-      if (total >= 10) {
-        nivelAtual =
-          "🚀 Explorador";
-        metaNivel = 25;
-        inicioNivel = 10;
-      }
+    document.getElementById(
+      "textoXP"
+    ).innerHTML =
+      "📈 " +
+      total +
+      " prompts criados";
 
-      if (total >= 25) {
-        nivelAtual =
-          "🧠 Criador";
-        metaNivel = 50;
-        inicioNivel = 25;
-      }
-
-      if (total >= 50) {
-        nivelAtual =
-          "🔥 Especialista";
-        metaNivel = 100;
-        inicioNivel = 50;
-      }
-
-      if (total >= 100) {
-        nivelAtual =
-          "🏆 Mestre dos Prompts";
-        metaNivel = 200;
-        inicioNivel = 100;
-      }
-
-      if (total >= 200) {
-        nivelAtual =
-          "👑 Lenda dos Prompts";
-        metaNivel = total;
-        inicioNivel = total;
-      }
-
-      nivelUsuario.innerHTML =
-        nivelAtual;
-
-      let porcentagemXP = 0;
-
-      if (total < 10) {
-        porcentagemXP =
-          (total / 10) * 100;
-      }
-
-      else if (total < 25) {
-        porcentagemXP =
-          (total / 25) * 100;
-      }
-
-      else if (total < 50) {
-        porcentagemXP =
-          (total / 50) * 100;
-      }
-
-      else if (total < 100) {
-        porcentagemXP =
-          (total / 100) * 100;
-      }
-
-      else {
-        porcentagemXP = 100;
-      }
-
-      document.getElementById(
-        "barraXP"
-      ).style.width =
-        porcentagemXP + "%";
-
-      document.getElementById(
-        "textoXP"
-      ).innerHTML =
-        "📈 " +
-        total +
-        " prompts criados";
-
-      let badgesHTML = `
+    let badgesHTML = `
 <div class="badge badgeDesbloqueada">
   🌱 Iniciante
 </div>
 `;
 
-      if (total >= 10) {
+    if (total >= 10) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge badgeDesbloqueada">
     🚀 Explorador
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🚀 Explorador
     (${10 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      if (total >= 25) {
+    if (total >= 25) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge">
     🧠 Criador
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🧠 Criador
     (${25 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      if (total >= 50) {
+    if (total >= 50) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge">
     🔥 Especialista
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🔥 Especialista
     (${50 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      if (total >= 100) {
+    if (total >= 100) {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badge">
     🏆 Mestre IA
   </div>
   `;
 
-      } else {
+    } else {
 
-        badgesHTML += `
+      badgesHTML += `
   <div class="badgeBloqueada">
     🔒 🏆 Mestre IA
     (${100 - total} faltam)
   </div>
   `;
-      }
+    }
 
-      //document.getElementById(
-      // "badgesUsuario"
-      //).innerHTML =
-      // badgesHTML;
+    //document.getElementById(
+    // "badgesUsuario"
+    //).innerHTML =
+    // badgesHTML;
 
 
-      const conquistaSalva =
-        JSON.parse(
-          localStorage.getItem(
-            "conquistasMostradas"
-          )
-        ) || {};
-
-      if (
-        total >= 10 &&
-        !conquistaSalva.explorador
-      ) {
-
-        mostrarPopupConquista(
-          "Explorador",
-          "🚀"
-        );
-
-        conquistaSalva.explorador =
-          true;
-      }
-
-      if (
-        total >= 25 &&
-        !conquistaSalva.criador
-      ) {
-
-        mostrarPopupConquista(
-          "Criador",
-          "🧠"
-        );
-
-        conquistaSalva.criador =
-          true;
-      }
-
-      if (
-        total >= 50 &&
-        !conquistaSalva.especialista
-      ) {
-
-        mostrarPopupConquista(
-          "Especialista",
-          "🔥"
-        );
-
-        conquistaSalva.especialista =
-          true;
-      }
-
-      if (
-        total >= 100 &&
-        !conquistaSalva.mestre
-      ) {
-
-        mostrarPopupConquista(
-          "Mestre IA",
-          "🏆"
-        );
-
-        conquistaSalva.mestre =
-          true;
-      }
-
-      localStorage.setItem(
-        "conquistasMostradas",
-        JSON.stringify(
-          conquistaSalva
+    const conquistaSalva =
+      JSON.parse(
+        localStorage.getItem(
+          "conquistasMostradas"
         )
+      ) || {};
+
+    if (
+      total >= 10 &&
+      !conquistaSalva.explorador
+    ) {
+
+      mostrarPopupConquista(
+        "Explorador",
+        "🚀"
       );
 
-      let badges = "";
+      conquistaSalva.explorador =
+        true;
+    }
 
-      badges +=
-        total >= 1
-          ? "<span class='badge'>⌛ Iniciante</span>"
-          : "<span class='badgeBloqueada'>🔒 Iniciante</span>";
+    if (
+      total >= 25 &&
+      !conquistaSalva.criador
+    ) {
 
-      badges +=
-        total >= 10
-          ? "<span class='badge'>🚀 Explorador</span>"
-          : "<span class='badgeBloqueada'>🔒 Explorador</span>";
+      mostrarPopupConquista(
+        "Criador",
+        "🧠"
+      );
 
-      badges +=
-        total >= 25
-          ? "<span class='badge'>🧠 Criador</span>"
-          : "<span class='badgeBloqueada'>🔒 Criador</span>";
+      conquistaSalva.criador =
+        true;
+    }
 
-      badges +=
-        total >= 50
-          ? "<span class='badge'>🔥 Especialista</span>"
-          : "<span class='badgeBloqueada'>🔒 Especialista</span>";
+    if (
+      total >= 50 &&
+      !conquistaSalva.especialista
+    ) {
 
-      badges +=
-        total >= 100
-          ? "<span class='badge'>🏆 Mestre IA</span>"
-          : "<span class='badgeBloqueada'>🔒 Mestre IA</span>";
+      mostrarPopupConquista(
+        "Especialista",
+        "🔥"
+      );
 
+      conquistaSalva.especialista =
+        true;
+    }
+
+    if (
+      total >= 100 &&
+      !conquistaSalva.mestre
+    ) {
+
+      mostrarPopupConquista(
+        "Mestre IA",
+        "🏆"
+      );
+
+      conquistaSalva.mestre =
+        true;
+    }
+
+    localStorage.setItem(
+      "conquistasMostradas",
+      JSON.stringify(
+        conquistaSalva
+      )
+    );
+
+    let badges = "";
+
+    badges +=
+      total >= 1
+        ? "<span class='badge'>⌛ Iniciante</span>"
+        : "<span class='badgeBloqueada'>🔒 Iniciante</span>";
+
+    badges +=
+      total >= 10
+        ? "<span class='badge'>🚀 Explorador</span>"
+        : "<span class='badgeBloqueada'>🔒 Explorador</span>";
+
+    badges +=
+      total >= 25
+        ? "<span class='badge'>🧠 Criador</span>"
+        : "<span class='badgeBloqueada'>🔒 Criador</span>";
+
+    badges +=
+      total >= 50
+        ? "<span class='badge'>🔥 Especialista</span>"
+        : "<span class='badgeBloqueada'>🔒 Especialista</span>";
+
+    badges +=
+      total >= 100
+        ? "<span class='badge'>🏆 Mestre IA</span>"
+        : "<span class='badgeBloqueada'>🔒 Mestre IA</span>";
+
+    document.getElementById(
+      "listaBadges"
+    ).innerHTML = badges;
+
+    // ===== BARRA DE CONQUISTAS =====
+
+    let totalBadges = 5;
+    let badgesDesbloqueadas = 0;
+
+    if (total >= 1)
+      badgesDesbloqueadas++;
+
+    if (total >= 10)
+      badgesDesbloqueadas++;
+
+    if (total >= 25)
+      badgesDesbloqueadas++;
+
+    if (total >= 50)
+      badgesDesbloqueadas++;
+
+    if (total >= 100)
+      badgesDesbloqueadas++;
+
+    const porcentagemBadge =
+      (badgesDesbloqueadas /
+        totalBadges) * 100;
+
+    const barraConquista =
       document.getElementById(
-        "listaBadges"
-      ).innerHTML = badges;
+        "barraConquista"
+      );
 
-      // ===== BARRA DE CONQUISTAS =====
+    if (barraConquista) {
 
-      let totalBadges = 5;
-      let badgesDesbloqueadas = 0;
-
-      if (total >= 1)
-        badgesDesbloqueadas++;
-
-      if (total >= 10)
-        badgesDesbloqueadas++;
-
-      if (total >= 25)
-        badgesDesbloqueadas++;
-
-      if (total >= 50)
-        badgesDesbloqueadas++;
-
-      if (total >= 100)
-        badgesDesbloqueadas++;
-
-      const porcentagemBadge =
-        (badgesDesbloqueadas /
-          totalBadges) * 100;
-
-      const barraConquista =
-        document.getElementById(
-          "barraConquista"
-        );
-
-      if (barraConquista) {
-
-        barraConquista.style.width =
-          porcentagemBadge + "%";
-      }
+      barraConquista.style.width =
+        porcentagemBadge + "%";
+    }
 
 
-      const meta = 50;
+    const meta = 50;
 
-      let progresso =
-        Math.min((total / meta) * 100, 100);
+    let progresso =
+      Math.min((total / meta) * 100, 100);
 
-      document.getElementById("barraProgresso")
-        .style.width = progresso + "%";
+    document.getElementById("barraProgresso")
+      .style.width = progresso + "%";
 
-      document.getElementById("textoProgresso")
-        .innerHTML =
-        "🚀 Você já criou " +
-        total +
-        " prompts";
+    document.getElementById("textoProgresso")
+      .innerHTML =
+      "🚀 Você já criou " +
+      total +
+      " prompts";
 
-      const favoritos =
-        prompts.filter(
-          p => p.favorito === true
-        ).length;
+    const favoritos =
+      prompts.filter(
+        p => p.favorito === true
+      ).length;
 
-      const hoje =
-        new Date().toLocaleDateString("sv-SE");
+    const hoje =
+      new Date().toLocaleDateString("sv-SE");
 
-      const criadosHoje =
-        prompts.filter(p => p.data === hoje).length;
-      const fixados = prompts.filter(p => p.fixado).length;
+    const criadosHoje =
+      prompts.filter(p => p.data === hoje).length;
+    const fixados = prompts.filter(p => p.fixado).length;
 
-      const categorias = [...new Set(prompts.map(p => p.categoria))].length;
+    const categorias = [...new Set(prompts.map(p => p.categoria))].length;
 
-      const porcentagemFav =
-        total > 0
-          ? Math.round((favoritos / total) * 100)
-          : 0;
+    const porcentagemFav =
+      total > 0
+        ? Math.round((favoritos / total) * 100)
+        : 0;
 
-      const ultimoPrompt =
-        prompts.length > 0
-          ? prompts[0].titulo || "Sem título"
-          : "Nenhum";
+    const ultimoPrompt =
+      prompts.length > 0
+        ? prompts[0].titulo || "Sem título"
+        : "Nenhum";
 
 
-      document.getElementById("dashboard").innerHTML = `
+    document.getElementById("dashboard").innerHTML = `
 
 <div class="cardDashboard"
 onclick="filtrarDashboard('todos')">
@@ -1984,345 +1991,433 @@ onclick="filtrarDashboard('hoje')">
 `;
 
 
-      prompts.sort((a, b) => {
+    prompts.sort((a, b) => {
 
-        // 📌 Fixados
-        const fixadoA = a.fixado ? 1 : 0;
-        const fixadoB = b.fixado ? 1 : 0;
+      // 📌 Fixados
+      const fixadoA = a.fixado ? 1 : 0;
+      const fixadoB = b.fixado ? 1 : 0;
 
-        if (fixadoB !== fixadoA) {
-          return fixadoB - fixadoA;
-        }
+      if (fixadoB !== fixadoA) {
+        return fixadoB - fixadoA;
+      }
 
-        // ⭐ Favoritos
-        const favA = a.favorito ? 1 : 0;
-        const favB = b.favorito ? 1 : 0;
+      // ⭐ Favoritos
+      const favA = a.favorito ? 1 : 0;
+      const favB = b.favorito ? 1 : 0;
 
-        if (favB !== favA) {
-          return favB - favA;
-        }
+      if (favB !== favA) {
+        return favB - favA;
+      }
 
-        // 📅 Datas
-        return new Date(b.data || 0) - new Date(a.data || 0);
+      // 📅 Datas
+      return new Date(b.data || 0) - new Date(a.data || 0);
 
-      });
+    });
 
-      prompts.forEach((p, index) => {
+    prompts.forEach((p, index) => {
+
+      console.log(
+        "PROMPT:",
+        p.titulo,
+        "CAT:",
+        p.categoria,
+        "FILTRO:",
+        categoriaSelecionada
+      );
+
+      if (
+        mostrarSomenteFavoritos &&
+        !p.favorito
+      ) {
+        return;
+      }
+
+      if (
+        mostrarSomenteFixados &&
+        p.fixado !== true
+      ) {
+        return;
+      }
+
+
+      if (
+        categoriaSelecionada &&
+        (
+          !p.categoria ||
+
+          !p.categoria
+            .toLowerCase()
+            .includes(
+              categoriaSelecionada
+            )
+        )
+      ) {
+        return;
+      }
+      const hoje =
+        new Date().toLocaleDateString(
+          "sv-SE"
+        );
+
+      if (
+        mostrarSomenteHoje &&
+        p.data !== hoje
+      ) {
+        return;
+      }
+
+
+      const conteudoBusca = (
+
+        p.categoria +
+
+        " " +
+
+        p.titulo +
+
+        " " +
+
+        p.texto +
+
+        " " +
+
+        (p.data || "") +
+
+        " " +
+
+        (p.colecao || "") +
+
+        " " +
+
+        (p.status || "") +
+
+        " " +
+
+        (p.favorito
+          ? "favorito favoritos estrela ⭐"
+          : "") +
+
+        " " +
+
+        (p.fixado
+          ? "fixado fixados pin 📌"
+          : "")
+
+      ).toLowerCase();
+
+      if (busca && !conteudoBusca.includes(busca)) {
+        return;
+      }
+
+
+
+      let item = document.createElement("li");
+
+      let texto = document.createElement("div");
+      let emoji = "📁";
+      let corCategoria = "#4CAF50";
+
+      if (p.categoria.toLowerCase().includes("imagem")) {
+        emoji = "🖼";
+        corCategoria = "#E91E63";
+
+      } else if (p.categoria.toLowerCase().includes("neg")) {
+        emoji = "💼";
+        corCategoria = "#FF9800";
+
+      } else if (p.categoria.toLowerCase().includes("ide")) {
+        emoji = "💡";
+        corCategoria = "#FFC107";
+
+      } else if (p.categoria.toLowerCase().includes("via")) {
+        emoji = "✈️";
+        corCategoria = "#9C27B0";
+
+      } else if (p.categoria.toLowerCase().includes("tec")) {
+        emoji = "💻";
+        corCategoria = "#2196F3";
+
+      } else if (p.categoria.toLowerCase().includes("sa")) {
+        emoji = "💚";
+        corCategoria = "#4CAF50";
+      }
+
+
+
+      let dataFormatada = "Sem data";
+
+      if (p.data) {
+        const partes = p.data.split("-");
+
+        dataFormatada =
+          partes[2] + "/" +
+          partes[1] + "/" +
+          partes[0];
+      }
+
+      texto.innerHTML =
+        "<div class='categoria' style='background:" + corCategoria + "'>" +
+
+        p.categoria
+          .split(",")
+          .map(tag =>
+            "🏷️ " + tag.trim()
+          )
+          .join(" ")
+
+        +
+
+        "</div>" +
+        "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
+
+        "📁 " + (p.colecao || "Sem coleção") +
+
+        "</div>" +
+
+        "<div style='margin-bottom:8px; font-size:14px;'>"
+
+        +
+
+        (
+          p.status === "ideias"
+            ? "💡 Ideias"
+
+            : p.status === "teste"
+              ? "🛠️ Em teste"
+
+              : p.status === "prontos"
+                ? "✅ Prontos"
+
+                : "💡 Ideias"
+        )
+
+        +
+
+        "</div>" +
+
+        "<div class='tituloPrompt'>" +
+
+        p.titulo +
+
+        "</div>" +
+
+        "<div class='textoPrompt' style='display:none'>" +
+
+        p.texto +
+
+        "</div>" +
+
+        "<div class='dataPrompt'>📅 " + dataFormatada + "</div>";
+
+      let botaoFixar = document.createElement("button");
+
+      botaoFixar.innerHTML = p.fixado ? "📌" : "📍";
+
+      botaoFixar.style.backgroundColor = "#795548";
+      botaoFixar.style.color = "white";
+      botaoFixar.style.fontWeight = "bold";
+
+
+
+      botaoFixar.onclick = function () {
+
+        const indiceReal =
+          prompts.findIndex(
+            item =>
+              item.titulo === p.titulo &&
+              item.texto === p.texto
+          );
+
+        if (indiceReal === -1)
+          return;
+
+        prompts[indiceReal].fixado =
+          !prompts[indiceReal]
+            .fixado;
 
         console.log(
-  "PROMPT:",
-  p.titulo,
-  "CAT:",
-  p.categoria,
-  "FILTRO:",
-  categoriaSelecionada
-);
+          "FIXADO:",
+          prompts[indiceReal]
+            .titulo,
+          prompts[indiceReal]
+            .fixado
+        );
 
-        if (
-          mostrarSomenteFavoritos &&
-          !p.favorito
-        ) {
-           return;
-        }
-
-        if (
-          mostrarSomenteFixados &&
-          p.fixado !== true
-        ) {
-          return;
-        }
-
-
-        if (
-  categoriaSelecionada &&
-  (
-    !p.categoria ||
-
-    !p.categoria
-      .toLowerCase()
-      .includes(
-        categoriaSelecionada
-      )
-  )
-) {
-  return;
-}
-        const hoje =
-          new Date().toLocaleDateString(
-            "sv-SE"
-          );
-
-        if (
-          mostrarSomenteHoje &&
-          p.data !== hoje
-        ) {
-          return;
-        }
-
-
-        const conteudoBusca = (
-
-          p.categoria +
-
-          " " +
-
-          p.titulo +
-
-          " " +
-
-          p.texto +
-
-          " " +
-
-          (p.data || "") +
-
-          " " +
-
-          (p.colecao || "") +
-
-          " " +
-
-          (p.status || "") +
-
-          " " +
-
-          (p.favorito
-            ? "favorito favoritos estrela ⭐"
-            : "") +
-
-          " " +
-
-          (p.fixado
-            ? "fixado fixados pin 📌"
-            : "")
-
-        ).toLowerCase();
-
-        if (busca && !conteudoBusca.includes(busca)) {
-          return;
-        }
-
-
-
-        let item = document.createElement("li");
-
-        let texto = document.createElement("div");
-        let emoji = "📁";
-        let corCategoria = "#4CAF50";
-
-        if (p.categoria.toLowerCase().includes("imagem")) {
-          emoji = "🖼";
-          corCategoria = "#E91E63";
-
-        } else if (p.categoria.toLowerCase().includes("neg")) {
-          emoji = "💼";
-          corCategoria = "#FF9800";
-
-        } else if (p.categoria.toLowerCase().includes("ide")) {
-          emoji = "💡";
-          corCategoria = "#FFC107";
-
-        } else if (p.categoria.toLowerCase().includes("via")) {
-          emoji = "✈️";
-          corCategoria = "#9C27B0";
-
-        } else if (p.categoria.toLowerCase().includes("tec")) {
-          emoji = "💻";
-          corCategoria = "#2196F3";
-
-        } else if (p.categoria.toLowerCase().includes("sa")) {
-          emoji = "💚";
-          corCategoria = "#4CAF50";
-        }
-
-
-
-        let dataFormatada = "Sem data";
-
-        if (p.data) {
-          const partes = p.data.split("-");
-
-          dataFormatada =
-            partes[2] + "/" +
-            partes[1] + "/" +
-            partes[0];
-        }
-
-        texto.innerHTML =
-          "<div class='categoria' style='background:" + corCategoria + "'>" +
-
-          p.categoria
-            .split(",")
-            .map(tag =>
-              "🏷️ " + tag.trim()
-            )
-            .join(" ")
-
-          +
-
-          "</div>" +
-          "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
-
-          "📁 " + (p.colecao || "Sem coleção") +
-
-          "</div>" +
-
-          "<div style='margin-bottom:8px; font-size:14px;'>"
-
-          +
-
-          (
-            p.status === "ideias"
-              ? "💡 Ideias"
-
-              : p.status === "teste"
-                ? "🛠️ Em teste"
-
-                : p.status === "prontos"
-                  ? "✅ Prontos"
-
-                  : "💡 Ideias"
+        localStorage.setItem(
+          "prompts",
+          JSON.stringify(
+            prompts
           )
+        );
 
-          +
+        mostrarToast(
 
-          "</div>" +
+          prompts[indiceReal]
+            .fixado
 
-          "<div class='tituloPrompt'>" +
+            ? "📌 Prompt fixado no topo!"
 
-          p.titulo +
+            : "📍 Prompt desafixado"
 
-          "</div>" +
+        );
 
-          "<div class='textoPrompt' style='display:none'>" +
+        mostrarPrompts();
 
-          p.texto +
+      };
 
-          "</div>" +
+      localStorage.setItem("prompts", JSON.stringify(prompts));
 
-          "<div class='dataPrompt'>📅 " + dataFormatada + "</div>";
+      const rascunho =
+        localStorage.getItem("rascunhoPrompt");
 
-        let botaoFixar = document.createElement("button");
+      if (rascunho) {
 
-        botaoFixar.innerHTML = p.fixado ? "📌" : "📍";
+        document.getElementById("contadorCaracteres")
+          .innerHTML =
+          rascunho.length + " caracteres";
 
-        botaoFixar.style.backgroundColor = "#795548";
-        botaoFixar.style.color = "white";
-        botaoFixar.style.fontWeight = "bold";
-
-
-
-        botaoFixar.onclick = function () {
-
-  const indiceReal =
-    prompts.findIndex(
-      item =>
-        item.titulo === p.titulo &&
-        item.texto === p.texto
-    );
-
-  if (indiceReal === -1)
-    return;
-
-  prompts[indiceReal].fixado =
-    !prompts[indiceReal]
-      .fixado;
-
-  console.log(
-    "FIXADO:",
-    prompts[indiceReal]
-      .titulo,
-    prompts[indiceReal]
-      .fixado
-  );
-
-  localStorage.setItem(
-    "prompts",
-    JSON.stringify(
-      prompts
-    )
-  );
-
-  mostrarToast(
-
-    prompts[indiceReal]
-      .fixado
-
-      ? "📌 Prompt fixado no topo!"
-
-      : "📍 Prompt desafixado"
-
-  );
-
-  mostrarPrompts();
-
-};
-  
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-
-          const rascunho =
-            localStorage.getItem("rascunhoPrompt");
-
-          if (rascunho) {
-
-            document.getElementById("contadorCaracteres")
-              .innerHTML =
-              rascunho.length + " caracteres";
-
-            document.getElementById("prompt").value =
-              rascunho;
-          }
+        document.getElementById("prompt").value =
+          rascunho;
+      }
 
 
 
-        let botaoFav =
-          document.createElement(
-            "button"
+      let botaoFav =
+        document.createElement(
+          "button"
+        );
+
+      botaoFav.innerHTML =
+        p.favorito
+          ? "⭐"
+          : "☆";
+
+      /* sempre amarelo */
+      botaoFav.style.backgroundColor =
+        "#FFD54F";
+
+      botaoFav.style.color =
+        "#333";
+
+      botaoFav.style.fontWeight =
+        "bold";
+
+      botaoFav.onclick =
+        function () {
+
+          const indiceReal =
+            prompts.findIndex(
+              item =>
+                item.titulo === p.titulo &&
+                item.texto === p.texto
+            );
+
+          if (indiceReal === -1)
+            return;
+
+          prompts[indiceReal].favorito =
+            !prompts[indiceReal]
+              .favorito;
+
+          botaoFav.innerHTML =
+            prompts[indiceReal]
+              .favorito
+              ? "⭐"
+              : "☆";
+
+          console.log(
+            "FAVORITO:",
+            prompts[indiceReal].titulo,
+            prompts[indiceReal].favorito
           );
 
-        botaoFav.innerHTML =
-          p.favorito
-            ? "⭐"
-            : "☆";
+          localStorage.setItem(
+            "prompts",
+            JSON.stringify(
+              prompts
+            )
+          );
 
-        /* sempre amarelo */
-        botaoFav.style.backgroundColor =
-          "#FFD54F";
+          setTimeout(() => {
 
-        botaoFav.style.color =
-          "#333";
+            mostrarPrompts();
 
-        botaoFav.style.fontWeight =
-          "bold";
+          }, 50);
 
-        botaoFav.onclick =
-          function () {
+          mostrarToast(
 
-            const indiceReal =
-              prompts.findIndex(
-                item =>
-                  item.titulo === p.titulo &&
-                  item.texto === p.texto
-              );
+            prompts[indiceReal]
+              .favorito
 
-            if (indiceReal === -1)
-              return;
+              ? "⭐ Prompt favoritado!"
 
-            prompts[indiceReal].favorito =
-              !prompts[indiceReal]
-                .favorito;
+              : "☆ Favorito removido"
 
-            botaoFav.innerHTML =
-              prompts[indiceReal]
-                .favorito
-                ? "⭐"
-                : "☆";
+          );
 
-            console.log(
-              "FAVORITO:",
-              prompts[indiceReal].titulo,
-              prompts[indiceReal].favorito
+          mostrarPrompts();
+
+        };
+
+      let botao = document.createElement("button");
+
+      botao.innerHTML = "🗑️ Excluir";
+
+
+      botao.style.backgroundColor = "#f44336";
+      botao.style.color = "white";
+
+      botao.onclick = function () {
+        item.classList.add("removendo");
+
+        setTimeout(() => {
+          prompts.splice(index, 1);
+          localStorage.setItem("prompts", JSON.stringify(prompts));
+          mostrarPrompts();
+        }, 400);
+      };
+
+      let botaoSubir = document.createElement("button");
+
+      botaoSubir.innerHTML = "⬆️";
+
+      botaoSubir.style.backgroundColor = "#8D6E63";
+      botaoSubir.style.color = "white";
+
+      botaoSubir.onclick =
+        function () {
+
+          const posicaoAtual =
+            prompts.findIndex(
+              item =>
+                item.titulo ===
+                p.titulo
             );
+
+          if (
+            posicaoAtual > 0
+          ) {
+
+            [
+              prompts[
+              posicaoAtual
+              ],
+
+              prompts[
+              posicaoAtual - 1
+              ]
+
+            ] = [
+
+                prompts[
+                posicaoAtual - 1
+                ],
+
+                prompts[
+                posicaoAtual
+                ]
+
+              ];
 
             localStorage.setItem(
               "prompts",
@@ -2331,351 +2426,263 @@ onclick="filtrarDashboard('hoje')">
               )
             );
 
-            setTimeout(() => {
-
-              mostrarPrompts();
-
-            }, 50);
-
             mostrarToast(
-
-              prompts[indiceReal]
-                .favorito
-
-                ? "⭐ Prompt favoritado!"
-
-                : "☆ Favorito removido"
-
+              "⬆️ Prompt movido"
             );
 
             mostrarPrompts();
+          }
 
-          };
+        };
 
-        let botao = document.createElement("button");
+      let botaoDescer =
+        document.createElement("button");
 
-        botao.innerHTML = "🗑️ Excluir";
+      botaoDescer.innerHTML = "⬇️";
 
+      /* cor terrosa */
+      botaoDescer.style.backgroundColor = "#FF9800";
 
-        botao.style.backgroundColor = "#f44336";
-        botao.style.color = "white";
+      botaoDescer.style.color =
+        "white";
 
-        botao.onclick = function () {
-          item.classList.add("removendo");
+      botaoDescer.style.fontWeight =
+        "bold";
 
-          setTimeout(() => {
-            prompts.splice(index, 1);
-            localStorage.setItem("prompts", JSON.stringify(prompts));
+      botaoDescer.onclick =
+        function () {
+
+          // pega posição REAL do prompt
+          const indiceReal =
+            prompts.findIndex(
+              item =>
+                item.titulo === p.titulo &&
+                item.texto === p.texto
+            );
+
+          if (
+            indiceReal <
+            prompts.length - 1
+          ) {
+
+            [
+              prompts[indiceReal],
+              prompts[indiceReal + 1]
+            ] = [
+                prompts[indiceReal + 1],
+                prompts[indiceReal]
+              ];
+
+            localStorage.setItem(
+              "prompts",
+              JSON.stringify(prompts)
+            );
+
+            mostrarToast(
+              "⬇️ Prompt movido!"
+            );
+
             mostrarPrompts();
-          }, 400);
-        };
-
-        let botaoSubir = document.createElement("button");
-
-        botaoSubir.innerHTML = "⬆️";
-
-        botaoSubir.style.backgroundColor = "#8D6E63";
-        botaoSubir.style.color = "white";
-
-        botaoSubir.onclick =
-          function () {
-
-            const posicaoAtual =
-              prompts.findIndex(
-                item =>
-                  item.titulo ===
-                  p.titulo
-              );
-
-            if (
-              posicaoAtual > 0
-            ) {
-
-              [
-                prompts[
-                posicaoAtual
-                ],
-
-                prompts[
-                posicaoAtual - 1
-                ]
-
-              ] = [
-
-                  prompts[
-                  posicaoAtual - 1
-                  ],
-
-                  prompts[
-                  posicaoAtual
-                  ]
-
-                ];
-
-              localStorage.setItem(
-                "prompts",
-                JSON.stringify(
-                  prompts
-                )
-              );
-
-              mostrarToast(
-                "⬆️ Prompt movido"
-              );
-
-              mostrarPrompts();
-            }
-
-          };
-
-        let botaoDescer =
-          document.createElement("button");
-
-        botaoDescer.innerHTML = "⬇️";
-
-        /* cor terrosa */
-        botaoDescer.style.backgroundColor = "#FF9800";
-
-        botaoDescer.style.color =
-          "white";
-
-        botaoDescer.style.fontWeight =
-          "bold";
-
-        botaoDescer.onclick =
-          function () {
-
-            // pega posição REAL do prompt
-            const indiceReal =
-              prompts.findIndex(
-                item =>
-                  item.titulo === p.titulo &&
-                  item.texto === p.texto
-              );
-
-            if (
-              indiceReal <
-              prompts.length - 1
-            ) {
-
-              [
-                prompts[indiceReal],
-                prompts[indiceReal + 1]
-              ] = [
-                  prompts[indiceReal + 1],
-                  prompts[indiceReal]
-                ];
-
-              localStorage.setItem(
-                "prompts",
-                JSON.stringify(prompts)
-              );
-
-              mostrarToast(
-                "⬇️ Prompt movido!"
-              );
-
-              mostrarPrompts();
-            }
-          };
-
-        let botaoExpandir = document.createElement("button");
-
-        botaoExpandir.innerHTML = "▼ Mostrar";
-
-        botaoExpandir.style.backgroundColor = "#607D8B";
-        botaoExpandir.style.color = "white";
-
-        botaoExpandir.onclick = function () {
-
-          const textoPrompt =
-            item.querySelector(".textoPrompt");
-
-          if (textoPrompt.style.display === "none") {
-
-            textoPrompt.style.display = "block";
-
-            botaoExpandir.innerHTML = "▲ Ocultar";
-
-          } else {
-
-            textoPrompt.style.display = "none";
-
-            botaoExpandir.innerHTML = "▼ Mostrar";
           }
         };
 
-        let botaoOuvir = document.createElement("button");
+      let botaoExpandir = document.createElement("button");
 
-        botaoOuvir.innerHTML = "🔊 Ouvir";
+      botaoExpandir.innerHTML = "▼ Mostrar";
 
-        botaoOuvir.style.backgroundColor = "#009688";
-        botaoOuvir.style.color = "white";
+      botaoExpandir.style.backgroundColor = "#607D8B";
+      botaoExpandir.style.color = "white";
 
-        botaoOuvir.onclick = function () {
+      botaoExpandir.onclick = function () {
 
-          falarTexto(p.texto);
+        const textoPrompt =
+          item.querySelector(".textoPrompt");
 
+        if (textoPrompt.style.display === "none") {
+
+          textoPrompt.style.display = "block";
+
+          botaoExpandir.innerHTML = "▲ Ocultar";
+
+        } else {
+
+          textoPrompt.style.display = "none";
+
+          botaoExpandir.innerHTML = "▼ Mostrar";
+        }
+      };
+
+      let botaoOuvir = document.createElement("button");
+
+      botaoOuvir.innerHTML = "🔊 Ouvir";
+
+      botaoOuvir.style.backgroundColor = "#009688";
+      botaoOuvir.style.color = "white";
+
+      botaoOuvir.onclick = function () {
+
+        falarTexto(p.texto);
+
+      };
+
+      let botaoFoco = document.createElement("button");
+
+      botaoFoco.innerHTML = "🎯 Foco";
+
+      botaoFoco.style.backgroundColor = "#3F51B5";
+      botaoFoco.style.color = "white";
+
+      botaoFoco.onclick = function () {
+
+        abrirFoco(p.texto);
+
+      };
+      let botaoCopiar = document.createElement("button");
+
+      botaoCopiar.textContent = "📋 Copiar";
+
+      botaoCopiar.style.background =
+        "linear-gradient(135deg, #42A5F5, #1565C0)";
+
+      botaoCopiar.onclick = function () {
+        navigator.clipboard.writeText(p.texto);
+
+        mostrarToast("📋 Prompt copiado!");
+
+      };
+
+      let botaoDuplicar = document.createElement("button");
+
+      botaoDuplicar.innerHTML = "📋 Duplicar";
+
+      botaoDuplicar.style.backgroundColor = "#00BCD4";
+      botaoDuplicar.style.color = "white";
+
+      botaoDuplicar.onclick = function () {
+
+        let copia = {
+          ...p,
+          titulo: p.titulo + " (Cópia)"
         };
 
-        let botaoFoco = document.createElement("button");
+        prompts.unshift(copia);
 
-        botaoFoco.innerHTML = "🎯 Foco";
+        localStorage.setItem("prompts", JSON.stringify(prompts));
 
-        botaoFoco.style.backgroundColor = "#3F51B5";
-        botaoFoco.style.color = "white";
+        mostrarPrompts();
 
-        botaoFoco.onclick = function () {
+        mostrarToast("📋 Prompt duplicado!");
+      };
 
-          abrirFoco(p.texto);
+      let botaoHistorico =
+        document.createElement("button");
 
-        };
-        let botaoCopiar = document.createElement("button");
+      botaoHistorico.innerHTML = "🕘 Histórico";
 
-        botaoCopiar.textContent = "📋 Copiar";
+      botaoHistorico.style.backgroundColor =
+        "#607D8B";
 
-        botaoCopiar.style.background =
-          "linear-gradient(135deg, #42A5F5, #1565C0)";
+      botaoHistorico.style.color = "white";
 
-        botaoCopiar.onclick = function () {
-          navigator.clipboard.writeText(p.texto);
+      botaoHistorico.onclick = function () {
 
-          mostrarToast("📋 Prompt copiado!");
+        let historico =
+          prompts[index].historico || [];
 
-        };
+        if (historico.length === 0) {
 
-        let botaoDuplicar = document.createElement("button");
+          mostrarToast("Sem histórico 😄");
+          return;
+        }
 
-        botaoDuplicar.innerHTML = "📋 Duplicar";
+        let textoHistorico = "";
 
-        botaoDuplicar.style.backgroundColor = "#00BCD4";
-        botaoDuplicar.style.color = "white";
+        historico.forEach((h, i) => {
 
-        botaoDuplicar.onclick = function () {
+          textoHistorico +=
 
-          let copia = {
-            ...p,
-            titulo: p.titulo + " (Cópia)"
-          };
+            "VERSÃO " + (i + 1) + "\n\n" +
 
-          prompts.unshift(copia);
+            h.texto +
 
-          localStorage.setItem("prompts", JSON.stringify(prompts));
+            "\n\n📅 " +
 
-          mostrarPrompts();
+            h.dataEdicao +
 
-          mostrarToast("📋 Prompt duplicado!");
-        };
+            "\n\n-------------------\n\n";
+        });
 
-        let botaoHistorico =
-          document.createElement("button");
+        alert(textoHistorico);
+      };
+      let botaoEditar = document.createElement("button");
+      botaoEditar.innerHTML = "✏️ Editar";
 
-        botaoHistorico.innerHTML = "🕘 Histórico";
+      botaoEditar.style.backgroundColor = "#2196F3";
 
-        botaoHistorico.style.backgroundColor =
-          "#607D8B";
+      botaoEditar.style.color = "white";
 
-        botaoHistorico.style.color = "white";
+      botaoEditar.onclick = function () {
+        document.getElementById("categoria").value = p.categoria;
+        document.getElementById("titulo").value = p.titulo;
+        document.getElementById("prompt").value = p.texto;
+        document.getElementById("dataPrompt").value = p.data || "";
 
-        botaoHistorico.onclick = function () {
 
-          let historico =
-            prompts[index].historico || [];
-
-          if (historico.length === 0) {
-
-            mostrarToast("Sem histórico 😄");
-            return;
-          }
-
-          let textoHistorico = "";
-
-          historico.forEach((h, i) => {
-
-            textoHistorico +=
-
-              "VERSÃO " + (i + 1) + "\n\n" +
-
-              h.texto +
-
-              "\n\n📅 " +
-
-              h.dataEdicao +
-
-              "\n\n-------------------\n\n";
+        document
+          .getElementById(
+            "prompt"
+          )
+          .scrollIntoView({
+            behavior: "smooth",
+            block: "center"
           });
 
-          alert(textoHistorico);
-        };
-        let botaoEditar = document.createElement("button");
-        botaoEditar.innerHTML = "✏️ Editar";
+        editandoIndex = index;
+      };
 
-        botaoEditar.style.backgroundColor = "#2196F3";
+      let botoesDiv = document.createElement("div");
+      botoesDiv.className = "botoes";
 
-        botaoEditar.style.color = "white";
+      botoesDiv.appendChild(botaoFixar);
 
-        botaoEditar.onclick = function () {
-          document.getElementById("categoria").value = p.categoria;
-          document.getElementById("titulo").value = p.titulo;
-          document.getElementById("prompt").value = p.texto;
-          document.getElementById("dataPrompt").value = p.data || "";
+      botoesDiv.appendChild(botaoFav);
 
+      botoesDiv.appendChild(botaoSubir);
+      botoesDiv.appendChild(botaoDescer);
 
-          document
-  .getElementById(
-    "prompt"
-  )
-  .scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
+      botoesDiv.appendChild(botaoExpandir);
 
-          editandoIndex = index;
-        };
+      botoesDiv.appendChild(botaoOuvir);
 
-        let botoesDiv = document.createElement("div");
-        botoesDiv.className = "botoes";
+      botoesDiv.appendChild(botaoFoco);
 
-        botoesDiv.appendChild(botaoFixar);
+      botoesDiv.appendChild(botaoCopiar);
 
-        botoesDiv.appendChild(botaoFav);
+      botoesDiv.appendChild(botaoDuplicar);
 
-        botoesDiv.appendChild(botaoSubir);
-        botoesDiv.appendChild(botaoDescer);
+      botoesDiv.appendChild(botaoHistorico);
 
-        botoesDiv.appendChild(botaoExpandir);
+      botoesDiv.appendChild(botaoEditar);
 
-        botoesDiv.appendChild(botaoOuvir);
-
-        botoesDiv.appendChild(botaoFoco);
-
-        botoesDiv.appendChild(botaoCopiar);
-
-        botoesDiv.appendChild(botaoDuplicar);
-
-        botoesDiv.appendChild(botaoHistorico);
-
-        botoesDiv.appendChild(botaoEditar);
-
-        botoesDiv.appendChild(botao);
+      botoesDiv.appendChild(botao);
 
 
 
-        item.appendChild(texto);
-        item.appendChild(botoesDiv);
+      item.appendChild(texto);
+      item.appendChild(botoesDiv);
 
-        lista.appendChild(item);
+      lista.appendChild(item);
 
-        encontrouResultado = true;
+      encontrouResultado = true;
 
-      });
+    });
 
-      if (
-        !encontrouResultado &&
-        busca
-      ) {
+    if (
+      !encontrouResultado &&
+      busca
+    ) {
 
-        lista.innerHTML = `
+      lista.innerHTML = `
 
   <li style="
     text-align:center;
@@ -2695,977 +2702,1041 @@ onclick="filtrarDashboard('hoje')">
   </li>
   `;
 
+    }
+
+
+    function melhorarPrompt() {
+
+      let textarea =
+        document.getElementById("prompt");
+
+      let texto = textarea.value;
+
+      if (!texto.trim()) {
+
+        mostrarToast("❌ Digite um prompt primeiro!");
+
+        return;
+      }
+
+      let melhorado =
+
+        "✨ Prompt otimizado:\n\n" +
+
+        "Seja extremamente detalhado, " +
+
+        "profissional, criativo e envolvente.\n\n" +
+
+        texto +
+
+        "\n\nInclua exemplos práticos, " +
+
+        "descrições avançadas, " +
+
+        "estrutura clara, tom profissional " +
+
+        "e respostas completas.";
+
+      textarea.value = melhorado;
+
+      mostrarToast("✨ Prompt melhorado!");
+    }
+
+    function salvarPrompt() {
+      const categoria = document.getElementById("categoria").value;
+      const colecao =
+        document.getElementById("colecao").value;
+      const status =
+        document.getElementById("status").value;
+      const titulo = document.getElementById("titulo").value;
+      const texto = document.getElementById("prompt").value;
+      const dataInput = document.getElementById("dataPrompt").value;
+      const hoje = new Date().toLocaleDateString("sv-SE");
+      const dataFinal =
+        dataInput || hoje;
+
+
+      if (dataInput > hoje) {
+        alert("❌ Não é permitido usar data futura!");
+        return;
       }
 
 
-      function melhorarPrompt() {
+      let data = document.getElementById("dataPrompt").value;
 
-        let textarea =
-          document.getElementById("prompt");
-
-        let texto = textarea.value;
-
-        if (!texto.trim()) {
-
-          mostrarToast("❌ Digite um prompt primeiro!");
-
-          return;
-        }
-
-        let melhorado =
-
-          "✨ Prompt otimizado:\n\n" +
-
-          "Seja extremamente detalhado, " +
-
-          "profissional, criativo e envolvente.\n\n" +
-
-          texto +
-
-          "\n\nInclua exemplos práticos, " +
-
-          "descrições avançadas, " +
-
-          "estrutura clara, tom profissional " +
-
-          "e respostas completas.";
-
-        textarea.value = melhorado;
-
-        mostrarToast("✨ Prompt melhorado!");
-      }
-
-      function salvarPrompt() {
-        const categoria = document.getElementById("categoria").value;
-        const colecao =
-          document.getElementById("colecao").value;
-        const status =
-          document.getElementById("status").value;
-        const titulo = document.getElementById("titulo").value;
-        const texto = document.getElementById("prompt").value;
-        const dataInput = document.getElementById("dataPrompt").value;
+      if (!data) {
         const hoje = new Date().toLocaleDateString("sv-SE");
-        const dataFinal =
-          dataInput || hoje;
-
-
-        if (dataInput > hoje) {
-          alert("❌ Não é permitido usar data futura!");
-          return;
-        }
-
-
-        let data = document.getElementById("dataPrompt").value;
-
-        if (!data) {
-          const hoje = new Date().toLocaleDateString("sv-SE");
-
-        }
-
-
-        if (texto.trim() === "") return;
-
-        if (editandoIndex !== null) {
-
-          if (!prompts[editandoIndex].historico) {
-            prompts[editandoIndex].historico = [];
-          }
-
-          prompts[editandoIndex].historico.push({
-
-            texto: prompts[editandoIndex].texto,
-
-            dataEdicao:
-              new Date().toLocaleString("pt-BR")
-
-          });
-          prompts[editandoIndex] = {
-
-            categoria,
-            colecao,
-            status,
-            titulo,
-            texto,
-
-            historico:
-              prompts[editandoIndex].historico || [],
-
-            favorito:
-              prompts[editandoIndex].favorito || false,
-
-            fixado:
-              prompts[editandoIndex].fixado || false,
-
-            data: dataFinal
-          };
-
-
-
-          editandoIndex = null;
-        } else {
-          prompts.push({
-            categoria,
-            titulo,
-            texto,
-            favorito: false,
-            fixado: false,
-            data: data
-          });
-
-        }
-
-        localStorage.setItem("prompts", JSON.stringify(prompts));
-        localStorage.removeItem("rascunhoPrompt");
-
-        document.getElementById("categoria").value = "";
-        document.getElementById("titulo").value = "";
-        document.getElementById("prompt").value = "";
-        document.getElementById(
-          "prompt"
-        ).style.height =
-         "120px";
-        document.getElementById("dataPrompt").value = "";
-
-        document.getElementById("status").value =
-          "ideias";
-
-        f
-
-        verificarConquistas();
-
-        mostrarToast("✅ Prompt salvo com sucesso!");
-
 
       }
 
-      mostrarPrompts();
-      async function exportarPDF() {
 
-        const { jsPDF } = window.jspdf;
+      if (texto.trim() === "") return;
 
-        const doc = new jsPDF();
+      if (editandoIndex !== null) {
 
-        let y = 20;
+        if (!prompts[editandoIndex].historico) {
+          prompts[editandoIndex].historico = [];
+        }
 
-        doc.setFontSize(20);
-        doc.text("PromptKeeper", 20, y);
+        prompts[editandoIndex].historico.push({
 
-        y += 15;
+          texto: prompts[editandoIndex].texto,
 
-        prompts.forEach((p, index) => {
+          dataEdicao:
+            new Date().toLocaleString("pt-BR")
 
-          if (y > 260) {
-            doc.addPage();
-            y = 20;
-          }
-
-          doc.setFontSize(14);
-
-          doc.text(
-            (index + 1) + ". " + p.titulo,
-            20,
-            y
-          );
-
-          y += 8;
-
-          doc.setFontSize(11);
-
-          doc.text(
-            "Categoria: " + p.categoria,
-            20,
-            y
-          );
-
-          y += 8;
-
-          const textoQuebrado =
-            doc.splitTextToSize(p.texto, 170);
-
-          doc.text(textoQuebrado, 20, y);
-
-          y += textoQuebrado.length * 7;
-
-          y += 10;
         });
+        prompts[editandoIndex] = {
 
-        window.open(doc.output("bloburl"));
+          categoria,
+          colecao,
+          status,
+          titulo,
+          texto,
 
+          historico:
+            prompts[editandoIndex].historico || [],
 
-        mostrarToast("📄 PDF exportado!");
-      }
+          favorito:
+            prompts[editandoIndex].favorito || false,
 
-      function fazerBackup() {
-        const dados = JSON.stringify(prompts, null, 2);
+          fixado:
+            prompts[editandoIndex].fixado || false,
 
-        const blob = new Blob([dados], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "promptkeeper_backup.json";
-
-        document.body.appendChild(link);
-        link.click();
-
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-      }
-
-      function restaurarBackup(event) {
-        const arquivo = event.target.files[0];
-
-        if (!arquivo) return;
-
-        const leitor = new FileReader();
-
-        leitor.onload = function (e) {
-          const dados = JSON.parse(e.target.result);
-
-          prompts = dados;
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-
-          mostrarPrompts();
+          data: dataFinal
         };
 
-        leitor.readAsText(arquivo);
-      }
 
 
-      function mostrarSugestoes() {
-        const input = document.getElementById("categoria").value.toLowerCase();
-        const lista = document.getElementById("sugestoes");
-
-        lista.innerHTML = "";
-
-
-
-        if (!input) return;
-
-        // pegar categorias já existentes
-        const categorias = [...new Set(prompts.map(p => p.categoria))];
-
-        categorias.forEach(cat => {
-          if (cat.toLowerCase().startsWith(input)) {
-
-            let item = document.createElement("li");
-            item.textContent = cat;
-
-            item.onclick = function () {
-              document.getElementById("categoria").value = cat;
-              lista.innerHTML = "";
-            };
-            lista.appendChild(item);
-
-          }
+        editandoIndex = null;
+      } else {
+        prompts.push({
+          categoria,
+          titulo,
+          texto,
+          favorito: false,
+          fixado: false,
+          data: data
         });
+
       }
 
-      function autoSalvarRascunho() {
+      localStorage.setItem("prompts", JSON.stringify(prompts));
+      localStorage.removeItem("rascunhoPrompt");
 
-        const texto =
-          document.getElementById("prompt").value;
+      document.getElementById("categoria").value = "";
+      document.getElementById("titulo").value = "";
+      document.getElementById("prompt").value = "";
+      document.getElementById(
+        "prompt"
+      ).style.height =
+        "120px";
+      document.getElementById("dataPrompt").value = "";
 
-        localStorage.setItem(
-          "rascunhoPrompt",
-          texto
+      document.getElementById("status").value =
+        "ideias";
+
+      f
+
+      verificarConquistas();
+
+      mostrarToast("✅ Prompt salvo com sucesso!");
+
+
+    }
+
+    mostrarPrompts();
+    async function exportarPDF() {
+
+      const { jsPDF } = window.jspdf;
+
+      const doc = new jsPDF();
+
+      let y = 20;
+
+      doc.setFontSize(20);
+      doc.text("PromptKeeper", 20, y);
+
+      y += 15;
+
+      prompts.forEach((p, index) => {
+
+        if (y > 260) {
+          doc.addPage();
+          y = 20;
+        }
+
+        doc.setFontSize(14);
+
+        doc.text(
+          (index + 1) + ". " + p.titulo,
+          20,
+          y
         );
 
-        document.getElementById("contadorCaracteres")
-          .innerHTML =
-          texto.length + " caracteres";
-      }
+        y += 8;
+
+        doc.setFontSize(11);
+
+        doc.text(
+          "Categoria: " + p.categoria,
+          20,
+          y
+        );
+
+        y += 8;
+
+        const textoQuebrado =
+          doc.splitTextToSize(p.texto, 170);
+
+        doc.text(textoQuebrado, 20, y);
+
+        y += textoQuebrado.length * 7;
+
+        y += 10;
+      });
+
+      window.open(doc.output("bloburl"));
 
 
-      function sugerirCategoriaAutomatica() {
-        const texto = document.getElementById("prompt").value.toLowerCase();
+      mostrarToast("📄 PDF exportado!");
+    }
 
-        let categoria = "";
+    function fazerBackup() {
+      const dados = JSON.stringify(prompts, null, 2);
 
-        if (texto.includes("imagem")) categoria = "IMAGENS";
-        else if (texto.includes("negócio") || texto.includes("marketing")) categoria = "NEGOCIOS";
-        else if (texto.includes("ideia")) categoria = "IDEIAS";
+      const blob = new Blob([dados], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "promptkeeper_backup.json";
 
-        if (categoria) {
-          document.getElementById("categoria").value = categoria;
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function restaurarBackup(event) {
+      const arquivo = event.target.files[0];
+
+      if (!arquivo) return;
+
+      const leitor = new FileReader();
+
+      leitor.onload = function (e) {
+        const dados = JSON.parse(e.target.result);
+
+        prompts = dados;
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+
+        mostrarPrompts();
+      };
+
+      leitor.readAsText(arquivo);
+    }
+
+
+    function mostrarSugestoes() {
+      const input = document.getElementById("categoria").value.toLowerCase();
+      const lista = document.getElementById("sugestoes");
+
+      lista.innerHTML = "";
+
+
+
+      if (!input) return;
+
+      // pegar categorias já existentes
+      const categorias = [...new Set(prompts.map(p => p.categoria))];
+
+      categorias.forEach(cat => {
+        if (cat.toLowerCase().startsWith(input)) {
+
+          let item = document.createElement("li");
+          item.textContent = cat;
+
+          item.onclick = function () {
+            document.getElementById("categoria").value = cat;
+            lista.innerHTML = "";
+          };
+          lista.appendChild(item);
+
         }
+      });
+    }
+
+    function autoSalvarRascunho() {
+
+      const texto =
+        document.getElementById("prompt").value;
+
+      localStorage.setItem(
+        "rascunhoPrompt",
+        texto
+      );
+
+      document.getElementById("contadorCaracteres")
+        .innerHTML =
+        texto.length + " caracteres";
+    }
+
+
+    function sugerirCategoriaAutomatica() {
+      const texto = document.getElementById("prompt").value.toLowerCase();
+
+      let categoria = "";
+
+      if (texto.includes("imagem")) categoria = "IMAGENS";
+      else if (texto.includes("negócio") || texto.includes("marketing")) categoria = "NEGOCIOS";
+      else if (texto.includes("ideia")) categoria = "IDEIAS";
+
+      if (categoria) {
+        document.getElementById("categoria").value = categoria;
       }
+    }
 
-      function alternarModo() {
-        document.body.classList.toggle("dark-mode");
-      }
+    function alternarModo() {
+      document.body.classList.toggle("dark-mode");
+    }
 
-      const dataHoje =
-        new Date()
-          .toLocaleDateString(
-            "sv-SE"
-          );
+    const dataHoje =
+      new Date()
+        .toLocaleDateString(
+          "sv-SE"
+        );
 
-      document.getElementById(
-        "dataPrompt"
-      ).max = dataHoje;
+    document.getElementById(
+      "dataPrompt"
+    ).max = dataHoje;
 
-      document.getElementById(
-        "dataPrompt"
-      ).value = dataHoje;
+    document.getElementById(
+      "dataPrompt"
+    ).value = dataHoje;
 
-      function mostrarToast(mensagem) {
-        console.log("Toast funcionando!");
+    function mostrarToast(mensagem) {
+      console.log("Toast funcionando!");
 
-        const toast = document.getElementById("toast");
+      const toast = document.getElementById("toast");
 
-        toast.textContent = mensagem;
+      toast.textContent = mensagem;
 
-        toast.classList.add("mostrar");
+      toast.classList.add("mostrar");
 
-        setTimeout(() => {
-          toast.classList.remove("mostrar");
-        }, 2500);
-      }
+      setTimeout(() => {
+        toast.classList.remove("mostrar");
+      }, 2500);
+    }
 
-      function mostrarPopupConquista(
-        titulo,
-        emoji
-      ) {
+    function mostrarPopupConquista(
+      titulo,
+      emoji
+    ) {
 
-        const popup =
-          document.getElementById(
-            "popupConquista"
-          );
+      const popup =
+        document.getElementById(
+          "popupConquista"
+        );
 
-        popup.innerHTML =
+      popup.innerHTML =
 
-          "🎉 <strong>Nova conquista!</strong><br><br>" +
+        "🎉 <strong>Nova conquista!</strong><br><br>" +
 
-          emoji +
+        emoji +
 
-          " " +
+        " " +
 
-          titulo +
+        titulo +
 
-          " desbloqueada!";
+        " desbloqueada!";
 
-        popup.classList.add(
+      popup.classList.add(
+        "mostrar"
+      );
+
+      setTimeout(() => {
+
+        popup.classList.remove(
           "mostrar"
         );
 
-        setTimeout(() => {
+      }, 3500);
+    }
 
-          popup.classList.remove(
-            "mostrar"
-          );
+    function verificarConquistas() {
 
-        }, 3500);
-      }
+      const totalPrompts =
+        prompts.length;
 
-      function verificarConquistas() {
-
-        const totalPrompts =
-          prompts.length;
-
-        const conquistas =
-          JSON.parse(
-            localStorage.getItem(
-              "conquistas"
-            )
-          ) || {};
-
-        // 🌱 Iniciante
-        if (
-          totalPrompts >= 1 &&
-          !conquistas.iniciante
-        ) {
-
-          mostrarPopupConquista(
-            "Iniciante",
-            "🌱"
-          );
-
-          conquistas.iniciante =
-            true;
-        }
-
-        // 🚀 Explorador
-        if (
-          totalPrompts >= 10 &&
-          !conquistas.explorador
-        ) {
-
-          mostrarPopupConquista(
-            "Explorador",
-            "🚀"
-          );
-
-          conquistas.explorador =
-            true;
-        }
-
-        // 🧠 Criador
-        if (
-          totalPrompts >= 25 &&
-          !conquistas.criador
-        ) {
-
-          mostrarPopupConquista(
-            "Criador",
-            "🧠"
-          );
-
-          conquistas.criador =
-            true;
-        }
-
-        // 🔥 Especialista
-        if (
-          totalPrompts >= 50 &&
-          !conquistas.especialista
-        ) {
-
-          mostrarPopupConquista(
-            "Especialista",
-            "🔥"
-          );
-
-          conquistas.especialista =
-            true;
-        }
-
-        // 👑 Mestre IA
-        if (
-          totalPrompts >= 100 &&
-          !conquistas.mestre
-        ) {
-
-          mostrarPopupConquista(
-            "Mestre IA",
-            "👑"
-          );
-
-          conquistas.mestre =
-            true;
-        }
-        mostrarSugestoes
-        localStorage.setItem(
-          "conquistas",
-          JSON.stringify(
-            conquistas
+      const conquistas =
+        JSON.parse(
+          localStorage.getItem(
+            "conquistas"
           )
-        );
-      }
+        ) || {};
 
+      // 🌱 Iniciante
+      if (
+        totalPrompts >= 1 &&
+        !conquistas.iniciante
+      ) {
 
-
-      function trocarTema(cor) {
-
-        document.body.classList.remove(
-          "tema-verde",
-          "tema-azul",
-          "tema-roxo",
-          "tema-vermelho"
-        );
-
-        document.body.classList.add(
-          "tema-" + cor
+        mostrarPopupConquista(
+          "Iniciante",
+          "🌱"
         );
 
-        localStorage.setItem(
-          "temaPromptKeeper",
-          cor
-        );
+        conquistas.iniciante =
+          true;
       }
 
-      const temaSalvo =
-        localStorage.getItem("temaPromptKeeper");
+      // 🚀 Explorador
+      if (
+        totalPrompts >= 10 &&
+        !conquistas.explorador
+      ) {
 
-      if (temaSalvo) {
-
-        document.body.classList.add(
-          "tema-" + temaSalvo
-        );
-      }
-
-      function falarTexto(texto) {
-
-        const fala =
-          new SpeechSynthesisUtterance(texto);
-
-        fala.lang = "pt-BR";
-
-        speechSynthesis.speak(fala);
-      }
-
-      function abrirFoco(texto) {
-
-        document.getElementById("modoFoco")
-          .style.display = "block";
-
-        document.getElementById("textoFoco")
-          .textContent = texto;
-      }
-
-      function fecharFoco() {
-
-        document.getElementById("modoFoco")
-          .style.display = "none";
-      }
-
-      function filtrarFavoritos() {
-
-        mostrarSomenteFavoritos =
-          !mostrarSomenteFavoritos;
-
-        mostrarPrompts();
-
-        if (mostrarSomenteFavoritos) {
-
-          mostrarToast("⭐ Mostrando favoritos");
-
-        } else {
-
-          mostrarToast("📚 Mostrando todos");
-        }
-      }
-
-      function criarConta() {
-
-        const usuario =
-          document.getElementById("novoUsuario").value;
-
-        const senha =
-          document.getElementById("novaSenha").value;
-
-        if (!usuario || !senha) {
-
-          alert("Preencha usuário e senha 😄");
-          return;
-        }
-
-        const conta = {
-          usuario,
-          senha
-        };
-
-        localStorage.setItem(
-          "contaPromptKeeper",
-          JSON.stringify(conta)
+        mostrarPopupConquista(
+          "Explorador",
+          "🚀"
         );
 
-        alert("✅ Conta criada com sucesso!");
+        conquistas.explorador =
+          true;
       }
-      document.getElementById(
-        "telaCadastro"
-      ).style.display = "none";
 
-      document.getElementById(
-        "telaLogin"
-      ).style.display = "block";
+      // 🧠 Criador
+      if (
+        totalPrompts >= 25 &&
+        !conquistas.criador
+      ) {
 
-      function fazerLogin() {
+        mostrarPopupConquista(
+          "Criador",
+          "🧠"
+        );
 
-        const usuario =
-          document.getElementById("usuarioLogin").value;
+        conquistas.criador =
+          true;
+      }
 
-        const senha =
-          document.getElementById("senhaLogin").value;
+      // 🔥 Especialista
+      if (
+        totalPrompts >= 50 &&
+        !conquistas.especialista
+      ) {
 
-        const contaSalva =
-          JSON.parse(
-            localStorage.getItem(
-              "contaPromptKeeper"
-            )
+        mostrarPopupConquista(
+          "Especialista",
+          "🔥"
+        );
+
+        conquistas.especialista =
+          true;
+      }
+
+      // 👑 Mestre IA
+      if (
+        totalPrompts >= 100 &&
+        !conquistas.mestre
+      ) {
+
+        mostrarPopupConquista(
+          "Mestre IA",
+          "👑"
+        );
+
+        conquistas.mestre =
+          true;
+      }
+      mostrarSugestoes
+      localStorage.setItem(
+        "conquistas",
+        JSON.stringify(
+          conquistas
+        )
+      );
+    }
+
+
+
+    function trocarTema(cor) {
+
+      document.body.classList.remove(
+        "tema-verde",
+        "tema-azul",
+        "tema-roxo",
+        "tema-vermelho"
+      );
+
+      document.body.classList.add(
+        "tema-" + cor
+      );
+
+      localStorage.setItem(
+        "temaPromptKeeper",
+        cor
+      );
+    }
+
+    const temaSalvo =
+      localStorage.getItem("temaPromptKeeper");
+
+    if (temaSalvo) {
+
+      document.body.classList.add(
+        "tema-" + temaSalvo
+      );
+    }
+
+    function falarTexto(texto) {
+
+      const fala =
+        new SpeechSynthesisUtterance(texto);
+
+      fala.lang = "pt-BR";
+
+      speechSynthesis.speak(fala);
+    }
+
+    function abrirFoco(texto) {
+
+      document.getElementById("modoFoco")
+        .style.display = "block";
+
+      document.getElementById("textoFoco")
+        .textContent = texto;
+    }
+
+    function fecharFoco() {
+
+      document.getElementById("modoFoco")
+        .style.display = "none";
+    }
+
+    function filtrarFavoritos() {
+
+      mostrarSomenteFavoritos =
+        !mostrarSomenteFavoritos;
+
+      mostrarPrompts();
+
+      if (mostrarSomenteFavoritos) {
+
+        mostrarToast("⭐ Mostrando favoritos");
+
+      } else {
+
+        mostrarToast("📚 Mostrando todos");
+      }
+    }
+
+    function criarConta() {
+
+      const usuario =
+        document.getElementById("novoUsuario").value;
+
+      const senha =
+        document.getElementById("novaSenha").value;
+
+      if (!usuario || !senha) {
+
+        alert("Preencha usuário e senha 😄");
+        return;
+      }
+
+      let contas = JSON.parse(
+        localStorage.getItem(
+          "contasPromptKeeper"
+        )
+      ) || [];
+
+      // evita usuário repetido
+      if (
+        contas.some(
+          c =>
+            c.usuario.toLowerCase() ===
+            usuario.toLowerCase()
+        )
+      ) {
+        alert(
+          "❌ Este usuário já existe!"
+        );
+        return;
+      }
+
+      contas.push({
+        usuario,
+        senha
+      });
+
+      localStorage.setItem(
+        "contasPromptKeeper",
+        JSON.stringify(contas)
+      );
+
+      alert("✅ Conta criada com sucesso!");
+    }
+    document.getElementById(
+      "telaCadastro"
+    ).style.display = "none";
+
+    document.getElementById(
+      "telaLogin"
+    ).style.display = "block";
+
+    function fazerLogin() {
+
+      const usuario =
+        document.getElementById("usuarioLogin").value;
+
+      const senha =
+        document.getElementById("senhaLogin").value;
+
+      const contas =
+        JSON.parse(
+          localStorage.getItem(
+            "contasPromptKeeper"
+          )
+        ) || [];
+
+      const usuarioEncontrado =
+        contas.find(
+          conta =>
+            conta.usuario === usuario &&
+            conta.senha === senha
+        );
+
+      if (!usuarioEncontrado) {
+
+        alert(
+          "❌ Usuário ou senha incorretos"
+        );
+
+        return;
+      }
+      localStorage.setItem(
+        "usuarioLogado",
+        "true"
+      );
+
+
+      localStorage.setItem(
+        "nomeUsuario",
+        usuario
+      );
+
+      console.log(
+        "Maria entrou 😄"
+      );
+      setTimeout(() => {
+
+        alert(
+          "🎉 Bem-vinda de volta, " +
+          usuario +
+          "!"
+        );
+
+      }, 300);
+
+      if (
+        !localStorage.getItem(
+          "cargoUsuario"
+        )
+      ) {
+
+
+        const cargo =
+          prompt(
+            "💼 Qual seu cargo?"
           );
 
-        if (!contaSalva) {
-
-          alert("Crie uma conta primeiro 😄");
-          return;
-        }
-
-        if (
-          usuario === contaSalva.usuario &&
-          senha === contaSalva.senha
-        ) {
-
+        if (cargo) {
 
           localStorage.setItem(
-            "usuarioLogado",
-            "true"
+            "cargoUsuario",
+            cargo
+          );
+        }
+      }
+
+      if (
+        !localStorage.getItem(
+          "fraseUsuario"
+        )
+      ) {
+
+        const frase =
+          prompt(
+            "✨ Sua frase pessoal:"
           );
 
+        if (frase) {
 
           localStorage.setItem(
-            "nomeUsuario",
-            usuario
+            "fraseUsuario",
+            frase
           );
-
-          console.log(
-            "Maria entrou 😄"
-          );
-          setTimeout(() => {
-
-            alert(
-              "🎉 Bem-vinda de volta, " +
-              usuario +
-              "!"
-            );
-
-          }, 300);
-
-          if (
-            !localStorage.getItem(
-              "cargoUsuario"
-            )
-          ) {
-
-
-            const cargo =
-              prompt(
-                "💼 Qual seu cargo?"
-              );
-
-            if (cargo) {
-
-              localStorage.setItem(
-                "cargoUsuario",
-                cargo
-              );
-            }
-          }
-
-          if (
-            !localStorage.getItem(
-              "fraseUsuario"
-            )
-          ) {
-
-            const frase =
-              prompt(
-                "✨ Sua frase pessoal:"
-              );
-
-            if (frase) {
-
-              localStorage.setItem(
-                "fraseUsuario",
-                frase
-              );
-            }
-          }
-
-
-          document.getElementById(
-            "nomePerfil"
-          ).innerHTML =
-
-            "👋 Olá, <strong>" +
-            usuario +
-            "</strong>";
-
-          const popup =
-            document.getElementById(
-              "boasVindas"
-            );
-
-          popup.innerHTML =
-            "🎉 Bem-vinda de volta, " +
-            usuario +
-            "!";
-
-          popup.style.display =
-            "block";
-
-          setTimeout(() => {
-
-            popup.style.display =
-              "none";
-
-          }, 3000);
-
-          verificarLogin();
-
-          mostrarPrompts();
-
-
-
-        } else {
-
-          alert("❌ Usuário ou senha incorretos");
         }
       }
 
-      function verificarLogin() {
 
-        if (
-          localStorage.getItem(
-            "modoEscuro"
-          ) === "true"
-        ) {
+      document.getElementById(
+        "nomePerfil"
+      ).innerHTML =
 
-          document.body.classList.add(
-            "dark-mode"
-          );
-        }
+        "👋 Olá, <strong>" +
+        usuario +
+        "</strong>";
 
-        const logado =
-          localStorage.getItem(
-            "usuarioLogado"
-          );
+      const popup =
+        document.getElementById(
+          "boasVindas"
+        );
 
-        if (logado === "true") {
+      popup.innerHTML =
+        "🎉 Bem-vinda de volta, " +
+        usuario +
+        "!";
 
-          document.getElementById(
-            "telaLogin"
-          ).style.display = "none";
+      popup.style.display =
+        "block";
 
-          document.getElementById(
-            "appPromptKeeper"
-          ).style.display = "block";
+      setTimeout(() => {
 
-        } else {
+        popup.style.display =
+          "none";
 
-          document.getElementById(
-            "telaLogin"
-          ).style.display = "block";
-
-          document.getElementById(
-            "appPromptKeeper"
-          ).style.display = "none";
-        }
-      }
+      }, 3000);
 
       verificarLogin();
 
-      function sairConta() {
+      mostrarPrompts();
 
-        localStorage.removeItem(
+      location.reload();
+    }
+
+
+    function verificarLogin() {
+
+      if (
+        localStorage.getItem(
+          "modoEscuro"
+        ) === "true"
+      ) {
+
+        document.body.classList.add(
+          "dark-mode"
+        );
+      }
+
+      const logado =
+        localStorage.getItem(
           "usuarioLogado"
         );
 
-        localStorage.removeItem(
-          "nomeUsuario"
-        );
+      if (logado === "true") {
 
-        verificarLogin();
+        document.getElementById(
+          "telaLogin"
+        ).style.display = "none";
 
-        mostrarPrompts();
+        document.getElementById(
+          "appPromptKeeper"
+        ).style.display = "block";
+
+      } else {
+
+        document.getElementById(
+          "telaLogin"
+        ).style.display = "block";
+
+        document.getElementById(
+          "appPromptKeeper"
+        ).style.display = "none";
+      }
+    }
+
+    verificarLogin();
+
+    function sairConta() {
+
+      localStorage.removeItem(
+        "usuarioLogado"
+      );
+
+      localStorage.removeItem(
+        "nomeUsuario"
+      );
+
+      verificarLogin();
+
+      mostrarPrompts();
+
+      mostrarToast(
+        "🚪 Você saiu da conta"
+      );
+    }
+
+    function recuperarSenha() {
+
+  const usuario =
+    prompt(
+      "Digite seu usuário:"
+    );
+
+  if (!usuario) return;
+
+  let contas =
+    JSON.parse(
+      localStorage.getItem(
+        "contasPromptKeeper"
+      )
+    ) || [];
+
+  const conta =
+    contas.find(
+      c => c.usuario === usuario
+    );
+
+  if (!conta) {
+
+    alert(
+      "❌ Usuário não encontrado."
+    );
+
+    return;
+  }
+
+  const novaSenha =
+    prompt(
+      "Digite sua nova senha:"
+    );
+
+  if (!novaSenha) return;
+
+  conta.senha = novaSenha;
+
+  localStorage.setItem(
+    "contasPromptKeeper",
+    JSON.stringify(contas)
+  );
+
+  alert(
+    "✅ Senha alterada com sucesso!"
+  );
+}
+    function carregarFotoPerfil(event) {
+
+  const arquivo =
+    event.target.files[0];
+
+  if (!arquivo) return;
+
+  const leitor =
+    new FileReader();
+
+  leitor.onload =
+    function (e) {
+
+      console.log(
+        "FOTO CARREGADA!"
+      );
+
+      console.log(
+        e.target.result
+      );
+
+      document.getElementById(
+        "avatarUsuario"
+      ).innerHTML =
+        `<img src="${e.target.result}"
+         style="
+           width:100px;
+           height:100px;
+           border-radius:50%;
+         ">`;
+
+    };
+
+  leitor.readAsDataURL(
+    arquivo
+  );
+}
+
+
+    function filtrarDashboard(tipo) {
+
+      mostrarSomenteFavoritos = false;
+      mostrarSomenteFixados = false;
+      categoriaSelecionada = "";
+      mostrarSomenteHoje = false;
+
+      if (tipo === "favoritos") {
+
+        mostrarSomenteFavoritos = true;
 
         mostrarToast(
-          "🚪 Você saiu da conta"
+          "⭐ Mostrando favoritos"
+        );
+
+      } else if (tipo === "fixados") {
+
+        mostrarSomenteFixados = true;
+
+        mostrarToast(
+          "📌 Mostrando fixados"
         );
       }
 
-      function carregarFotoPerfil(event) {
+      else if (
+        tipo === "categorias"
+      ) {
 
-        const arquivo =
-          event.target.files[0];
+        const categoriasUnicas =
+          [...new Set(
+            prompts.map(
+              p => p.categoria
+            )
+          )];
 
-        if (!arquivo) return;
+        let menu =
+          "🏷️ Escolha a categoria:\n\n";
 
-        const leitor =
-          new FileReader();
+        categoriasUnicas.forEach(
+          (cat, index) => {
 
-        leitor.onload =
-          function (e) {
+            const quantidade =
+              prompts.filter(
+                p =>
+                  p.categoria === cat
+              ).length;
 
-            const foto =
-              e.target.result;
-
-            // pega SEMPRE o usuário atual
-            const usuarioAtual =
-              localStorage.getItem(
-                "nomeUsuario"
-              );
-
-            // salva a foto do usuário certo
-            localStorage.setItem(
-              "fotoPerfil_" +
-              usuarioAtual,
-              foto
-            );
-
-            // mostra a foto
-            document.getElementById(
-              "avatarUsuario"
-            ).innerHTML =
-              `<img src="${foto}">`;
-          };
-
-        leitor.readAsDataURL(
-          arquivo
-        );
-      }
-
-
-      function filtrarDashboard(tipo) {
-
-        mostrarSomenteFavoritos = false;
-        mostrarSomenteFixados = false;
-        categoriaSelecionada = "";
-        mostrarSomenteHoje = false;
-
-        if (tipo === "favoritos") {
-
-          mostrarSomenteFavoritos = true;
-
-          mostrarToast(
-            "⭐ Mostrando favoritos"
-          );
-
-        } else if (tipo === "fixados") {
-
-          mostrarSomenteFixados = true;
-
-          mostrarToast(
-            "📌 Mostrando fixados"
-          );
-        }
-
-        else if (
-          tipo === "categorias"
-        ) {
-
-          const categoriasUnicas =
-            [...new Set(
-              prompts.map(
-                p => p.categoria
-              )
-            )];
-
-          let menu =
-            "🏷️ Escolha a categoria:\n\n";
-
-          categoriasUnicas.forEach(
-            (cat, index) => {
-
-              const quantidade =
-                prompts.filter(
-                  p =>
-                    p.categoria === cat
-                ).length;
-
-              menu +=
-                (index + 1) +
-                " - " +
-                cat +
-                " (" +
-                quantidade +
-                ")\n";
-            }
-          );
-
-          const escolha =
-            prompt(menu);
-
-          if (!escolha) return;
-
-          const categoriaEscolhida =
-            categoriasUnicas[
-            parseInt(escolha) - 1
-            ];
-
-          if (!categoriaEscolhida) {
-
-            mostrarToast(
-              "❌ Categoria inválida"
-            );
-
-            return;
+            menu +=
+              (index + 1) +
+              " - " +
+              cat +
+              " (" +
+              quantidade +
+              ")\n";
           }
+        );
 
-          categoriaSelecionada =
-            categoriaEscolhida
-              .toLowerCase();
+        const escolha =
+          prompt(menu);
+
+        if (!escolha) return;
+
+        const categoriaEscolhida =
+          categoriasUnicas[
+          parseInt(escolha) - 1
+          ];
+
+        if (!categoriaEscolhida) {
 
           mostrarToast(
-            "🏷️ " +
-            categoriaEscolhida
+            "❌ Categoria inválida"
           );
+
+          return;
         }
 
-        else if (
-          tipo === "hoje"
-        ) {
-
-          mostrarSomenteHoje = true;
-
-          mostrarToast(
-            "🚀 Prompts de hoje"
-          );
-
-        } else {
-
-          mostrarToast(
-            "📚 Mostrando todos"
-          );
-        }
-
-        mostrarPrompts();
-
-setTimeout(() => {
-
-  document
-    .getElementById(
-      "lista"
-    )
-    ?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-}, 150);
-      }
-
-      function editarCargo() {
-
-
-        const novoCargo =
-          prompt(
-            "💼 Digite seu novo cargo:"
-          );
-
-        if (!novoCargo) return;
-
-        localStorage.setItem(
-          "cargoUsuario",
-          novoCargo
-        );
-
-        document.getElementById(
-          "cargoPerfil"
-        ).innerHTML =
-
-          "💼 " +
-          novoCargo;
+        categoriaSelecionada =
+          categoriaEscolhida
+            .toLowerCase();
 
         mostrarToast(
-          "✅ Cargo atualizado!"
+          "🏷️ " +
+          categoriaEscolhida
         );
       }
 
-      function editarFrase() {
+      else if (
+        tipo === "hoje"
+      ) {
 
-        const novaFrase =
-          prompt(
-            "✨ Digite sua nova frase pessoal:"
-          );
-
-        if (!novaFrase) return;
-
-        localStorage.setItem(
-          "fraseUsuario",
-          novaFrase
-        );
-
-        document.getElementById(
-          "frasePerfil"
-        ).innerHTML =
-
-          "✨ " +
-          novaFrase;
+        mostrarSomenteHoje = true;
 
         mostrarToast(
-          "✅ Frase atualizada!"
+          "🚀 Prompts de hoje"
+        );
+
+      } else {
+
+        mostrarToast(
+          "📚 Mostrando todos"
         );
       }
+
+      mostrarPrompts();
+
+      setTimeout(() => {
+
+        document
+          .getElementById(
+            "lista"
+          )
+          ?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+      }, 150);
+    }
+
+    function editarCargo() {
+
+
+      const novoCargo =
+        prompt(
+          "💼 Digite seu novo cargo:"
+        );
+
+      if (!novoCargo) return;
+
+      localStorage.setItem(
+        "cargoUsuario",
+        novoCargo
+      );
+
+      document.getElementById(
+        "cargoPerfil"
+      ).innerHTML =
+
+        "💼 " +
+        novoCargo;
+
+      mostrarToast(
+        "✅ Cargo atualizado!"
+      );
+    }
+
+    function editarFrase() {
+
+      const novaFrase =
+        prompt(
+          "✨ Digite sua nova frase pessoal:"
+        );
+
+      if (!novaFrase) return;
+
+      localStorage.setItem(
+        "fraseUsuario",
+        novaFrase
+      );
+
+      document.getElementById(
+        "frasePerfil"
+      ).innerHTML =
+
+        "✨ " +
+        novaFrase;
+
+      mostrarToast(
+        "✅ Frase atualizada!"
+      );
+    }
 
 
     <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
@@ -3682,72 +3753,72 @@ setTimeout(() => {
   <!-- 👇 AQUI ESTÁ O SEGREDO: Abrir uma NOVA tag script para o código funcionar -->
 
   <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const loginCard = document.getElementById('telaLogin');
-        const cadastroCard = document.getElementById('telaCadastro');
-        const irParaCadastro = document.getElementById('linkIrParaCadastro');
-        const irParaLogin = document.getElementById('linkIrParaLogin');
-        const botaoEntrar = document.getElementById('btnEntrar');
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginCard = document.getElementById('telaLogin');
+      const cadastroCard = document.getElementById('telaCadastro');
+      const irParaCadastro = document.getElementById('linkIrParaCadastro');
+      const irParaLogin = document.getElementById('linkIrParaLogin');
+      const botaoEntrar = document.getElementById('btnEntrar');
 
-        // 🟢 Ação: Ir para a tela de Cadastro
-        if (irParaCadastro && loginCard && cadastroCard) {
-          irParaCadastro.onclick = (e) => {
-            e.preventDefault();
-            loginCard.style.setProperty('display', 'none', 'important');
-            cadastroCard.style.setProperty('display', 'block', 'important');
-          };
-        }
+      // 🟢 Ação: Ir para a tela de Cadastro
+      if (irParaCadastro && loginCard && cadastroCard) {
+        irParaCadastro.onclick = (e) => {
+          e.preventDefault();
+          loginCard.style.setProperty('display', 'none', 'important');
+          cadastroCard.style.setProperty('display', 'block', 'important');
+        };
+      }
 
-        // 🟢 Ação: Voltar para a tela de Login
-        if (irParaLogin && loginCard && cadastroCard) {
-          irParaLogin.onclick = (e) => {
-            e.preventDefault();
-            cadastroCard.style.setProperty('display', 'none', 'important');
-            loginCard.style.setProperty('display', 'block', 'important');
-          };
-        }
+      // 🟢 Ação: Voltar para a tela de Login
+      if (irParaLogin && loginCard && cadastroCard) {
+        irParaLogin.onclick = (e) => {
+          e.preventDefault();
+          cadastroCard.style.setProperty('display', 'none', 'important');
+          loginCard.style.setProperty('display', 'block', 'important');
+        };
+      }
 
-        // 🟢 Ação: Clicar em Entrar (Fecha a tela e libera o App)
-        if (botaoEntrar && loginCard) {
-          botaoEntrar.onclick = () => {
-            loginCard.style.setProperty('display', 'none', 'important');
-          };
-        }
-      });
+      // 🟢 Ação: Clicar em Entrar (Fecha a tela e libera o App)
+      if (botaoEntrar && loginCard) {
+        botaoEntrar.onclick = () => {
+          loginCard.style.setProperty('display', 'none', 'important');
+        };
+      }
+    });
 
-      // 1. FUNÇÃO CENTRALIZADORA (O "Coração" da Reatividade do seu App)
-function salvarEAtualizar() {
-  // Salva o estado atual no localStorage
-  localStorage.setItem("prompts", JSON.stringify(prompts));
-  
-  // Força toda a interface a se redesenhar com os dados novos
-  atualizarDashboard();
-  mostrarPrompts();
-}
+    // 1. FUNÇÃO CENTRALIZADORA (O "Coração" da Reatividade do seu App)
+    function salvarEAtualizar() {
+      // Salva o estado atual no localStorage
+      localStorage.setItem("prompts", JSON.stringify(prompts));
 
-// 2. EXEMPLO: Botão Favoritar/Desfavoritar atualizado
-function alternarFavorito(idDoPrompt) {
-  const prompt = prompts.find(p => p.id === idDoPrompt);
-  if (prompt) {
-    prompt.favorito = !prompt.favorito;
-    console.log(prompt.favorito ? "Prompt favoritado" : "Prompt desfavoritado");
-    
-    // REATIVIDADE INSTANTÂNEA: Chama a centralizadora
-    salvarEAtualizar();
-  }
-}
+      // Força toda a interface a se redesenhar com os dados novos
+      atualizarDashboard();
+      mostrarPrompts();
+    }
 
-// 3. EXEMPLO: Botão Fixar/Desfixar no Topo atualizado
-function alternarFixar(idDoPrompt) {
-  const prompt = prompts.find(p => p.id === idDoPrompt);
-  if (prompt) {
-    prompt.fixado = !prompt.fixado; // Altera a propriedade de fixar
-    console.log(prompt.fixado ? "Prompt fixado no topo" : "Prompt desfixado");
-    
-    // REATIVIDADE INSTANTÂNEA: Chama a mesma centralizadora
-    salvarEAtualizar();
-  }
-}
+    // 2. EXEMPLO: Botão Favoritar/Desfavoritar atualizado
+    function alternarFavorito(idDoPrompt) {
+      const prompt = prompts.find(p => p.id === idDoPrompt);
+      if (prompt) {
+        prompt.favorito = !prompt.favorito;
+        console.log(prompt.favorito ? "Prompt favoritado" : "Prompt desfavoritado");
+
+        // REATIVIDADE INSTANTÂNEA: Chama a centralizadora
+        salvarEAtualizar();
+      }
+    }
+
+    // 3. EXEMPLO: Botão Fixar/Desfixar no Topo atualizado
+    function alternarFixar(idDoPrompt) {
+      const prompt = prompts.find(p => p.id === idDoPrompt);
+      if (prompt) {
+        prompt.fixado = !prompt.fixado; // Altera a propriedade de fixar
+        console.log(prompt.fixado ? "Prompt fixado no topo" : "Prompt desfixado");
+
+        // REATIVIDADE INSTANTÂNEA: Chama a mesma centralizadora
+        salvarEAtualizar();
+      }
+    }
 
   </script>
 
