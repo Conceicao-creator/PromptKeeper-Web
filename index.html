@@ -1202,10 +1202,11 @@
 
     <div id="perfilBox">
 
-      <div id="avatarUsuario">
-        M
-      </div>
-
+      <div
+  id="avatarUsuario"
+  onclick="document.getElementById('fotoPerfil').click();"
+  style="cursor:pointer;">
+</div>
       <div id="perfilUsuario">
 
         <div id="nomePerfil"></div>
@@ -1258,7 +1259,9 @@
           ✨ Editar Frase
         </button>
 
-        <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)">
+        <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)"
+
+        style="display:none;">
 
 
 
