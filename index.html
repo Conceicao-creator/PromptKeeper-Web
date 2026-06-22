@@ -1135,11 +1135,10 @@
     </button>
 
     <p style="text-align:center; margin-top:10px;">
-  <a href="#"
-     onclick="recuperarSenha()">
-     🔑 Esqueceu sua senha?
-  </a>
-</p>
+      <a href="#" onclick="recuperarSenha()">
+        🔑 Esqueceu sua senha?
+      </a>
+    </p>
 
     <hr>
 
@@ -1202,11 +1201,8 @@
 
     <div id="perfilBox">
 
-      <div
-  id="avatarUsuario"
-  onclick="document.getElementById('fotoPerfil').click();"
-  style="cursor:pointer;">
-</div>
+      <div id="avatarUsuario" onclick="document.getElementById('fotoPerfil').click();" style="cursor:pointer;">
+      </div>
       <div id="perfilUsuario">
 
         <div id="nomePerfil"></div>
@@ -1259,9 +1255,7 @@
           ✨ Editar Frase
         </button>
 
-        <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)"
-
-        style="display:none;">
+        <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)" style="display:none;">
 
 
 
@@ -1368,20 +1362,62 @@
       ⭐ Favoritos
     </button>
 
+    <!--
+<button onclick="fazerBackup()">
+  Fazer Backup
+</button>
+-->
 
+    <button id="btnFerramentas" onclick="abrirFerramentas()" style="
 
-
-    <button onclick="fazerBackup()">Fazer Backup</button>
-
-    <button onclick="exportarPDF()">📄 Exportar PDF</button>
-
-    <input type="file" onchange="restaurarBackup(event)">
-
-    <button onclick="document.getElementById('importarTXT').click()">
-      📄 Importar TXT
+background:#673AB7;
+    color:white;
+    font-weight:bold;
+  ">
+      ⚙️ Ferramentas ▼
     </button>
 
-    <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
+    <div id="menuFerramentas" style="
+    display:none;
+    margin-top:10px;
+  ">
+
+      <button onclick="exportarPDF()">
+        📄 PDF
+      </button>
+
+      <button onclick="
+    document
+      .getElementById(
+        'arquivoBackup'
+      )
+      .click()
+  " style="
+    background:#4CAF50;
+    color:white;
+    font-weight:bold;
+  ">
+        📤 Restaurar Backup
+      </button>
+
+      <button onclick="document.getElementById('importarTXT').click()">
+        📄 Importar TXT
+      </button>
+
+      <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
+
+
+
+    </div>
+
+    <!--
+<button ...>
+  📄 Exportar PDF
+</button>
+-->
+
+    <input type="file" id="arquivoBackup" onchange="restaurarBackup(event)" style="display:none;">
+
 
     <div id="contador"></div>
 
@@ -1602,6 +1638,13 @@ onclick="filtrarDashboard('favoritos')">
     const lista = document.getElementById("lista");
 
     lista.innerHTML = "";
+
+    console.log(
+      "FAVORITOS:",
+      mostrarSomenteFavoritos,
+      "FIXADOS:",
+      mostrarSomenteFixados
+    );
 
     let encontrouResultado = false;
 
@@ -2032,6 +2075,12 @@ onclick="filtrarDashboard('hoje')">
         mostrarSomenteFavoritos &&
         !p.favorito
       ) {
+
+        console.log(
+          "BLOQUEADO:",
+          p.titulo
+        );
+
         return;
       }
 
@@ -3218,7 +3267,7 @@ onclick="filtrarDashboard('hoje')">
         .style.display = "none";
     }
 
-    function filtrarFavoritos() {
+    function filtrarFavoritos() {//
 
       mostrarSomenteFavoritos =
         !mostrarSomenteFavoritos;
@@ -3482,94 +3531,128 @@ onclick="filtrarDashboard('hoje')">
       );
     }
 
+
+
     function recuperarSenha() {
 
-  const usuario =
-    prompt(
-      "Digite seu usuário:"
-    );
+      const usuario =
+        prompt(
+          "Digite seu usuário:"
+        );
 
-  if (!usuario) return;
+      if (!usuario) return;
 
-  let contas =
-    JSON.parse(
-      localStorage.getItem(
-        "contasPromptKeeper"
-      )
-    ) || [];
+      let contas =
+        JSON.parse(
+          localStorage.getItem(
+            "contasPromptKeeper"
+          )
+        ) || [];
 
-  const conta =
-    contas.find(
-      c => c.usuario === usuario
-    );
+      const conta =
+        contas.find(
+          c => c.usuario === usuario
+        );
 
-  if (!conta) {
+      if (!conta) {
 
-    alert(
-      "❌ Usuário não encontrado."
-    );
+        alert(
+          "❌ Usuário não encontrado."
+        );
 
-    return;
-  }
+        return;
+      }
 
-  const novaSenha =
-    prompt(
-      "Digite sua nova senha:"
-    );
+      const novaSenha =
+        prompt(
+          "Digite sua nova senha:"
+        );
 
-  if (!novaSenha) return;
+      if (!novaSenha) return;
 
-  conta.senha = novaSenha;
+      conta.senha = novaSenha;
 
-  localStorage.setItem(
-    "contasPromptKeeper",
-    JSON.stringify(contas)
-  );
+      localStorage.setItem(
+        "contasPromptKeeper",
+        JSON.stringify(contas)
+      );
 
-  alert(
-    "✅ Senha alterada com sucesso!"
-  );
-}
+      alert(
+        "✅ Senha alterada com sucesso!"
+      );
+    }
     function carregarFotoPerfil(event) {
 
-  const arquivo =
-    event.target.files[0];
+      const arquivo =
+        event.target.files[0];
 
-  if (!arquivo) return;
+      if (!arquivo) return;
 
-  const leitor =
-    new FileReader();
+      const leitor =
+        new FileReader();
 
-  leitor.onload =
-    function (e) {
+      leitor.onload =
+        function (e) {
 
-      console.log(
-        "FOTO CARREGADA!"
-      );
+          console.log(
+            "FOTO CARREGADA!"
+          );
 
-      console.log(
-        e.target.result
-      );
+          console.log(
+            e.target.result
+          );
 
-      document.getElementById(
-        "avatarUsuario"
-      ).innerHTML =
-        `<img src="${e.target.result}"
+          document.getElementById(
+            "avatarUsuario"
+          ).innerHTML =
+            `<img src="${e.target.result}"
          style="
            width:100px;
            height:100px;
            border-radius:50%;
          ">`;
 
-    };
+        };
 
-  leitor.readAsDataURL(
-    arquivo
-  );
-}
+      leitor.readAsDataURL(
+        arquivo
+      );
+    }
+
+    function abrirFerramentas() {
+
+      const menu =
+        document.getElementById(
+          "menuFerramentas"
+        );
+
+      const botao =
+        document.getElementById(
+          "btnFerramentas"
+        );
+
+      if (
+        menu.style.display === "none"
+      ) {
+
+        menu.style.display = "block";
+
+        botao.innerHTML =
+          "⚙️ Ferramentas ▲";
+
+      } else {
+
+        menu.style.display = "none";
+
+        botao.innerHTML =
+          "⚙️ Ferramentas ▼";
+
+      }
+    }
 
 
     function filtrarDashboard(tipo) {
+
 
       mostrarSomenteFavoritos = false;
       mostrarSomenteFixados = false;
@@ -3600,7 +3683,7 @@ onclick="filtrarDashboard('hoje')">
         const categoriasUnicas =
           [...new Set(
             prompts.map(
-              p => p.categoria
+              p => p.categoria.toUpperCase()
             )
           )];
 
@@ -3613,7 +3696,8 @@ onclick="filtrarDashboard('hoje')">
             const quantidade =
               prompts.filter(
                 p =>
-                  p.categoria === cat
+                  p.categoria &&
+                  p.categoria.toUpperCase() === cat
               ).length;
 
             menu +=
