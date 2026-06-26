@@ -3,6 +3,28 @@
 
 <head>
   <style>
+    #avisoBackup {
+
+      background: #FFF3CD;
+
+      color: #856404;
+
+      border: 1px solid #FFE69C;
+
+      border-radius: 10px;
+
+      padding: 10px;
+
+      margin: 10px 0;
+
+      font-size: 16px;
+
+      text-align: center;
+      
+      font-weight:bold;
+
+    }
+
     .card-autenticacao {
       position: fixed;
       top: 50%;
@@ -1366,17 +1388,25 @@ document.getElementById('sugestoesPastas').innerHTML='';
     <div id="mensagemSalva"></div>
 
 
-    <input type="text" id="filtro" placeholder="🔎 Buscar qualquer coisa..." oninput="mostrarPrompts()">
-    <button onclick="filtrarFavoritos()" style="
-    width:auto;
-    padding:10px 18px;
-    margin-top:10px;
-    background:#FFD54F;
-    color:#333;
-    font-size:15px;
-  ">
-      ⭐ Favoritos
-    </button>
+    <!--
+<input type="text" id="filtro"
+placeholder="🔎 Buscar qualquer coisa..."
+oninput="mostrarPrompts()">
+-->
+    <input type="text" id="filtro" placeholder="🔎 Busca Inteligente (em breve)" readonly
+      onclick="mostrarToast('🚧 Busca Inteligente em desenvolvimento')">
+
+    <!--
+<button onclick="filtrarFavoritos()" style="
+width:auto;
+padding:10px 18px;
+margin-top:10px;
+background:#FFD54F;
+color:#333;
+font-size:15px;
+">
+⭐ Favoritos
+</button>
 
     <!--
 <button onclick="fazerBackup()">
@@ -1437,7 +1467,12 @@ background:#673AB7;
 
     <div id="contador"></div>
 
-    <div id="dashboard"></div>
+    <div id="dashboard">
+      TESTE DASHBOARD
+    </div>
+    <div id="avisoBackup">
+      💾 Dica: faça backup regularmente para manter seus prompts seguros.
+    </div>
 
 
     <div id="barraContainer">
@@ -1501,6 +1536,25 @@ background:#673AB7;
           p => p.favorito === true
         ).length;
 
+      const fixados =
+        prompts.filter(
+          p => p.fixado === true
+        ).length;
+
+      const colecoes =
+        new Set(
+          prompts
+            .map(p => p.colecao)
+            .filter(Boolean)
+        ).size;
+
+      const categorias =
+        new Set(
+          prompts
+            .map(p => p.categoria)
+            .filter(Boolean)
+        ).size;
+
       document.getElementById(
         "dashboard"
       ).innerHTML = `
@@ -1520,10 +1574,34 @@ onclick="filtrarDashboard('favoritos')">
     ${favoritos}
   </div>
 </div>
+
+<div class="cardDashboard">
+  📌 FIXADOS
+  <div class="numeroDashboard">
+    ${fixados}
+  </div>
+</div>
+
+<div class="cardDashboard">
+  📁 PASTAS
+  <div class="numeroDashboard">
+    ${colecoes}
+  </div>
+</div>
+
+<div class="cardDashboard">
+  🏷️ TAGS
+  <div class="numeroDashboard">
+    ${categorias}
+  </div>
+</div>
+
 `;
+
     }
 
-    mostrarPrompts()
+    mostrarPrompts();
+    atualizarDashboard();
 
     function mostrarPrompts() {
 
@@ -2101,8 +2179,8 @@ onclick="filtrarDashboard('hoje')">
         p.titulo,
         "CAT:",
         p.categoria,
-        "FILTRO:",
-        categoriaSelecionada
+        "BUSCA:",
+        busca
       );
 
       if (
@@ -2922,8 +3000,6 @@ onclick="filtrarDashboard('hoje')">
       document.getElementById("status").value =
         "ideias";
 
-      f
-
       verificarConquistas();
 
       mostrarToast("✅ Prompt salvo com sucesso!");
@@ -3023,7 +3099,7 @@ onclick="filtrarDashboard('hoje')">
       leitor.readAsText(arquivo);
     }
 
-     {
+    {
 
       const input =
         document.getElementById("colecao")
