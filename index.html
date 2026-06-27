@@ -20,8 +20,8 @@
       font-size: 16px;
 
       text-align: center;
-      
-      font-weight:bold;
+
+      font-weight: bold;
 
     }
 
@@ -1393,9 +1393,7 @@ document.getElementById('sugestoesPastas').innerHTML='';
 placeholder="🔎 Buscar qualquer coisa..."
 oninput="mostrarPrompts()">
 -->
-    <input type="text" id="filtro" placeholder="🔎 Busca Inteligente (em breve)" readonly
-      onclick="mostrarToast('🚧 Busca Inteligente em desenvolvimento')">
-
+    <input type="text" id="filtro" placeholder="🔎 Busca Inteligente..." oninput="mostrarPrompts()">
     <!--
 <button onclick="filtrarFavoritos()" style="
 width:auto;
@@ -1729,6 +1727,8 @@ onclick="filtrarDashboard('favoritos')">
       normalizarTexto(
         document.getElementById("filtro").value
       );
+
+
     const filtro = document.getElementById("filtro").value.toLowerCase();
 
     console.log(
@@ -1742,6 +1742,11 @@ onclick="filtrarDashboard('favoritos')">
     console.log(
       "BUSCA:",
       filtro
+    );
+
+    console.log(
+      "BUSCA NORMALIZADA:",
+      busca
     );
     const lista = document.getElementById("lista");
 
@@ -2231,43 +2236,53 @@ onclick="filtrarDashboard('hoje')">
       }
 
 
-      const conteudoBusca = (
+      const conteudoBusca =
+        normalizarTexto(
 
-        p.categoria +
+          p.categoria +
 
-        " " +
+          " " +
 
-        p.titulo +
+          p.titulo +
 
-        " " +
+          " " +
 
-        p.texto +
+          p.texto +
 
-        " " +
+          " " +
 
-        (p.data || "") +
+          (p.data || "") +
 
-        " " +
+          " " +
 
-        (p.colecao || "") +
+          (p.colecao || "") +
 
-        " " +
+          " " +
 
-        (p.status || "") +
+          (p.status || "") +
 
-        " " +
+          " " +
 
-        (p.favorito
-          ? "favorito favoritos estrela ⭐"
-          : "") +
+          (p.favorito
+            ? "favorito favoritos estrela"
+            : "") +
 
-        " " +
+          " " +
 
-        (p.fixado
-          ? "fixado fixados pin 📌"
-          : "")
+          (p.fixado
+            ? "fixado fixados pin"
+            : "")
 
-      ).toLowerCase();
+        );
+
+      console.log(
+        "BUSCA:",
+        busca,
+        "| TITULO:",
+        p.titulo,
+        "| ACHOU?",
+        conteudoBusca.includes(busca)
+      );
 
       if (busca && !conteudoBusca.includes(busca)) {
         return;
@@ -2419,12 +2434,15 @@ onclick="filtrarDashboard('hoje')">
           prompts[indiceReal]
             .fixado
 
-            ? "📌 Prompt fixado no topo!"
+            ? '📌 "' +
+            prompts[indiceReal].titulo +
+            '" fixado no topo!'
 
-            : "📍 Prompt desafixado"
+            : '📍 "' +
+            prompts[indiceReal].titulo +
+            '" removido dos fixados!'
 
         );
-
         mostrarPrompts();
 
       };
@@ -2513,12 +2531,15 @@ onclick="filtrarDashboard('hoje')">
             prompts[indiceReal]
               .favorito
 
-              ? "⭐ Prompt favoritado!"
+              ? '⭐ "' +
+              prompts[indiceReal].titulo +
+              '" adicionado aos favoritos!'
 
-              : "☆ Favorito removido"
+              : '❌ "' +
+              prompts[indiceReal].titulo +
+              '" removido dos favoritos!'
 
           );
-
           mostrarPrompts();
 
         };
@@ -2532,15 +2553,35 @@ onclick="filtrarDashboard('hoje')">
       botao.style.color = "white";
 
       botao.onclick = function () {
+
+        const confirmar = confirm(
+          "🗑️ Deseja realmente excluir este prompt?"
+        );
+
+        if (!confirmar) return;
+
         item.classList.add("removendo");
 
         setTimeout(() => {
-          prompts.splice(index, 1);
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-          mostrarPrompts();
-        }, 400);
-      };
 
+          prompts.splice(index, 1);
+
+          localStorage.setItem(
+            "prompts",
+            JSON.stringify(prompts)
+          );
+
+          mostrarToast(
+            '🗑️ "' +
+            p.titulo +
+            '" excluído!'
+          );
+
+          mostrarPrompts();
+
+        }, 400);
+
+      };
       let botaoSubir = document.createElement("button");
 
       botaoSubir.innerHTML = "⬆️";
@@ -2557,6 +2598,13 @@ onclick="filtrarDashboard('hoje')">
                 item.titulo ===
                 p.titulo
             );
+
+          console.log(
+            "MOVENDO:",
+            p.titulo,
+            "POSIÇÃO:",
+            posicaoAtual
+          );
 
           if (
             posicaoAtual > 0
@@ -2593,6 +2641,8 @@ onclick="filtrarDashboard('hoje')">
             mostrarToast(
               "⬆️ Prompt movido"
             );
+
+            console.log(prompts.map(p => p.titulo));
 
             mostrarPrompts();
           }
@@ -2885,25 +2935,38 @@ onclick="filtrarDashboard('hoje')">
 
       let melhorado =
 
-        "✨ Prompt otimizado:\n\n" +
+        "✨ PROMPT OTIMIZADO\n\n" +
 
-        "Seja extremamente detalhado, " +
+        "Você é um especialista em engenharia de prompts.\n\n" +
 
-        "profissional, criativo e envolvente.\n\n" +
+        "Reescreva o texto abaixo transformando-o em um prompt avançado para ChatGPT, Gemini, Claude, Copilot ou outras IAs.\n\n" +
+
+        "Objetivos:\n" +
+
+        "- Tornar o pedido mais claro.\n" +
+
+        "- Eliminar ambiguidades.\n" +
+
+        "- Adicionar contexto relevante.\n" +
+
+        "- Melhorar a qualidade das respostas.\n" +
+
+        "- Organizar a estrutura do prompt.\n" +
+
+        "- Incluir instruções específicas quando apropriado.\n" +
+
+        "- Preservar a intenção original.\n\n" +
+
+        "Texto original:\n\n" +
 
         texto +
 
-        "\n\nInclua exemplos práticos, " +
-
-        "descrições avançadas, " +
-
-        "estrutura clara, tom profissional " +
-
-        "e respostas completas.";
+        "\n\nRetorne apenas o prompt final otimizado, pronto para uso.";
 
       textarea.value = melhorado;
 
       mostrarToast("✨ Prompt melhorado!");
+
     }
 
     function salvarPrompt() {
