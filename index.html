@@ -1131,6 +1131,52 @@
 
       box-sizing: border-box;
     }
+
+    #btnTopo {
+
+      position: fixed;
+
+      right: 20px;
+
+      bottom: 20px;
+
+      width: 55px;
+
+      height: 55px;
+
+      background: #673AB7;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 50%;
+
+      cursor: pointer;
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
+
+      z-index: 9999;
+
+      transition: .3s;
+
+    }
+
+    #btnTopo:hover {
+
+      transform: scale(1.10);
+
+    }
   </style>
 
   <link rel="manifest" href="manifest.json">
@@ -1480,6 +1526,12 @@ background:#673AB7;
     </div>
 
     <div id="textoProgresso"></div>
+
+    <button id="btnTopo" onclick="alternarRolagem()">
+
+      ⬇️ Final
+
+    </button>
 
 
     <h2>Seus Prompts:</h2>
@@ -4074,6 +4126,42 @@ onclick="filtrarDashboard('hoje')">
       mostrarToast(
         "✅ Frase atualizada!"
       );
+    }
+
+    let estaNoFinal = false;
+
+    function alternarRolagem() {
+
+      if (!estaNoFinal) {
+
+        window.scrollTo({
+
+          top: document.body.scrollHeight,
+
+          behavior: "smooth"
+
+        });
+
+        document.getElementById("btnTopo").innerHTML = "⬆️";
+
+        estaNoFinal = true;
+
+      } else {
+
+        window.scrollTo({
+
+          top: 0,
+
+          behavior: "smooth"
+
+        });
+
+        document.getElementById("btnTopo").innerHTML = "⬇️";
+
+        estaNoFinal = false;
+
+      }
+
     }
 
 
