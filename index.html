@@ -2978,6 +2978,206 @@ onclick="filtrarDashboard('hoje')">
 
       let texto = textarea.value;
 
+      const tipo =
+        detectarTipoPrompt(texto);
+
+      console.log(
+        "TIPO:",
+        tipo
+      );
+
+      let instrucao = "";
+
+      switch (tipo) {
+
+        case "IMAGEM":
+
+          instrucao =
+
+            "Você é um especialista em criação de prompts para geração de imagens por Inteligência Artificial.\n\n" +
+
+            "Reescreva o texto do usuário transformando-o em um prompt altamente detalhado.\n\n" +
+
+            "Inclua sempre:\n\n" +
+
+            "• Estilo artístico.\n" +
+
+            "• Aparência física dos personagens.\n" +
+
+            "• Roupas e acessórios.\n" +
+
+            "• Expressão facial.\n" +
+
+            "• Cenário.\n" +
+
+            "• Iluminação.\n" +
+
+            "• Paleta de cores.\n" +
+
+            "• Enquadramento da câmera.\n" +
+
+            "• Nível de realismo.\n" +
+
+            "• Qualidade máxima da imagem.\n" +
+
+            "• Atmosfera e emoção da cena.";
+
+          break;
+
+        case "PROGRAMAÇÃO":
+
+          instrucao =
+
+            "Você é um desenvolvedor Full Stack experiente.\n\n" +
+
+            "Reescreva o texto do usuário transformando-o em um prompt profissional para desenvolvimento de software.\n\n" +
+
+            "Inclua sempre:\n\n" +
+
+            "• Objetivo do projeto.\n" +
+
+            "• Linguagem de programação.\n" +
+
+            "• Tecnologias envolvidas.\n" +
+
+            "• Estrutura esperada.\n" +
+
+            "• Boas práticas.\n" +
+
+            "• Código limpo.\n" +
+
+            "• Comentários importantes.\n" +
+
+            "• Resultado esperado.";
+
+          break;
+
+        case "ESTUDOS":
+
+          instrucao =
+
+            "Você é um professor experiente e especialista no assunto solicitado.\n\n" +
+
+            "Reescreva o texto do usuário transformando-o em um prompt de aprendizagem completo e bem estruturado.\n\n" +
+
+            "Inclua sempre:\n\n" +
+
+            "• Objetivo do aprendizado.\n" +
+
+            "• Explicação passo a passo.\n" +
+
+            "• Linguagem clara e didática.\n" +
+
+            "• Exemplos práticos.\n" +
+
+            "• Comparações para facilitar o entendimento.\n" +
+
+            "• Exercícios ou perguntas para fixação.\n" +
+
+            "• Resumo final dos pontos principais.\n" +
+
+            "• Sugestões de aprofundamento, quando pertinente.";
+
+          break;
+
+        case "NEGÓCIOS":
+
+          instrucao =
+
+            "Você é um consultor empresarial, estrategista de negócios e especialista em empreendedorismo.\n\n" +
+
+            "Reescreva o texto do usuário transformando-o em um prompt profissional para planejamento e tomada de decisões empresariais.\n\n" +
+
+            "Inclua sempre:\n\n" +
+
+            "• Objetivo do negócio.\n" +
+
+            "• Público-alvo.\n" +
+
+            "• Estratégias recomendadas.\n" +
+
+            "• Plano de ação organizado.\n" +
+
+            "• Oportunidades de crescimento.\n" +
+
+            "• Possíveis riscos.\n" +
+
+            "• Sugestões práticas de implementação.\n" +
+
+            "• Indicadores de sucesso e resultados esperados.\n" +
+
+            "• Linguagem profissional, clara e objetiva.";
+
+          break;
+
+        case "SAÚDE":
+
+          instrucao =
+
+            "Você é um profissional especializado em educação em saúde.\n\n" +
+
+            "Reescreva o texto do usuário transformando-o em um prompt claro, responsável e bem estruturado.\n\n" +
+
+            "Inclua sempre:\n\n" +
+
+            "• Explicação objetiva do tema.\n" +
+
+            "• Possíveis causas quando apropriado.\n" +
+
+            "• Principais sintomas, quando aplicável.\n" +
+
+            "• Formas de prevenção.\n" +
+
+            "• Hábitos saudáveis relacionados.\n" +
+
+            "• Opções de tratamento normalmente utilizadas.\n" +
+
+            "• Quando é recomendável procurar um profissional de saúde.\n" +
+
+            "• Utilize linguagem clara, educativa e responsável.\n" +
+
+            "• Evite diagnósticos definitivos e incentive a consulta a profissionais habilitados quando necessário.";
+
+          break;
+
+        case "VIAGENS":
+
+          instrucao =
+
+            "Você é um consultor especializado em viagens nacionais e internacionais.\n\n" +
+
+            "Reescreva o texto do usuário transformando-o em um prompt profissional para planejamento de viagens.\n\n" +
+
+            "Inclua sempre:\n\n" +
+
+            "• Objetivo da viagem.\n" +
+
+            "• Destino e principais atrações.\n" +
+
+            "• Melhor época para viajar.\n" +
+
+            "• Sugestão de roteiro organizado por dias.\n" +
+
+            "• Opções de hospedagem.\n" +
+
+            "• Meios de transporte recomendados.\n" +
+
+            "• Estimativa de orçamento.\n" +
+
+            "• Dicas de segurança.\n" +
+
+            "• Curiosidades locais.\n" +
+
+            "• Sugestões para tornar a experiência inesquecível.\n" +
+
+            "• Utilize linguagem agradável, organizada e inspiradora.";
+
+          break;
+
+        default:
+          instrucao = "Prompt geral.";
+      }
+
       if (!texto.trim()) {
 
         mostrarToast("❌ Digite um prompt primeiro!");
@@ -2985,36 +3185,23 @@ onclick="filtrarDashboard('hoje')">
         return;
       }
 
+      mostrarToast("🧠 Tipo detectado: " + tipo);
+
+      console.log("INSTRUÇÃO:", instrucao);
+
       let melhorado =
 
-        "✨ PROMPT OTIMIZADO\n\n" +
+        "✨ PROMPT PROFISSIONAL\n\n" +
 
-        "Você é um especialista em engenharia de prompts.\n\n" +
+        instrucao +
 
-        "Reescreva o texto abaixo transformando-o em um prompt avançado para ChatGPT, Gemini, Claude, Copilot ou outras IAs.\n\n" +
+        "\n\n" +
 
-        "Objetivos:\n" +
+        "Solicitação do usuário:\n\n" +
 
-        "- Tornar o pedido mais claro.\n" +
+        "\"" + texto + "\"\n\n" +
 
-        "- Eliminar ambiguidades.\n" +
-
-        "- Adicionar contexto relevante.\n" +
-
-        "- Melhorar a qualidade das respostas.\n" +
-
-        "- Organizar a estrutura do prompt.\n" +
-
-        "- Incluir instruções específicas quando apropriado.\n" +
-
-        "- Preservar a intenção original.\n\n" +
-
-        "Texto original:\n\n" +
-
-        texto +
-
-        "\n\nRetorne apenas o prompt final otimizado, pronto para uso.";
-
+        "Execute todas as instruções acima e entregue apenas o resultado final, de forma completa, clara, organizada e profissional.";
       textarea.value = melhorado;
 
       mostrarToast("✨ Prompt melhorado!");
@@ -4164,7 +4351,76 @@ onclick="filtrarDashboard('hoje')">
 
     }
 
+    function detectarTipoPrompt(texto) {
 
+      const t = texto.toLowerCase();
+
+      if (
+        t.includes("imagem") ||
+        t.includes("foto") ||
+        t.includes("desenho") ||
+        t.includes("ilustração") ||
+        t.includes("render") ||
+        t.includes("crie uma imagem")
+      ) {
+        return "IMAGEM";
+      }
+
+      if (
+        t.includes("html") ||
+        t.includes("css") ||
+        t.includes("javascript") ||
+        t.includes("python") ||
+        t.includes("java") ||
+        t.includes("código") ||
+        t.includes("programação")
+      ) {
+        return "PROGRAMAÇÃO";
+      }
+
+      if (
+        t.includes("estudar") ||
+        t.includes("curso") ||
+        t.includes("aprender") ||
+        t.includes("explicar") ||
+        t.includes("ensinar")
+      ) {
+        return "ESTUDOS";
+      }
+
+      if (
+        t.includes("empresa") ||
+        t.includes("negócio") ||
+        t.includes("marketing") ||
+        t.includes("cliente") ||
+        t.includes("vendas")
+      ) {
+        return "NEGÓCIOS";
+      }
+
+      if (
+        t.includes("saúde") ||
+        t.includes("tratamento") ||
+        t.includes("dor") ||
+        t.includes("doença") ||
+        t.includes("alimentação")
+      ) {
+        return "SAÚDE";
+      }
+
+      if (
+        t.includes("viagem") ||
+        t.includes("hotel") ||
+        t.includes("turismo") ||
+        t.includes("país") ||
+        t.includes("cidade")
+      ) {
+        return "VIAGENS";
+      }
+
+      return "GERAL";
+
+    }
     <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
   </script>
 
