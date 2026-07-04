@@ -2978,6 +2978,8 @@ onclick="filtrarDashboard('hoje')">
 
       let texto = textarea.value;
 
+      texto = enriquecerPrompt(texto);
+
       const tipo =
         detectarTipoPrompt(texto);
 
@@ -3191,17 +3193,17 @@ onclick="filtrarDashboard('hoje')">
 
       let melhorado =
 
-        "✨ PROMPT PROFISSIONAL\n\n" +
+        "✨ PROMPT INTELIGENTE\n\n" +
 
-        instrucao +
+        "TIPO DETECTADO: " + tipo + "\n\n" +
 
-        "\n\n" +
+        instrucao + "\n\n" +
 
-        "Solicitação do usuário:\n\n" +
+        "=== PROMPT ENRIQUECIDO ===\n\n" +
 
-        "\"" + texto + "\"\n\n" +
+        texto + "\n\n" +
 
-        "Execute todas as instruções acima e entregue apenas o resultado final, de forma completa, clara, organizada e profissional.";
+        "Agora gere o melhor resultado possível com base nas instruções acima.";
       textarea.value = melhorado;
 
       mostrarToast("✨ Prompt melhorado!");
@@ -4419,6 +4421,46 @@ onclick="filtrarDashboard('hoje')">
       }
 
       return "GERAL";
+
+    }
+
+    function enriquecerPrompt(texto) {
+
+      let novoTexto = texto;
+
+      const melhorias = [
+
+        {
+          original: "garotinha",
+          novo: "garotinha de aproximadamente 10 anos"
+        },
+
+        {
+          original: "rica",
+          novo: "rica, elegante, sofisticada e de aparência luxuosa"
+        },
+
+        {
+          original: "Paris",
+          novo: "Paris, com arquitetura francesa clássica, ruas charmosas e atmosfera romântica"
+        },
+
+        {
+          original: "feliz",
+          novo: "feliz, sorridente e transmitindo alegria"
+        }
+
+      ];
+
+      melhorias.forEach(item => {
+
+        const regex = new RegExp(item.original, "gi");
+
+        novoTexto = novoTexto.replace(regex, item.novo);
+
+      });
+
+      return novoTexto;
 
     }
     <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
