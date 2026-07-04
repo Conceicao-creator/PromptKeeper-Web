@@ -4428,7 +4428,9 @@ onclick="filtrarDashboard('hoje')">
 
       let novoTexto = texto;
 
-      const melhorias = [
+      const tipo = detectarTipoPrompt(texto);
+
+      const melhoriasImagem = [
 
         {
           original: "garotinha",
@@ -4452,14 +4454,21 @@ onclick="filtrarDashboard('hoje')">
 
       ];
 
-      melhorias.forEach(item => {
+      let melhoriasAtivas = [];
+
+      if (tipo === "IMAGEM") {
+
+        melhoriasAtivas = melhoriasImagem;
+
+      }
+
+      melhoriasAtivas.forEach(item => {
 
         const regex = new RegExp(item.original, "gi");
 
         novoTexto = novoTexto.replace(regex, item.novo);
 
       });
-
       return novoTexto;
 
     }
