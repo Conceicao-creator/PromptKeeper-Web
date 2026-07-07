@@ -4353,41 +4353,107 @@ onclick="filtrarDashboard('hoje')">
 
     }
 
+    const palavrasChave = {
+
+      IMAGEM: {
+        imagem: 3,
+        foto: 3,
+        desenho: 2,
+        ilustração: 2,
+        render: 2,
+        "crie uma imagem": 5
+      },
+
+      PROGRAMAÇÃO: {
+        html: 1,
+        css: 1,
+        javascript: 1,
+        python: 1,
+        java: 1,
+        código: 2,
+        programação: 2
+      },
+
+      ESTUDOS: {
+        explique: 3,
+
+        explicar: 3,
+
+        ensine: 3,
+
+        ensinar: 3,
+
+        estudar: 2,
+
+        aprender: 2,
+
+        curso: 2,
+
+        iniciante: 2,
+
+        iniciantes: 2
+
+      },
+
+      NEGÓCIOS: {
+        empresa: 2,
+        negócio: 3,
+        marketing: 2,
+        cliente: 1,
+        vendas: 2
+      },
+
+      SAÚDE: {
+        saúde: 3,
+        tratamento: 2,
+        dor: 1,
+        doença: 2,
+        alimentação: 2
+      },
+
+      VIAGENS: {
+        viagem: 3,
+        hotel: 2,
+        turismo: 2,
+        país: 1,
+        cidade: 1
+      }
+
+    };
+
     function detectarTipoPrompt(texto) {
 
       const t = texto.toLowerCase();
+      let pontos = {
 
-      if (
-        t.includes("imagem") ||
-        t.includes("foto") ||
-        t.includes("desenho") ||
-        t.includes("ilustração") ||
-        t.includes("render") ||
-        t.includes("crie uma imagem")
-      ) {
-        return "IMAGEM";
-      }
+        IMAGEM: 0,
 
-      if (
-        t.includes("html") ||
-        t.includes("css") ||
-        t.includes("javascript") ||
-        t.includes("python") ||
-        t.includes("java") ||
-        t.includes("código") ||
-        t.includes("programação")
-      ) {
-        return "PROGRAMAÇÃO";
-      }
+        PROGRAMAÇÃO: 0,
 
-      if (
-        t.includes("estudar") ||
-        t.includes("curso") ||
-        t.includes("aprender") ||
-        t.includes("explicar") ||
-        t.includes("ensinar")
-      ) {
-        return "ESTUDOS";
+        ESTUDOS: 0,
+
+        NEGÓCIOS: 0,
+
+        SAÚDE: 0,
+
+        VIAGENS: 0,
+
+        GERAL: 0
+
+      };
+
+      for (const categoria in palavrasChave) {
+
+        for (const palavra in palavrasChave[categoria]) {
+
+          if (t.includes(palavra)) {
+
+            pontos[categoria] += palavrasChave[categoria][palavra];
+
+          }
+
+        }
+
       }
 
       if (
@@ -4397,7 +4463,7 @@ onclick="filtrarDashboard('hoje')">
         t.includes("cliente") ||
         t.includes("vendas")
       ) {
-        return "NEGÓCIOS";
+        pontos.NEGÓCIOS += 1;
       }
 
       if (
@@ -4405,22 +4471,53 @@ onclick="filtrarDashboard('hoje')">
         t.includes("tratamento") ||
         t.includes("dor") ||
         t.includes("doença") ||
-        t.includes("alimentação")
+        t.includes("alimentação") ||
+        t.includes("alimentacao") ||
+        t.includes("médico") ||
+        t.includes("medico") ||
+        t.includes("remédio") ||
+        t.includes("remedio") ||
+        t.includes("exercício") ||
+        t.includes("exercicio") ||
+        t.includes("bem-estar") ||
+        t.includes("bem estar") ||
+        t.includes("sintoma")
       ) {
-        return "SAÚDE";
+        pontos.SAÚDE += 1;
       }
-
       if (
         t.includes("viagem") ||
+        t.includes("viajar") ||
+        t.includes("roteiro") ||
         t.includes("hotel") ||
         t.includes("turismo") ||
+        t.includes("destino") ||
         t.includes("país") ||
-        t.includes("cidade")
+        t.includes("cidade") ||
+        t.includes("passagem") ||
+        t.includes("férias")
       ) {
-        return "VIAGENS";
+        pontos.VIAGENS += 1;
       }
 
-      return "GERAL";
+      let vencedor = "GERAL";
+
+      let maiorPontuacao = 0;
+
+      for (const categoria in pontos) {
+
+        if (pontos[categoria] > maiorPontuacao) {
+
+          maiorPontuacao = pontos[categoria];
+
+          vencedor = categoria;
+
+        }
+
+      }
+      console.table(pontos);
+
+      return vencedor;
 
     }
 
