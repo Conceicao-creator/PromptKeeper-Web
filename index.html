@@ -1439,7 +1439,17 @@ document.getElementById('sugestoesPastas').innerHTML='';
 placeholder="🔎 Buscar qualquer coisa..."
 oninput="mostrarPrompts()">
 -->
-    <input type="text" id="filtro" placeholder="🔎 Busca Inteligente..." oninput="mostrarPrompts()">
+
+    <input type="text" id="filtro" placeholder="🔎 Busca Inteligente..." oninput="mostrarPrompts()"
+      onkeypress="if(event.key==='Enter'){event.preventDefault(); document.getElementById('btnBuscar').click();}">
+
+
+    <button id="btnBuscar" onclick="buscarPrompt()">
+      🔍 Buscar
+    </button>
+
+    <span id="resultadoBusca"></span>
+
     <!--
 <button onclick="filtrarFavoritos()" style="
 width:auto;
@@ -1492,6 +1502,10 @@ background:#673AB7;
 
       <button onclick="document.getElementById('importarTXT').click()">
         📄 Importar TXT
+      </button>
+
+      <button onclick="fazerBackup()">
+        💾 Fazer Backup
       </button>
 
       <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
@@ -1652,6 +1666,12 @@ onclick="filtrarDashboard('favoritos')">
 
     mostrarPrompts();
     atualizarDashboard();
+
+    function buscarPrompt() {
+
+      mostrarPrompts();
+
+    }
 
     function mostrarPrompts() {
 
@@ -4650,6 +4670,41 @@ onclick="filtrarDashboard('hoje')">
       }
     }
 
+    function buscarPrompt() {
+
+      const texto = document.getElementById("filtro").value.trim().toLowerCase();
+
+      const resultados = prompts.filter(p => {
+
+        const conteudo = (
+          (p.titulo || "") + " " +
+          (p.categoria || "") + " " +
+          (p.texto || "")
+        ).toLowerCase();
+
+        return conteudo.includes(texto);
+
+      });
+
+      document.getElementById("resultadoBusca").innerHTML =
+        resultados.length + " resultado(s)";
+
+      if (texto === "") {
+        mostrarPrompts();
+        document.getElementById("resultadoBusca").innerHTML = "";
+        return;
+      }
+
+      mostrarPrompts();
+
+      const lista = document.getElementById("lista");
+
+      const encontrou = lista.innerText.toLowerCase().includes(texto);
+
+      //document.getElementById("resultadoBusca").innerHTML =
+       // encontrou ? "✅ Encontrado" : "❌ Não encontrado";
+
+    }
   </script>
 
 </body>
