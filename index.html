@@ -4723,7 +4723,7 @@ onclick="filtrarDashboard('hoje')">
       resultados.forEach(p => {
 
         listaResultados.innerHTML += `
-<div style="
+<div tabindex="0" style="
     padding:10px;
     margin:6px 0;
     border-left:4px solid #00E676;
@@ -4731,12 +4731,16 @@ onclick="filtrarDashboard('hoje')">
     color:#1B5E20;
     box-shadow:0 2px 8px rgba(0,0,0,.25);
     border:1px solid #81C784;
-    border-radius:8px;
+    border-radius:8px;onfocus="
     cursor:pointer;
     transition:0.2s;
 "
-onmouseover="this.style.background='#3a3a3a'"
-onmouseout="this.style.background='#2b2b2b'">
+onclick="
+this.style.background='#66BB6A';
+setTimeout(()=>{
+this.style.background='linear-gradient(135deg,#E8F5E9,#C8E6C9)';
+},3000);
+">
 
 📄 <strong>${p.titulo}</strong>
 
