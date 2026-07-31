@@ -1625,8 +1625,12 @@
       prompts.filter(p => p.data === hoje).length;
     const fixados = prompts.filter(p => p.fixado).length;
 
-    const categorias = [...new Set(prompts.map(p => p.categoria))].length;
-
+    const categorias = [
+      ...new Set(
+        prompts.map(p => normalizarCategoria(p.categoria))
+      )
+    ];
+    const totalCategorias = categorias.length;
     const porcentagemFav =
       total > 0
         ? Math.round((favoritos / total) * 100)
@@ -2447,8 +2451,11 @@ onclick="filtrarDashboard('hoje')">
       if (!input) return;
 
       // pegar categorias já existentes
-      const categorias = [...new Set(prompts.map(p => p.categoria))];
-
+      const categorias = [
+        ...new Set(
+          prompts.map(p => normalizarCategoria(p.categoria))
+        )
+      ];
       categorias.forEach(cat => {
         if (cat.toLowerCase().startsWith(input)) {
 
