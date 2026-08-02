@@ -1342,8 +1342,8 @@
 
     <ul id="sugestoes"></ul>
 
-    <input type="text" id="colecao" placeholder="📁 Coleção / Pasta" oninput="mostrarSugestoesPastas()"
-      onclick="mostrarSugestoesPastas()" onfocus="mostrarSugestoesPastas()">
+    <input type="text" id="colecao" placeholder="🏷 Tags (ex.: HTML, CSS, JavaScript)"
+      oninput="mostrarSugestoesPastas()" onclick="mostrarSugestoesPastas()" onfocus="mostrarSugestoesPastas()">
 
     <ul id="sugestoesPastas" style="
       list-style:none;
@@ -1544,6 +1544,34 @@ background:#673AB7;
     <input type="text" id="filtro" placeholder="🔎 Busca Inteligente..." autocomplete="off" oninput="mostrarPrompts()"
       onkeypress="if(event.key==='Enter'){event.preventDefault(); document.getElementById('btnBuscar').click();}">
 
+    <div id="infoFiltro" style="
+display:none;
+margin:12px 0;
+padding:10px;
+background:#E8F5E9;
+border-left:5px solid #2E7D32;
+border-radius:8px;
+font-weight:bold;
+color:#2E7D32;
+">
+    </div>
+
+    <button id="btnLimparFiltro" style="
+display:none;
+margin-bottom:15px;
+background:#d32f2f;
+color:white;
+border:none;
+padding:8px 14px;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+" onclick="limparFiltroTag()">
+
+      ❌ Limpar filtro
+
+    </button>
+
     <button id="btnBuscar" onclick="buscarPrompt()" style="
     background:#1976D2;
     color:white;
@@ -1599,6 +1627,24 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
 
     let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
 
+    let filtroTag = "";
+
+    // Migração automática: colecao -> tags
+    prompts.forEach(function (p) {
+
+      if (!p.tags && p.colecao) {
+
+        p.tags = p.colecao;
+
+        delete p.colecao;
+
+      }
+
+    });
+
+    // Salva a estrutura já atualizada
+    localStorage.setItem("prompts", JSON.stringify(prompts));
+
     let nomeUsuario = localStorage.getItem("nomeUsuario");
 
     if (!nomeUsuario) {
@@ -1616,37 +1662,48 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
 
       if (!categoria) return "SEM CATEGORIA";
 
-      categoria = categoria.trim().toUpperCase();
+      categoria = categoria
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toUpperCase();
 
       const mapa = {
 
+        // TECNOLOGIAS
         "TECNOLOGIA": "TECNOLOGIAS",
         "TECNOLOGIAS": "TECNOLOGIAS",
-        "TECNOLOGIAS ": "TECNOLOGIAS",
 
+        // NEGÓCIOS
+        "NEGOCIO": "NEGÓCIOS",
         "NEGOCIOS": "NEGÓCIOS",
         "NEGÓCIO": "NEGÓCIOS",
         "NEGÓCIOS": "NEGÓCIOS",
 
+        // IMAGENS
         "IMAGEM": "IMAGENS",
         "IMAGENS": "IMAGENS",
 
+        // VIAGENS
         "VIAGEM": "VIAGENS",
         "VIAGENS": "VIAGENS",
 
+        // SAÚDE
         "SAUDE": "SAÚDE",
         "SAÚDE": "SAÚDE",
 
-        "PSICOLOGIA": "PSICOLOGIA",
-
+        // IDEIAS
         "IDEIA": "IDEIAS",
-        "IDEIAS": "IDEIAS"
+        "IDEIAS": "IDEIAS",
+
+        // PSICOLOGIA
+        "PSICOLOGIA": "PSICOLOGIA"
+
       };
 
       return mapa[categoria] || categoria;
 
     }
-
     function normalizarTexto(texto) {
 
       return texto
@@ -1674,7 +1731,7 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
       const colecoes =
         new Set(
           prompts
-            .map(p => p.colecao)
+            .map(p => p.tags || p.colecao)
             .filter(Boolean)
         ).size;
 
@@ -2339,6 +2396,19 @@ onclick="filtrarDashboard('hoje')">
 
     prompts.forEach((p, index) => {
 
+      if (
+        !p.titulo?.trim() ||
+        !p.categoria?.trim() ||
+        !p.texto?.trim()
+      ) {
+        console.warn(
+          "👻 PROMPT FANTASMA:",
+          index,
+          p.categoria,
+          p.titulo
+        );
+      }
+
       console.log(
         "PROMPT:",
         p.titulo,
@@ -2410,7 +2480,7 @@ onclick="filtrarDashboard('hoje')">
 
           " " +
 
-          (p.colecao || "") +
+          (p.tags || p.colecao || "") +
 
           " " +
 
@@ -2502,12 +2572,23 @@ onclick="filtrarDashboard('hoje')">
         +
 
         "</div>" +
-        "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
 
-        "📁 " + (p.colecao || "Sem coleção") +
+        ((p.tags || "").trim()
+          ? "<div style='margin-bottom:8px;'>" +
 
-        "</div>" +
+          (p.tags || "")
+            .split(",")
+            .filter(tag => tag.trim() !== "")
+            .map(tag =>
+              "<span onclick=\"filtrarPorTag('" + tag.trim() + "')\" " +
+              "style='display:inline-block; background:#2E7D32; color:white; padding:4px 10px; border-radius:12px; font-size:12px; margin-right:6px; margin-bottom:4px; font-weight:bold; cursor:pointer; transition:0.2s;'>🏷 " +
+              tag.trim() +
+              "</span>"
+            ).join("")
 
+          + "</div>"
+          : "")
+        +
         "<div style='margin-bottom:8px; font-size:14px;'>"
 
         +
@@ -3314,7 +3395,7 @@ onclick="filtrarDashboard('hoje')">
 
     function salvarPrompt() {
       const categoria = document.getElementById("categoria").value;
-      const colecao =
+      const tags =
         document.getElementById("colecao").value;
       const status =
         document.getElementById("status").value;
@@ -3329,14 +3410,6 @@ onclick="filtrarDashboard('hoje')">
       if (dataInput > hoje) {
         alert("❌ Não é permitido usar data futura!");
         return;
-      }
-
-
-      let data = document.getElementById("dataPrompt").value;
-
-      if (!data) {
-        const hoje = new Date().toLocaleDateString("sv-SE");
-
       }
 
 
@@ -3359,7 +3432,7 @@ onclick="filtrarDashboard('hoje')">
         prompts[editandoIndex] = {
 
           categoria,
-          colecao,
+          tags,
           status,
           titulo,
           texto,
@@ -3381,12 +3454,20 @@ onclick="filtrarDashboard('hoje')">
         editandoIndex = null;
       } else {
         prompts.push({
+
           categoria,
+          tags,
+          status,
           titulo,
           texto,
+
           favorito: false,
           fixado: false,
-          data: data
+
+          historico: [],
+
+          data: dataFinal
+
         });
 
       }
@@ -3519,12 +3600,20 @@ onclick="filtrarDashboard('hoje')">
 
       lista.innerHTML = "";
 
-      const pastas =
-        [...new Set(
-          prompts.map(
-            p => p.colecao
-          )
-        )];
+      const pastas = [
+        ...new Set(
+
+          prompts
+            .flatMap(p => (p.tags || p.colecao || "")
+              .split(","))
+
+            .map(t => t.trim())
+
+            .filter(t => t !== "")
+
+        )
+
+      ].sort();
 
       pastas.forEach(pasta => {
 
@@ -3564,6 +3653,50 @@ onclick="filtrarDashboard('hoje')">
         }
 
       });
+
+    }
+
+    function filtrarPorTag(tag) {
+
+      tagSelecionada = tag;
+
+      // deixa a busca livre vazia
+      document.getElementById("filtro").value = "";
+
+      const quantidade = prompts.filter(p =>
+        (p.tags || "")
+          .toLowerCase()
+          .includes(tag.toLowerCase())
+      ).length;
+
+      document.getElementById("infoFiltro").style.display = "block";
+
+      document.getElementById("infoFiltro").innerHTML =
+        "🏷 <b>Filtrando por:</b> <span style='color:#1B5E20'>" +
+        tag +
+        "</span> &nbsp;&nbsp;(" +
+        quantidade +
+        " prompt" +
+        (quantidade == 1 ? "" : "s") +
+        ")";
+
+      document.getElementById("btnLimparFiltro").style.display = "inline-block";
+
+      mostrarPrompts();
+
+    }
+
+    function limparFiltroTag() {
+
+      tagSelecionada = "";
+
+      document.getElementById("filtro").value = "";
+
+      document.getElementById("infoFiltro").style.display = "none";
+
+      document.getElementById("btnLimparFiltro").style.display = "none";
+
+      mostrarPrompts();
 
     }
 
@@ -4350,18 +4483,18 @@ onclick="filtrarDashboard('hoje')">
 
       mostrarPrompts();
 
-      setTimeout(() => {
+      //setTimeout(() => {
 
-        document
-          .getElementById(
-            "lista"
-          )
-          ?.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
+      //document
+      //.getElementById(
+      //  "lista"
+      //)
+      //?.scrollIntoView({
+      //behavior: "smooth",
+      //block: "start"
+      //});
 
-      }, 150);
+      //}, 150);
     }
 
     function editarCargo() {
@@ -4830,7 +4963,7 @@ onclick="filtrarDashboard('hoje')">
           }, 100);
 
 
-              
+
 
         };
 
