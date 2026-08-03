@@ -1138,7 +1138,7 @@
 
       right: 20px;
 
-      bottom: 20px;
+      bottom: 80px;
 
       width: 55px;
 
@@ -1532,10 +1532,8 @@ background:#673AB7;
 
     <div id="textoProgresso"></div>
 
-    <button id="btnTopo" onclick="alternarRolagem()">
-
-      ⬇️ Final
-
+    <button id="btnTopo" onclick="alternarRolagem()" title="Ir para o final">
+      ⬇️
     </button>
 
 
@@ -1668,6 +1666,8 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
         .replace(/[\u0300-\u036f]/g, "")
         .toUpperCase();
 
+      categoria = categoria.split(",")[0].trim();
+
       const mapa = {
 
         // TECNOLOGIAS
@@ -1738,7 +1738,7 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
       const categorias =
         new Set(
           prompts
-            .map(p => p.categoria)
+            .map(p => normalizarCategoria(p.categoria))
             .filter(Boolean)
         ).size;
 
@@ -1788,7 +1788,11 @@ onclick="filtrarDashboard('favoritos')">
     }
 
     mostrarPrompts();
+
     atualizarDashboard();
+
+
+
 
     function buscarPrompt() {
 
@@ -1808,7 +1812,18 @@ onclick="filtrarDashboard('favoritos')">
 
     }
 
+    function atualizarPerfilUsuario() {
+
+      // Refatoração futura:
+      // aqui ficará todo o código responsável
+      // por atualizar o perfil do usuário.
+
+    }
+
     function mostrarPrompts() {
+
+      console.log(">>> mostrarPrompts iniciou");
+      console.log("categoriaSelecionada =", categoriaSelecionada);
 
       const nomeUsuario =
         localStorage.getItem(
@@ -1824,6 +1839,8 @@ onclick="filtrarDashboard('favoritos')">
           "👋 Olá, <strong>" +
           nomeUsuario +
           "</strong>";
+
+
       }
 
       const usuarioAtual =
@@ -2440,6 +2457,15 @@ onclick="filtrarDashboard('hoje')">
 
       console.log("Categoria selecionada:", categoriaSelecionada);
       console.log("Categoria do prompt:", normalizarCategoria(p.categoria));
+
+      console.log(
+        "Categoria escolhida:",
+        categoriaSelecionada,
+        "| Categoria do prompt:",
+        normalizarCategoria(p.categoria),
+        "| Título:",
+        p.titulo
+      );
 
 
       if (
@@ -4390,6 +4416,8 @@ onclick="filtrarDashboard('hoje')">
 
         item.onclick = function () {
 
+          console.log("CLICOU NA CATEGORIA:", cat);
+
           categoriaSelecionada = normalizarCategoria(cat);
 
           mostrarPrompts();
@@ -4578,9 +4606,15 @@ onclick="filtrarDashboard('hoje')">
 
         });
 
+        document.getElementById("btnTopo").title =
+          "Voltar ao topo";
+
         document.getElementById("btnTopo").innerHTML = "⬇️";
 
         estaNoFinal = false;
+
+        document.getElementById("btnTopo").title =
+          "Ir para o final";
 
       }
 
@@ -4856,7 +4890,10 @@ onclick="filtrarDashboard('hoje')">
 
       // Força toda a interface a se redesenhar com os dados novos
       atualizarDashboard();
-      mostrarPrompts();
+
+      console.log("<<< mostrarPrompts terminou");
+      console.log("categoriaSelecionada =", categoriaSelecionada);
+
     }
 
     // 2. EXEMPLO: Botão Favoritar/Desfavoritar atualizado
