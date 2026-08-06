@@ -1491,9 +1491,9 @@ background:#673AB7;
         📤 Restaurar Backup
       </button>
 
-      <button onclick="document.getElementById('importarTXT').click()">
+     <!-- <button onclick="document.getElementById('importarTXT').click()">
         📄 Importar TXT
-      </button>
+      </button>-->
 
       <button onclick="fazerBackup()">
         💾 Fazer Backup
@@ -1820,49 +1820,24 @@ onclick="filtrarDashboard('favoritos')">
 
     }
 
-    function mostrarPrompts() {
+    function mostrarPerfilUsuario() {
 
-      console.log(">>> mostrarPrompts iniciou");
-      console.log("categoriaSelecionada =", categoriaSelecionada);
-
-      const nomeUsuario =
-        localStorage.getItem(
-          "nomeUsuario"
-        );
-
+      const nomeUsuario = localStorage.getItem("nomeUsuario");
 
       if (nomeUsuario) {
-        document.getElementById(
-          "nomePerfil"
-        ).innerHTML =
-
-          "👋 Olá, <strong>" +
-          nomeUsuario +
-          "</strong>";
-
-
+        document.getElementById("nomePerfil").innerHTML =
+          "👋 Olá, <strong>" + nomeUsuario + "</strong>";
       }
 
-      const usuarioAtual =
-        localStorage.getItem(
-          "nomeUsuario"
-        );
+      const usuarioAtual = localStorage.getItem("nomeUsuario");
 
       console.log("USUÁRIO ATUAL:", usuarioAtual);
 
-      const avatar =
-        document.getElementById(
-          "avatarUsuario"
-        );
+      const avatar = document.getElementById("avatarUsuario");
 
-      // limpa avatar anterior
       avatar.innerHTML = "";
 
-      const fotoSalva =
-        localStorage.getItem(
-          "fotoPerfil_" +
-          usuarioAtual
-        );
+      const fotoSalva = localStorage.getItem("fotoPerfil_" + usuarioAtual);
 
       console.log("CHAVE DA FOTO:", "fotoPerfil_" + usuarioAtual);
       console.log("FOTO RECUPERADA:", fotoSalva?.substring(0, 50));
@@ -1877,10 +1852,20 @@ onclick="filtrarDashboard('favoritos')">
       } else {
 
         avatar.innerHTML =
-          usuarioAtual
-            .charAt(0)
-            .toUpperCase();
+          usuarioAtual.charAt(0).toUpperCase();
+
       }
+
+    }
+
+    function mostrarPrompts() {
+
+      console.log(">>> mostrarPrompts iniciou");
+      console.log("categoriaSelecionada =", categoriaSelecionada);
+
+      mostrarPerfilUsuario();
+
+  
     }
 
 
@@ -4884,6 +4869,7 @@ onclick="filtrarDashboard('hoje')">
     });
 
     // 1. FUNÇÃO CENTRALIZADORA (O "Coração" da Reatividade do seu App)
+
     function salvarEAtualizar() {
       // Salva o estado atual no localStorage
       localStorage.setItem("prompts", JSON.stringify(prompts));
@@ -4891,8 +4877,6 @@ onclick="filtrarDashboard('hoje')">
       // Força toda a interface a se redesenhar com os dados novos
       atualizarDashboard();
 
-      console.log("<<< mostrarPrompts terminou");
-      console.log("categoriaSelecionada =", categoriaSelecionada);
 
     }
 
