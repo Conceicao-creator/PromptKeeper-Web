@@ -1859,14 +1859,12 @@ onclick="filtrarDashboard('favoritos')">
     }
 
     function mostrarPrompts() {
+    console.log(">>> mostrarPrompts iniciou");
+    console.log("categoriaSelecionada =", categoriaSelecionada);
 
-      console.log(">>> mostrarPrompts iniciou");
-      console.log("categoriaSelecionada =", categoriaSelecionada);
-
-      mostrarPerfilUsuario();
-
-  
-    }
+   mostrarPerfilUsuario();
+    renderizarListaPrompts();
+  }
 
 
     const cargoUsuario =
@@ -1937,7 +1935,9 @@ onclick="filtrarDashboard('favoritos')">
         "✨ " +
         fraseUsuario;
     }
-    const busca =
+
+          function renderizarListaPrompts() {
+            const busca =
       normalizarTexto(
         document.getElementById("filtro").value
       );
@@ -3164,6 +3164,8 @@ onclick="filtrarDashboard('hoje')">
 
     }
 
+    }
+
 
     function melhorarPrompt() {
 
@@ -3500,9 +3502,10 @@ onclick="filtrarDashboard('hoje')">
 
       verificarConquistas();
 
+      // Salva e atualiza toda a interface
+      salvarEAtualizar();
+
       mostrarToast("✅ Prompt salvo com sucesso!");
-
-
     }
 
     mostrarPrompts();
@@ -4871,14 +4874,13 @@ onclick="filtrarDashboard('hoje')">
     // 1. FUNÇÃO CENTRALIZADORA (O "Coração" da Reatividade do seu App)
 
     function salvarEAtualizar() {
-      // Salva o estado atual no localStorage
-      localStorage.setItem("prompts", JSON.stringify(prompts));
+         // Salva no LocalStorage
+        // Atualiza imediatamente a lista de prompts
+  mostrarPrompts();
 
-      // Força toda a interface a se redesenhar com os dados novos
-      atualizarDashboard();
-
-
-    }
+  // Atualiza o Dashboard
+  atualizarDashboard();
+}
 
     // 2. EXEMPLO: Botão Favoritar/Desfavoritar atualizado
     function alternarFavorito(idDoPrompt) {
