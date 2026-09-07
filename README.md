@@ -1,4 +1,4 @@
-# 🚀 PromptKeeper — Versão 1.0 Oficial
+# 🚀 PromptKeeper — Versão 1.0.1
 
 ## 🧠 Gerenciador inteligente de prompts
 
@@ -86,6 +86,11 @@ Durante seu desenvolvimento foram realizados testes de funcionalidades, organiza
 
 A **Versão 1.0 Oficial** representa uma etapa importante dessa evolução.
 
+### Versão 1.0.1
+
+- Correção da atualização imediata da lista de prompts após o salvamento.
+- Novo prompt passa a aparecer imediatamente, sem necessidade de atualizar a página.
+
 ---
 
 ## 👩‍💻 Autoria
@@ -98,6 +103,11 @@ Projeto desenvolvido como iniciativa de estudo, aprendizagem e desenvolvimento d
 
 ## 🚀 Status
 
-**PromptKeeper — Versão 1.0 Oficial**
+PromptKeeper — Versão 1.0.1
+
+**Versão:** 1.0.1
+**Status:** Correção de atualização imediata da lista de prompts
 
 Projeto em evolução contínua.
+
+
