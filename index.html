@@ -3,28 +3,6 @@
 
 <head>
   <style>
-    #avisoBackup {
-
-      background: #FFF3CD;
-
-      color: #856404;
-
-      border: 1px solid #FFE69C;
-
-      border-radius: 10px;
-
-      padding: 10px;
-
-      margin: 10px 0;
-
-      font-size: 16px;
-
-      text-align: center;
-
-      font-weight: bold;
-
-    }
-
     .card-autenticacao {
       position: fixed;
       top: 50%;
@@ -117,41 +95,23 @@
     }
 
     button {
-
+      background: #4CAF50;
       color: white;
-
       border: none;
-
-      padding: 14px 22px;
-
-      border-radius: 18px;
-
+      padding: 10px;
+      border-radius: 8px;
       cursor: pointer;
-
-      margin-top: 12px;
-
+      margin-top: 10px;
       width: 100%;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 14px;
+      border-radius: 12px;
 
-      font-weight: 700;
-
-      font-size: 17px;
-
-      transition:
-        transform .25s ease,
-        box-shadow .25s ease,
-        filter .25s ease;
     }
 
     button:hover {
-
-      transform:
-        translateY(-2px);
-
-      filter:
-        brightness(1.06);
-
-      box-shadow:
-        0 12px 28px rgba(76, 175, 80, 0.38);
+      background: #388E3C;
     }
 
     ul {
@@ -160,44 +120,21 @@
     }
 
     li {
+      background: linear-gradient(135deg, #ffffff, #f1f8f4);
+      margin-top: 15px;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 
-      background:
-        linear-gradient(145deg,
-          rgba(35, 35, 35, 0.96),
-          rgba(22, 22, 22, 0.98));
-
-      border:
-        1px solid rgba(255, 255, 255, 0.08);
-
-      margin-top: 22px;
-
-      padding: 22px;
-
-      border-radius: 26px;
-
-      box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35);
-
-      backdrop-filter:
-        blur(12px);
-
-      transition:
-        transform .35s ease,
-        box-shadow .35s ease,
-        border .35s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: aparecer 0.5s forwards;
     }
 
     /* Efeito ao passar o mouse */
     li:hover {
-
-      transform:
-        translateY(-4px);
-
-      border:
-        1px solid rgba(76, 175, 80, 0.35);
-
-      box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.45);
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     }
 
     li button {
@@ -235,9 +172,7 @@
     }
 
     button:active {
-
-      transform:
-        scale(0.98);
+      transform: scale(0.95);
     }
 
     /* Cards (lista de prompts) */
@@ -262,55 +197,29 @@
     }
 
     .categoria {
-
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 6px;
-
-      padding: 8px 18px;
-
-      border-radius: 999px;
-
-      background:
-        linear-gradient(135deg,
-          #43A047,
-          #2E7D32);
-
+      display: inline-block;
+      background: #4CAF50;
       color: white;
-
-      font-size: 14px;
-
-      font-weight: 700;
-
-      box-shadow:
-        0 4px 14px rgba(76, 175, 80, 0.25);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
     }
 
     .tituloPrompt {
-
-      font-size: 30px;
-
-      font-weight: 800;
-
-      color: #ffffff;
-
-      letter-spacing: -0.5px;
-
-      margin-top: 14px;
-
-      margin-bottom: 16px;
-
-      text-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.25);
+      font-size: 20px;
+      font-weight: bold;
+      color: #222;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     .textoPrompt {
-      font-size: 16px;
-      font-weight: bold;
+      font-size: 13px;
       line-height: 1.5;
-      color: #111;
+      color: #444;
     }
 
     .botoes {
@@ -332,7 +241,6 @@
     button:nth-child(2) {
       background: #ff9800;
     }
-
 
     #contador {
       background: rgba(255, 255, 255, 0.15);
@@ -989,194 +897,6 @@
       background: yellow !important;
       border: 2px solid red !important;
     }
-
-    #boasVindas {
-
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-
-      background: #2E7D32;
-      color: white;
-
-      padding: 14px 25px;
-      border-radius: 14px;
-
-      font-size: 16px;
-      font-weight: bold;
-
-      box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.3);
-
-      display: none;
-      z-index: 999999;
-    }
-
-    #textoXP {
-      margin-top: 6px;
-      font-size: 13px;
-      font-weight: bold;
-      color: #2E7D32;
-      text-align: center;
-    }
-
-    /* ===== BOTÕES PRINCIPAIS DO APP ===== */
-
-    /* Salvar */
-    #btnSalvar,
-    button[onclick*="salvar"] {
-      background: linear-gradient(135deg, #43A047, #2E7D32);
-      box-shadow: 0 8px 20px rgba(76, 175, 80, .25);
-    }
-
-    /* Melhorar Prompt */
-    #btnMelhorar,
-    button[onclick*="melhorar"] {
-      background: linear-gradient(135deg, #00C853, #009624);
-    }
-
-    /* Fazer Backup */
-    button[onclick*="fazerBackup"] {
-      background: linear-gradient(135deg, #1E88E5, #1565C0);
-    }
-
-    /* Exportar PDF */
-    button[onclick*="exportarPDF"] {
-      background: linear-gradient(135deg, #E53935, #C62828);
-    }
-
-    /* Importar TXT */
-    button[onclick*="import"] {
-      background: linear-gradient(135deg, #8E24AA, #6A1B9A);
-    }
-
-    /* Copiar */
-    button[onclick*="copiar"] {
-      background: linear-gradient(135deg, #43A047, #2E7D32);
-    }
-
-    /* Editar Cargo */
-    button[onclick*="cargo"] {
-      background: linear-gradient(135deg, #FB8C00, #EF6C00);
-    }
-
-    /* Editar Frase */
-    button[onclick*="frase"] {
-      background: linear-gradient(135deg, #8E24AA, #6A1B9A);
-    }
-
-    /* Sair */
-    button[onclick*="logout"],
-    button[onclick*="sair"] {
-      background: linear-gradient(135deg, #E53935, #B71C1C);
-    }
-
-    /* Modo Escuro */
-    button[onclick*="alternarModo"] {
-      background:
-        linear-gradient(135deg,
-          #5E35B1,
-          #311B92);
-
-      color: white;
-    }
-
-    button[onclick*="editarCargo"] {
-      background:
-        linear-gradient(135deg,
-          #8E24AA,
-          #6A1B9A);
-    }
-
-    button[onclick*="editarFrase"] {
-      background:
-        linear-gradient(135deg,
-          #FF7043,
-          #E64A19);
-    }
-
-    /* Hover Premium */
-    button:hover {
-
-      transform:
-        translateY(-2px);
-
-      filter:
-        brightness(1.08);
-
-      box-shadow:
-        0 10px 22px rgba(0, 0, 0, .25);
-    }
-
-    #categoria {
-
-      width: 100%;
-
-      padding: 14px;
-
-      margin-top: 8px;
-
-      border-radius: 14px;
-
-      border: 1px solid #ccc;
-
-      font-size: 15px;
-
-      background: #ffffff;
-
-      color: #333333;
-
-      cursor: pointer;
-
-      box-sizing: border-box;
-    }
-
-    #btnTopo {
-
-      position: fixed;
-
-      right: 20px;
-
-      bottom: 80px;
-
-      width: 55px;
-
-      height: 55px;
-
-      background: #673AB7;
-
-      color: white;
-
-      border: none;
-
-      border-radius: 50%;
-
-      cursor: pointer;
-
-      font-size: 22px;
-
-      font-weight: bold;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      box-shadow: 0 4px 12px rgba(0, 0, 0, .35);
-
-      z-index: 9999;
-
-      transition: .3s;
-
-    }
-
-    #btnTopo:hover {
-
-      transform: scale(1.10);
-
-    }
   </style>
 
   <link rel="manifest" href="manifest.json">
@@ -1191,55 +911,22 @@
 
   <!-- Bloco de LOGIN -->
   <div id="telaLogin" class="card-autenticacao">
-
     <h1>🔒 PromptKeeper Login</h1>
-
-    <input id="usuarioLogin" type="text" placeholder="Usuário">
-
-    <input id="senhaLogin" type="password" placeholder="Senha">
-
-    <button onclick="fazerLogin()">
-      ✨ Entrar
-    </button>
-
-    <p style="text-align:center; margin-top:10px;">
-      <a href="#" onclick="recuperarSenha()">
-        🔑 Esqueceu sua senha?
-      </a>
-    </p>
-
+    <input type="text" placeholder="Usuário">
+    <input type="password" placeholder="Senha">
+    <button id="btnEntrar">✨ Entrar</button>
     <hr>
-
-    <p>
-      Não tem conta?
-      <a href="#" id="linkIrParaCadastro">
-        Criar Conta
-      </a>
-    </p>
-
+    <p>Não tem conta? <a href="#" id="linkIrParaCadastro">Criar Conta</a></p>
   </div>
 
   <!-- Bloco de CADASTRO (Começa escondido) -->
   <div id="telaCadastro" class="card-autenticacao" style="display: none;">
     <h1>📝 Criar Conta</h1>
-
-    <input id="novoUsuario" type="text" placeholder="Escolha um Usuário">
-
-    <input id="novaSenha" type="password" placeholder="Escolha uma Senha">
-
-    <button id="btnCadastrar" onclick="criarConta()">
-      ✨ Cadastrar
-    </button>
-
+    <input type="text" placeholder="Escolha um Usuário">
+    <input type="password" placeholder="Escolha uma Senha">
+    <button id="btnCadastrar">✨ Cadastrar</button>
     <hr>
-
-    <p>
-      Já tem conta?
-      <a href="#" id="linkIrParaLogin">
-        Fazer Login
-      </a>
-    </p>
-  </div>
+    <p>Já tem conta? <a href="#" id="linkIrParaLogin">Fazer Login</a></p>
   </div>
 
 
@@ -1247,366 +934,189 @@
 
   <div id="popupConquista"></div>
 
-  <div id="boasVindas"></div>
-
   <div id="appPromptKeeper" style="display:block !important; border:4px solid red;"></div>
 
-  <div class="container">
+    <div class="container">
 
-    <h1>PromptKeeper</h1>
+      <h1>PromptKeeper</h1>
 
-    <select onchange="trocarTema(this.value)">
+      <select onchange="trocarTema(this.value)">
 
-      <option value="verde">🟢 Verde</option>
+        <option value="verde">🟢 Verde</option>
 
-      <option value="azul">🔵 Azul</option>
+        <option value="azul">🔵 Azul</option>
 
-      <option value="roxo">🟣 Roxo</option>
+        <option value="roxo">🟣 Roxo</option>
 
-      <option value="vermelho">🔴 Vermelho</option>
+        <option value="vermelho">🔴 Vermelho</option>
 
-    </select>
+      </select>
 
-    <div id="perfilBox">
+      <div id="perfilBox">
 
-      <div id="avatarUsuario" onclick="document.getElementById('fotoPerfil').click();" style="cursor:pointer;">
-      </div>
-      <div id="perfilUsuario">
-
-        <div id="nomePerfil"></div>
-
-        <div id="cargoPerfil"></div>
-
-        <div id="frasePerfil"></div>
-
-        <div id="nivelUsuario">
-          🌱 Iniciante
+        <div id="avatarUsuario">
+          M
         </div>
 
-        <div id="barraXPContainer">
-          <div id="barraXP"></div>
-        </div>
+        <div id="perfilUsuario">
 
-        <div id="textoXP">
-          📈 0 prompts criados
-        </div>
+          <div id="nomePerfil"></div>
 
-        <div id="badgesUsuario">
+          <div id="cargoPerfil"></div>
 
-          <h2 id="tituloConquistas">
-            🏅 Conquistas
-          </h2>
+          <div id="frasePerfil"></div>
 
-          <div id="listaBadges">
+          <div id="nivelUsuario">
+            🌱 Iniciante
+          </div>
 
-            <span class="badgeBloqueada">
-              🔒 Sem badges ainda
-            </span>
+          <div id="barraXPContainer">
+            <div id="barraXP"></div>
+          </div>
+
+          <div id="textoXP">
+            📈 0 prompts criados
+          </div>
+
+          <div id="badgesUsuario">
+
+            <h2 id="tituloConquistas">
+              🏅 Conquistas
+            </h2>
+
+            <div id="listaBadges">
+
+              <span class="badgeBloqueada">
+                🔒 Sem badges ainda
+              </span>
+
+            </div>
 
           </div>
 
+          <button onclick="editarCargo()" style="
+    margin-top:10px;
+    font-size:14px;
+    padding:8px;
+  ">
+            ✏️ Editar Cargo
+          </button>
+
+          <button onclick="editarFrase()" style="
+    margin-top:10px;
+    font-size:14px;
+    padding:8px;
+  ">
+            ✨ Editar Frase
+          </button>
+
+          <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)">
+
+
+
         </div>
-
-        <button onclick="editarCargo()" style="
-    margin-top:10px;
-    font-size:14px;
-    padding:8px;
-  ">
-          ✏️ Editar Cargo
-        </button>
-
-        <button onclick="editarFrase()" style="
-    margin-top:10px;
-    font-size:14px;
-    padding:8px;
-  ">
-          ✨ Editar Frase
-        </button>
-
-        <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)" style="display:none;">
-
 
 
       </div>
 
+      <button onclick="sairConta()">
+        🚪 Sair
+      </button>
 
-    </div>
-
-    <button onclick="sairConta()">
-      🚪 Sair
-    </button>
-
-    <button onclick="alternarModo()">🌙 Modo Escuro</button>
+      <button onclick="alternarModo()">🌙 Modo Escuro</button>
 
 
 
-    <ul id="sugestoes"></ul>
+      <ul id="sugestoes"></ul>
 
-    <input type="text" id="colecao" placeholder="🏷 Tags (ex.: HTML, CSS, JavaScript)"
-      oninput="mostrarSugestoesPastas()" onclick="mostrarSugestoesPastas()" onfocus="mostrarSugestoesPastas()">
+      <input type="text" id="colecao" placeholder="📁 Coleção / Pasta">
 
-    <ul id="sugestoesPastas" style="
-      list-style:none;
-      margin:0;
-      padding:0;
-      background:white;
-      border:1px solid #ddd;
-      border-radius:10px;
-      max-height:150px;
-      overflow-y:auto;
-    ">
-
-    </ul>
-
-    <input type="text" id="categoria" placeholder="🏷️ Tags (IA, Marketing...)" onfocus="
-document.getElementById('sugestoesPastas').innerHTML='';
-" oninput="mostrarSugestoes()" onkeypress="if(event.key === 'Enter'){
+      <input type="text" id="categoria" placeholder="🏷️ Tags (IA, Marketing...)" oninput="mostrarSugestoes()"
+        onkeypress="if(event.key === 'Enter'){
     document.getElementById('titulo').focus();
   }">
 
-    <select id="status">
+      <select id="status">
 
-      <option value="ideias">
-        💡 Ideias
-      </option>
+        <option value="ideias">
+          💡 Ideias
+        </option>
 
-      <option value="teste">
-        🛠️ Em teste
-      </option>
+        <option value="teste">
+          🛠️ Em teste
+        </option>
 
-      <option value="prontos">
-        ✅ Prontos
-      </option>
+        <option value="prontos">
+          ✅ Prontos
+        </option>
 
-    </select>
+      </select>
 
+      <input type="text" id="titulo" placeholder="📝 Título do prompt">
 
-    <input type="date" id="dataPrompt" max="">
-
-    <input type="text" id="titulo" placeholder="📝 Título do prompt">
-
-
-    <select id="categoria">
-
-      <option value="">
-        📁 Escolha uma categoria
-      </option>
-
-      <option value="💼 Trabalho">
-        💼 Trabalho
-      </option>
-
-      <option value="🤖 IA">
-        🤖 IA
-      </option>
-
-      <option value="📚 Estudos">
-        📚 Estudos
-      </option>
-
-      <option value="🎯 Marketing">
-        🎯 Marketing
-      </option>
-
-      <option value="❤️ Pessoal">
-        ❤️ Pessoal
-      </option>
-
-      <option value="⭐ Favoritos">
-        ⭐ Favoritos
-      </option>
-
-    </select>
+      <input type="date" id="dataPrompt" max="">
 
 
-    <textarea id="prompt" oninput="autoSalvarRascunho(); sugerirCategoriaAutomatica()"
-      placeholder="📄 Digite seu prompt aqui..." rows="5"></textarea>
+      <textarea id="prompt" oninput="autoSalvarRascunho(); sugerirCategoriaAutomatica()"
+        placeholder="📄 Digite seu prompt aqui..." rows="5"></textarea>
 
-    <div id="contadorCaracteres">
-      0 caracteres
-    </div>
+      <div id="contadorCaracteres">
+        0 caracteres
+      </div>
 
 
 
-    <button onclick="salvarPrompt()">Salvar</button>
-    <button onclick="melhorarPrompt()">✨ Melhorar Prompt</button>
+      <button onclick="salvarPrompt()">Salvar</button>
+      <button onclick="melhorarPrompt()">✨ Melhorar Prompt</button>
 
-    <div id="mensagemSalva"></div>
-
-
-    <!--
-<input type="text" id="filtro"
-placeholder="🔎 Buscar qualquer coisa..."
-oninput="mostrarPrompts()">
--->
+      <div id="mensagemSalva"></div>
 
 
-    <!--
-<button onclick="filtrarFavoritos()" style="
-width:auto;
-padding:10px 18px;
-margin-top:10px;
-background:#FFD54F;
-color:#333;
-font-size:15px;
-">
-⭐ Favoritos
-</button>
-
-    <!--
-<button onclick="fazerBackup()">
-  Fazer Backup
-</button>
--->
-
-    <button id="btnFerramentas" onclick="abrirFerramentas()" style="
-
-background:#673AB7;
-    color:white;
-    font-weight:bold;
-  ">
-      ⚙️ Ferramentas ▼
-    </button>
-
-    <div id="menuFerramentas" style="
-    display:none;
+      <input type="text" id="filtro" placeholder="🔎 Buscar qualquer coisa..." oninput="mostrarPrompts()">
+      <button onclick="filtrarFavoritos()" style="
+    width:auto;
+    padding:10px 18px;
     margin-top:10px;
+    background:#FFD54F;
+    color:#333;
+    font-size:15px;
   ">
-
-      <button onclick="exportarPDF()">
-        📄 PDF
+        ⭐ Favoritos
       </button>
 
-      <button onclick="
-    document
-      .getElementById(
-        'arquivoBackup'
-      )
-      .click()
-  " style="
-    background:#4CAF50;
-    color:white;
-    font-weight:bold;
-  ">
-        📤 Restaurar Backup
-      </button>
 
-     <!-- <button onclick="document.getElementById('importarTXT').click()">
+
+
+      <button onclick="fazerBackup()">Fazer Backup</button>
+
+      <button onclick="exportarPDF()">📄 Exportar PDF</button>
+
+      <input type="file" onchange="restaurarBackup(event)">
+
+      <button onclick="document.getElementById('importarTXT').click()">
         📄 Importar TXT
-      </button>-->
-
-      <button onclick="fazerBackup()">
-        💾 Fazer Backup
       </button>
 
       <input type="file" id="importarTXT" accept=".txt" onchange="importarTXT(event)" style="display:none">
 
+      <div id="contador"></div>
+
+      <div id="dashboard"></div>
+
+      <div id="barraContainer">
+
+        <div id="barraProgresso"></div>
+
+      </div>
+
+      <div id="textoProgresso"></div>
 
 
-    </div>
+      <h2>Seus Prompts:</h2>
 
-    <!--
-<button ...>
-  📄 Exportar PDF
-</button>
--->
-
-    <input type="file" id="arquivoBackup" onchange="restaurarBackup(event)" style="display:none;">
-
-
-    <div id="contador"></div>
-
-    <div id="dashboard">
-      TESTE DASHBOARD
-    </div>
-    <div id="avisoBackup">
-      💾 Dica: faça backup regularmente para manter seus prompts seguros.
-    </div>
-
-
-    <div id="barraContainer">
-
-      <div id="barraProgresso"></div>
+      <ul id="lista"></ul>
 
     </div>
-
-    <div id="textoProgresso"></div>
-
-    <button id="btnTopo" onclick="alternarRolagem()" title="Ir para o final">
-      ⬇️
-    </button>
-
-
-    <h2>Seus Prompts:</h2>
-
-    <input type="text" id="filtro" placeholder="🔎 Busca Inteligente..." autocomplete="off" oninput="mostrarPrompts()"
-      onkeypress="if(event.key==='Enter'){event.preventDefault(); document.getElementById('btnBuscar').click();}">
-
-    <div id="infoFiltro" style="
-display:none;
-margin:12px 0;
-padding:10px;
-background:#E8F5E9;
-border-left:5px solid #2E7D32;
-border-radius:8px;
-font-weight:bold;
-color:#2E7D32;
-">
-    </div>
-
-    <button id="btnLimparFiltro" style="
-display:none;
-margin-bottom:15px;
-background:#d32f2f;
-color:white;
-border:none;
-padding:8px 14px;
-border-radius:8px;
-cursor:pointer;
-font-weight:bold;
-" onclick="limparFiltroTag()">
-
-      ❌ Limpar filtro
-
-    </button>
-
-    <button id="btnBuscar" onclick="buscarPrompt()" style="
-    background:#1976D2;
-    color:white;
-    border:none;
-    border-radius:8px;
-    padding:10px 18px;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 2px 6px rgba(0,0,0,.35);
-  ">
-      🔍 Buscar
-    </button>
-
-    <span id="resultadoBusca"></span>
-
-    <div id="listaResultadosBusca"></div>
-
-    <ul id="listaCategorias" style="
-display:none;
-list-style:none;
-padding:0;
-margin-top:8px;
-background:white;
-border:1px solid #ccc;
-border-radius:8px;
-max-height:220px;
-overflow-y:auto;
-box-shadow:0 4px 12px rgba(0,0,0,.15);
-">
-    </ul>
-
-    <div id="lista"></div>
-
-    <ul id="lista"></ul>
-
-  </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -1614,9 +1124,6 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
 
 
   <script>
-
-    let filtroAtual = "todos";
-
     let editandoIndex = null;
     let mostrarSomenteFavoritos = false;
     let mostrarSomenteFixados = false;
@@ -1624,24 +1131,6 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
     let mostrarSomenteHoje = false;
 
     let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
-
-    let filtroTag = "";
-
-    // Migração automática: colecao -> tags
-    prompts.forEach(function (p) {
-
-      if (!p.tags && p.colecao) {
-
-        p.tags = p.colecao;
-
-        delete p.colecao;
-
-      }
-
-    });
-
-    // Salva a estrutura já atualizada
-    localStorage.setItem("prompts", JSON.stringify(prompts));
 
     let nomeUsuario = localStorage.getItem("nomeUsuario");
 
@@ -1653,57 +1142,6 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
       }
     }
 
-    // ==========================================
-    // NORMALIZA AS CATEGORIAS
-    // ==========================================
-    function normalizarCategoria(categoria) {
-
-      if (!categoria) return "SEM CATEGORIA";
-
-      categoria = categoria
-        .trim()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toUpperCase();
-
-      categoria = categoria.split(",")[0].trim();
-
-      const mapa = {
-
-        // TECNOLOGIAS
-        "TECNOLOGIA": "TECNOLOGIAS",
-        "TECNOLOGIAS": "TECNOLOGIAS",
-
-        // NEGÓCIOS
-        "NEGOCIO": "NEGÓCIOS",
-        "NEGOCIOS": "NEGÓCIOS",
-        "NEGÓCIO": "NEGÓCIOS",
-        "NEGÓCIOS": "NEGÓCIOS",
-
-        // IMAGENS
-        "IMAGEM": "IMAGENS",
-        "IMAGENS": "IMAGENS",
-
-        // VIAGENS
-        "VIAGEM": "VIAGENS",
-        "VIAGENS": "VIAGENS",
-
-        // SAÚDE
-        "SAUDE": "SAÚDE",
-        "SAÚDE": "SAÚDE",
-
-        // IDEIAS
-        "IDEIA": "IDEIAS",
-        "IDEIAS": "IDEIAS",
-
-        // PSICOLOGIA
-        "PSICOLOGIA": "PSICOLOGIA"
-
-      };
-
-      return mapa[categoria] || categoria;
-
-    }
     function normalizarTexto(texto) {
 
       return texto
@@ -1713,158 +1151,53 @@ box-shadow:0 4px 12px rgba(0,0,0,.15);
 
     }
 
-    function atualizarDashboard() {
 
-      const total =
-        prompts.length;
+    function mostrarPrompts() {
 
-      const favoritos =
-        prompts.filter(
-          p => p.favorito === true
-        ).length;
-
-      const fixados =
-        prompts.filter(
-          p => p.fixado === true
-        ).length;
-
-      const colecoes =
-        new Set(
-          prompts
-            .map(p => p.tags || p.colecao)
-            .filter(Boolean)
-        ).size;
-
-      const categorias =
-        new Set(
-          prompts
-            .map(p => normalizarCategoria(p.categoria))
-            .filter(Boolean)
-        ).size;
-
-      document.getElementById(
-        "dashboard"
-      ).innerHTML = `
-
-<div class="cardDashboard"
-onclick="filtrarDashboard('todos')">
-  📚 TOTAL
-  <div class="numeroDashboard">
-    ${total}
-  </div>
-</div>
-
-<div class="cardDashboard"
-onclick="filtrarDashboard('favoritos')">
-  ⭐ FAVORITOS
-  <div class="numeroDashboard">
-    ${favoritos}
-  </div>
-</div>
-
-<div class="cardDashboard">
-  📌 FIXADOS
-  <div class="numeroDashboard">
-    ${fixados}
-  </div>
-</div>
-
-<div class="cardDashboard">
-  📁 PASTAS
-  <div class="numeroDashboard">
-    ${colecoes}
-  </div>
-</div>
-
-<div class="cardDashboard">
-  🏷️ TAGS
-  <div class="numeroDashboard">
-    ${categorias}
-  </div>
-</div>
-
-`;
-
-    }
-
-    mostrarPrompts();
-
-    atualizarDashboard();
-
-
-
-
-    function buscarPrompt() {
-
-      function abrirPrompt(titulo) {
-
-        const indice = prompts.findIndex(
-          p => p.titulo === titulo
+      const nomeUsuario =
+        localStorage.getItem(
+          "nomeUsuario"
         );
-
-        if (indice >= 0) {
-          editarPrompt(indice);
-        }
-
-      }
-
-      mostrarPrompts();
-
-    }
-
-    function atualizarPerfilUsuario() {
-
-      // Refatoração futura:
-      // aqui ficará todo o código responsável
-      // por atualizar o perfil do usuário.
-
-    }
-
-    function mostrarPerfilUsuario() {
-
-      const nomeUsuario = localStorage.getItem("nomeUsuario");
-
       if (nomeUsuario) {
-        document.getElementById("nomePerfil").innerHTML =
-          "👋 Olá, <strong>" + nomeUsuario + "</strong>";
+
+        document.getElementById(
+          "avatarUsuario"
+        ).innerHTML =
+
+          nomeUsuario.charAt(0).toUpperCase();
       }
 
-      const usuarioAtual = localStorage.getItem("nomeUsuario");
-
-      console.log("USUÁRIO ATUAL:", usuarioAtual);
-
-      const avatar = document.getElementById("avatarUsuario");
-
-      avatar.innerHTML = "";
-
-      const fotoSalva = localStorage.getItem("fotoPerfil_" + usuarioAtual);
-
-      console.log("CHAVE DA FOTO:", "fotoPerfil_" + usuarioAtual);
-      console.log("FOTO RECUPERADA:", fotoSalva?.substring(0, 50));
+      const fotoSalva =
+        localStorage.getItem(
+          "fotoPerfil"
+        );
 
       if (fotoSalva) {
 
-        avatar.innerHTML =
-          "<img src='" +
-          fotoSalva +
-          "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
+        document.getElementById(
+          "avatarUsuario"
+        ).innerHTML =
 
-      } else {
-
-        avatar.innerHTML =
-          usuarioAtual.charAt(0).toUpperCase();
-
+          `<img src="${fotoSalva}">`;
       }
 
+      function carregarFotoPerfil(event) {
+
+
+        const perfil = document.getElementById("perfilUsuario");
+
+
+        if (nomeUsuario) {
+          document.getElementById(
+            "nomePerfil"
+          ).innerHTML =
+
+            "👋 Olá, <strong>" +
+            nomeUsuario +
+            "</strong>";
+        }
+      }
     }
-
-    function mostrarPrompts() {
-    console.log(">>> mostrarPrompts iniciou");
-    console.log("categoriaSelecionada =", categoriaSelecionada);
-
-   mostrarPerfilUsuario();
-    renderizarListaPrompts();
-  }
 
 
     const cargoUsuario =
@@ -1935,47 +1268,14 @@ onclick="filtrarDashboard('favoritos')">
         "✨ " +
         fraseUsuario;
     }
-
-          function renderizarListaPrompts() {
-            const busca =
+    const busca =
       normalizarTexto(
         document.getElementById("filtro").value
       );
-
-
     const filtro = document.getElementById("filtro").value.toLowerCase();
-
-    console.log(
-      document.getElementById("filtro")
-    );
-
-    console.log(
-      document.getElementById("filtro").value
-    );
-
-    console.log(
-      "BUSCA:",
-      filtro
-    );
-
-    console.log(
-      "BUSCA NORMALIZADA:",
-      busca
-    );
     const lista = document.getElementById("lista");
 
     lista.innerHTML = "";
-
-    console.log(
-      "MOSTRAR PROMPTS CHAMADO"
-    );
-
-    console.log(
-      "FAVORITOS:",
-      mostrarSomenteFavoritos,
-      "FIXADOS:",
-      mostrarSomenteFixados
-    );
 
     let encontrouResultado = false;
 
@@ -2151,10 +1451,10 @@ onclick="filtrarDashboard('favoritos')">
   `;
     }
 
-    //document.getElementById(
-    // "badgesUsuario"
-    //).innerHTML =
-    // badgesHTML;
+    document.getElementById(
+      "badgesUsuario"
+    ).innerHTML =
+      badgesHTML;
 
 
     const conquistaSalva =
@@ -2229,34 +1529,49 @@ onclick="filtrarDashboard('favoritos')">
 
     let badges = "";
 
-    badges +=
-      total >= 1
-        ? "<span class='badge'>⌛ Iniciante</span>"
-        : "<span class='badgeBloqueada'>🔒 Iniciante</span>";
+    if (total >= 10) {
 
-    badges +=
-      total >= 10
-        ? "<span class='badge'>🚀 Explorador</span>"
-        : "<span class='badgeBloqueada'>🔒 Explorador</span>";
+      badges +=
+        "<span class='badge'>" +
+        "🚀 Explorador" +
+        "</span>";
+    }
 
-    badges +=
-      total >= 25
-        ? "<span class='badge'>🧠 Criador</span>"
-        : "<span class='badgeBloqueada'>🔒 Criador</span>";
+    if (total >= 30) {
 
-    badges +=
-      total >= 50
-        ? "<span class='badge'>🔥 Especialista</span>"
-        : "<span class='badgeBloqueada'>🔒 Especialista</span>";
+      badges +=
+        "<span class='badge'>" +
+        "🧠 Criador IA" +
+        "</span>";
+    }
 
-    badges +=
-      total >= 100
-        ? "<span class='badge'>🏆 Mestre IA</span>"
-        : "<span class='badgeBloqueada'>🔒 Mestre IA</span>";
+    if (total >= 50) {
+
+      badges +=
+        "<span class='badge'>" +
+        "🔥 Especialista" +
+        "</span>";
+    }
+
+    if (total >= 100) {
+
+      badges +=
+        "<span class='badge'>" +
+        "🏆 Mestre dos Prompts" +
+        "</span>";
+    }
+
 
     document.getElementById(
       "listaBadges"
-    ).innerHTML = badges;
+    ).innerHTML =
+
+      badges ||
+
+      "<span class='badgeBloqueada'>" +
+      "🔒 Sem badges ainda" +
+      "</span>";
+
 
     // ===== BARRA DE CONQUISTAS =====
 
@@ -2282,16 +1597,10 @@ onclick="filtrarDashboard('favoritos')">
       (badgesDesbloqueadas /
         totalBadges) * 100;
 
-    const barraConquista =
-      document.getElementById(
-        "barraConquista"
-      );
-
-    if (barraConquista) {
-
-      barraConquista.style.width =
-        porcentagemBadge + "%";
-    }
+    document.getElementById(
+      "barraConquista"
+    ).style.width =
+      porcentagemBadge + "%";
 
 
     const meta = 50;
@@ -2308,10 +1617,7 @@ onclick="filtrarDashboard('favoritos')">
       total +
       " prompts";
 
-    const favoritos =
-      prompts.filter(
-        p => p.favorito === true
-      ).length;
+    const favoritos = prompts.filter(p => p.favorito).length;
 
     const hoje =
       new Date().toLocaleDateString("sv-SE");
@@ -2320,11 +1626,8 @@ onclick="filtrarDashboard('favoritos')">
       prompts.filter(p => p.data === hoje).length;
     const fixados = prompts.filter(p => p.fixado).length;
 
-    const categorias = [
-      ...new Set(
-        prompts.map(p => normalizarCategoria(p.categoria))
-      )
-    ];
+    const categorias = [...new Set(prompts.map(p => p.categoria))].length;
+
     const porcentagemFav =
       total > 0
         ? Math.round((favoritos / total) * 100)
@@ -2357,10 +1660,10 @@ onclick="filtrarDashboard('fixados')">
 </div>
 
 <div class="cardDashboard"
-onclick="abrirMenuCategorias()">
+onclick="filtrarDashboard('categorias')">
   🏷️ CATEGORIAS
-<div class="numeroDashboard">${categorias.length}</div>
-  </div>
+  <div class="numeroDashboard">${categorias}</div>
+</div>
 
 <div class="cardDashboard"
 onclick="filtrarDashboard('hoje')">
@@ -2394,71 +1697,34 @@ onclick="filtrarDashboard('hoje')">
 
     });
 
-    console.log("Categoria selecionada:", categoriaSelecionada);
-
     prompts.forEach((p, index) => {
-
-      if (
-        !p.titulo?.trim() ||
-        !p.categoria?.trim() ||
-        !p.texto?.trim()
-      ) {
-        console.warn(
-          "👻 PROMPT FANTASMA:",
-          index,
-          p.categoria,
-          p.titulo
-        );
-      }
-
-      console.log(
-        "PROMPT:",
-        p.titulo,
-        "CAT:",
-        p.categoria,
-        "BUSCA:",
-        busca
-      );
 
       if (
         mostrarSomenteFavoritos &&
         !p.favorito
       ) {
-
-        console.log(
-          "BLOQUEADO:",
-          p.titulo
-        );
-
         return;
       }
 
       if (
         mostrarSomenteFixados &&
-        p.fixado !== true
+        !p.fixado
       ) {
         return;
       }
-
-      console.log("Categoria selecionada:", categoriaSelecionada);
-      console.log("Categoria do prompt:", normalizarCategoria(p.categoria));
-
-      console.log(
-        "Categoria escolhida:",
-        categoriaSelecionada,
-        "| Categoria do prompt:",
-        normalizarCategoria(p.categoria),
-        "| Título:",
-        p.titulo
-      );
 
 
       if (
         categoriaSelecionada &&
-        normalizarCategoria(p.categoria) !== categoriaSelecionada
+        !p.categoria
+          .toLowerCase()
+          .includes(
+            categoriaSelecionada
+          )
       ) {
         return;
       }
+
       const hoje =
         new Date().toLocaleDateString(
           "sv-SE"
@@ -2472,53 +1738,43 @@ onclick="filtrarDashboard('hoje')">
       }
 
 
-      const conteudoBusca =
-        normalizarTexto(
+      const conteudoBusca = (
 
-          p.categoria +
+        p.categoria +
 
-          " " +
+        " " +
 
-          p.titulo +
+        p.titulo +
 
-          " " +
+        " " +
 
-          p.texto +
+        p.texto +
 
-          " " +
+        " " +
 
-          (p.data || "") +
+        (p.data || "") +
 
-          " " +
+        " " +
 
-          (p.tags || p.colecao || "") +
+        (p.colecao || "") +
 
-          " " +
+        " " +
 
-          (p.status || "") +
+        (p.status || "") +
 
-          " " +
+        " " +
 
-          (p.favorito
-            ? "favorito favoritos estrela"
-            : "") +
+        (p.favorito
+          ? "favorito favoritos estrela ⭐"
+          : "") +
 
-          " " +
+        " " +
 
-          (p.fixado
-            ? "fixado fixados pin"
-            : "")
+        (p.fixado
+          ? "fixado fixados pin 📌"
+          : "")
 
-        );
-
-      console.log(
-        "BUSCA:",
-        busca,
-        "| TITULO:",
-        p.titulo,
-        "| ACHOU?",
-        conteudoBusca.includes(busca)
-      );
+      ).toLowerCase();
 
       if (busca && !conteudoBusca.includes(busca)) {
         return;
@@ -2583,23 +1839,12 @@ onclick="filtrarDashboard('hoje')">
         +
 
         "</div>" +
+        "<div style='font-size:14px; color:#777; margin-bottom:8px; font-weight:bold;'>" +
 
-        ((p.tags || "").trim()
-          ? "<div style='margin-bottom:8px;'>" +
+        "📁 " + (p.colecao || "Sem coleção") +
 
-          (p.tags || "")
-            .split(",")
-            .filter(tag => tag.trim() !== "")
-            .map(tag =>
-              "<span onclick=\"filtrarPorTag('" + tag.trim() + "')\" " +
-              "style='display:inline-block; background:#2E7D32; color:white; padding:4px 10px; border-radius:12px; font-size:12px; margin-right:6px; margin-bottom:4px; font-weight:bold; cursor:pointer; transition:0.2s;'>🏷 " +
-              tag.trim() +
-              "</span>"
-            ).join("")
+        "</div>" +
 
-          + "</div>"
-          : "")
-        +
         "<div style='margin-bottom:8px; font-size:14px;'>"
 
         +
@@ -2643,153 +1888,47 @@ onclick="filtrarDashboard('hoje')">
       botaoFixar.style.color = "white";
       botaoFixar.style.fontWeight = "bold";
 
-
-
       botaoFixar.onclick = function () {
 
-        const indiceReal =
-          prompts.findIndex(
-            item =>
-              item.titulo === p.titulo &&
-              item.texto === p.texto
-          );
+        prompts[index].fixado = !prompts[index].fixado;
 
-        if (indiceReal === -1)
-          return;
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+        const rascunho =
+          localStorage.getItem("rascunhoPrompt");
 
-        prompts[indiceReal].fixado =
-          !prompts[indiceReal]
-            .fixado;
+        if (rascunho) {
 
-        console.log(
-          "FIXADO:",
-          prompts[indiceReal]
-            .titulo,
-          prompts[indiceReal]
-            .fixado
-        );
+          document.getElementById("contadorCaracteres")
+            .innerHTML =
+            rascunho.length + " caracteres";
 
-        localStorage.setItem(
-          "prompts",
-          JSON.stringify(
-            prompts
-          )
-        );
-
-        mostrarToast(
-
-          prompts[indiceReal]
-            .fixado
-
-            ? '📌 "' +
-            prompts[indiceReal].titulo +
-            '" fixado no topo!'
-
-            : '📍 "' +
-            prompts[indiceReal].titulo +
-            '" removido dos fixados!'
-
-        );
+          document.getElementById("prompt").value =
+            rascunho;
+        }
         mostrarPrompts();
 
       };
 
-      localStorage.setItem("prompts", JSON.stringify(prompts));
 
-      const rascunho =
-        localStorage.getItem("rascunhoPrompt");
+      let botaoFav = document.createElement("button");
 
-      if (rascunho) {
+      botaoFav.textContent = p.favorito ? "⭐" : "☆";
 
-        document.getElementById("contadorCaracteres")
-          .innerHTML =
-          rascunho.length + " caracteres";
-
-        document.getElementById("prompt").value =
-          rascunho;
-      }
-
-
-
-      let botaoFav =
-        document.createElement(
-          "button"
-        );
-
-      botaoFav.innerHTML =
-        p.favorito
-          ? "⭐"
-          : "☆";
-
-      /* sempre amarelo */
       botaoFav.style.backgroundColor =
-        "#FFD54F";
+        p.favorito ? "#FFD54F" : "#BA68C8";
 
       botaoFav.style.color =
-        "#333";
+        p.favorito ? "#333" : "white";
 
-      botaoFav.style.fontWeight =
-        "bold";
+      botaoFav.style.fontWeight = "bold";
 
-      botaoFav.onclick =
-        function () {
+      botaoFav.onclick = function () {
+        prompts[index].favorito = !prompts[index].favorito;
 
-          const indiceReal =
-            prompts.findIndex(
-              item =>
-                item.titulo === p.titulo &&
-                item.texto === p.texto
-            );
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+        mostrarPrompts();
 
-          if (indiceReal === -1)
-            return;
-
-          prompts[indiceReal].favorito =
-            !prompts[indiceReal]
-              .favorito;
-
-          botaoFav.innerHTML =
-            prompts[indiceReal]
-              .favorito
-              ? "⭐"
-              : "☆";
-
-          console.log(
-            "FAVORITO:",
-            prompts[indiceReal].titulo,
-            prompts[indiceReal].favorito
-          );
-
-          localStorage.setItem(
-            "prompts",
-            JSON.stringify(
-              prompts
-            )
-          );
-
-          setTimeout(() => {
-
-            mostrarPrompts();
-
-          }, 50);
-
-          mostrarToast(
-
-            prompts[indiceReal]
-              .favorito
-
-              ? '⭐ "' +
-              prompts[indiceReal].titulo +
-              '" adicionado aos favoritos!'
-
-              : '❌ "' +
-              prompts[indiceReal].titulo +
-              '" removido dos favoritos!'
-
-          );
-          mostrarPrompts();
-
-        };
+      };
 
       let botao = document.createElement("button");
 
@@ -2799,153 +1938,65 @@ onclick="filtrarDashboard('hoje')">
       botao.style.backgroundColor = "#f44336";
       botao.style.color = "white";
 
+
+
+      botaoFav.onclick = function () {
+        prompts[index].favorito = !prompts[index].favorito;
+
+        localStorage.setItem("prompts", JSON.stringify(prompts));
+        mostrarPrompts();
+      };
+
+
       botao.onclick = function () {
-
-        const confirmar = confirm(
-          "🗑️ Deseja realmente excluir este prompt?"
-        );
-
-        if (!confirmar) return;
-
         item.classList.add("removendo");
 
         setTimeout(() => {
-
           prompts.splice(index, 1);
-
-          localStorage.setItem(
-            "prompts",
-            JSON.stringify(prompts)
-          );
-
-          mostrarToast(
-            '🗑️ "' +
-            p.titulo +
-            '" excluído!'
-          );
-
+          localStorage.setItem("prompts", JSON.stringify(prompts));
           mostrarPrompts();
-
         }, 400);
-
       };
+
       let botaoSubir = document.createElement("button");
 
       botaoSubir.innerHTML = "⬆️";
 
-      botaoSubir.style.backgroundColor = "#8D6E63";
+      botaoSubir.style.backgroundColor = "#607D8B";
       botaoSubir.style.color = "white";
 
-      botaoSubir.onclick =
-        function () {
+      botaoSubir.onclick = function () {
 
-          const posicaoAtual =
-            prompts.findIndex(
-              item =>
-                item.titulo ===
-                p.titulo
-            );
+        if (index > 0) {
 
-          console.log(
-            "MOVENDO:",
-            p.titulo,
-            "POSIÇÃO:",
-            posicaoAtual
-          );
+          [prompts[index], prompts[index - 1]] =
+            [prompts[index - 1], prompts[index]];
 
-          if (
-            posicaoAtual > 0
-          ) {
+          localStorage.setItem("prompts", JSON.stringify(prompts));
 
-            [
-              prompts[
-              posicaoAtual
-              ],
+          mostrarPrompts();
+        }
+      };
 
-              prompts[
-              posicaoAtual - 1
-              ]
-
-            ] = [
-
-                prompts[
-                posicaoAtual - 1
-                ],
-
-                prompts[
-                posicaoAtual
-                ]
-
-              ];
-
-            localStorage.setItem(
-              "prompts",
-              JSON.stringify(
-                prompts
-              )
-            );
-
-            mostrarToast(
-              "⬆️ Prompt movido"
-            );
-
-            console.log(prompts.map(p => p.titulo));
-
-            mostrarPrompts();
-          }
-
-        };
-
-      let botaoDescer =
-        document.createElement("button");
+      let botaoDescer = document.createElement("button");
 
       botaoDescer.innerHTML = "⬇️";
 
-      /* cor terrosa */
-      botaoDescer.style.backgroundColor = "#FF9800";
+      botaoDescer.style.backgroundColor = "#607D8B";
+      botaoDescer.style.color = "white";
 
-      botaoDescer.style.color =
-        "white";
+      botaoDescer.onclick = function () {
 
-      botaoDescer.style.fontWeight =
-        "bold";
+        if (index < prompts.length - 1) {
 
-      botaoDescer.onclick =
-        function () {
+          [prompts[index], prompts[index + 1]] =
+            [prompts[index + 1], prompts[index]];
 
-          // pega posição REAL do prompt
-          const indiceReal =
-            prompts.findIndex(
-              item =>
-                item.titulo === p.titulo &&
-                item.texto === p.texto
-            );
+          localStorage.setItem("prompts", JSON.stringify(prompts));
 
-          if (
-            indiceReal <
-            prompts.length - 1
-          ) {
-
-            [
-              prompts[indiceReal],
-              prompts[indiceReal + 1]
-            ] = [
-                prompts[indiceReal + 1],
-                prompts[indiceReal]
-              ];
-
-            localStorage.setItem(
-              "prompts",
-              JSON.stringify(prompts)
-            );
-
-            mostrarToast(
-              "⬇️ Prompt movido!"
-            );
-
-            mostrarPrompts();
-          }
-        };
+          mostrarPrompts();
+        }
+      };
 
       let botaoExpandir = document.createElement("button");
 
@@ -2968,6 +2019,7 @@ onclick="filtrarDashboard('hoje')">
         } else {
 
           textoPrompt.style.display = "none";
+
           botaoExpandir.innerHTML = "▼ Mostrar";
         }
       };
@@ -3000,9 +2052,6 @@ onclick="filtrarDashboard('hoje')">
       let botaoCopiar = document.createElement("button");
 
       botaoCopiar.textContent = "📋 Copiar";
-
-      botaoCopiar.style.background =
-        "linear-gradient(135deg, #42A5F5, #1565C0)";
 
       botaoCopiar.onclick = function () {
         navigator.clipboard.writeText(p.texto);
@@ -3088,14 +2137,10 @@ onclick="filtrarDashboard('hoje')">
         document.getElementById("dataPrompt").value = p.data || "";
 
 
-        document
-          .getElementById(
-            "prompt"
-          )
-          .scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
 
         editandoIndex = index;
       };
@@ -3126,7 +2171,7 @@ onclick="filtrarDashboard('hoje')">
 
       botoesDiv.appendChild(botao);
 
-      item.setAttribute("data-titulo", p.titulo);
+
 
       item.appendChild(texto);
       item.appendChild(botoesDiv);
@@ -3164,8 +2209,6 @@ onclick="filtrarDashboard('hoje')">
 
     }
 
-    }
-
 
     function melhorarPrompt() {
 
@@ -3174,208 +2217,6 @@ onclick="filtrarDashboard('hoje')">
 
       let texto = textarea.value;
 
-      texto = enriquecerPrompt(texto);
-
-      const tipo =
-        detectarTipoPrompt(texto);
-
-      console.log(
-        "TIPO:",
-        tipo
-      );
-
-      let instrucao = "";
-
-      switch (tipo) {
-
-        case "IMAGEM":
-
-          instrucao =
-
-            "Você é um especialista em criação de prompts para geração de imagens por Inteligência Artificial.\n\n" +
-
-            "Reescreva o texto do usuário transformando-o em um prompt altamente detalhado.\n\n" +
-
-            "Inclua sempre:\n\n" +
-
-            "• Estilo artístico.\n" +
-
-            "• Aparência física dos personagens.\n" +
-
-            "• Roupas e acessórios.\n" +
-
-            "• Expressão facial.\n" +
-
-            "• Cenário.\n" +
-
-            "• Iluminação.\n" +
-
-            "• Paleta de cores.\n" +
-
-            "• Enquadramento da câmera.\n" +
-
-            "• Nível de realismo.\n" +
-
-            "• Qualidade máxima da imagem.\n" +
-
-            "• Atmosfera e emoção da cena.";
-
-          break;
-
-        case "PROGRAMAÇÃO":
-
-          instrucao =
-
-            "Você é um desenvolvedor Full Stack experiente.\n\n" +
-
-            "Reescreva o texto do usuário transformando-o em um prompt profissional para desenvolvimento de software.\n\n" +
-
-            "Inclua sempre:\n\n" +
-
-            "• Objetivo do projeto.\n" +
-
-            "• Linguagem de programação.\n" +
-
-            "• Tecnologias envolvidas.\n" +
-
-            "• Estrutura esperada.\n" +
-
-            "• Boas práticas.\n" +
-
-            "• Código limpo.\n" +
-
-            "• Comentários importantes.\n" +
-
-            "• Resultado esperado.";
-
-          break;
-
-        case "ESTUDOS":
-
-          instrucao =
-
-            "Você é um professor experiente e especialista no assunto solicitado.\n\n" +
-
-            "Reescreva o texto do usuário transformando-o em um prompt de aprendizagem completo e bem estruturado.\n\n" +
-
-            "Inclua sempre:\n\n" +
-
-            "• Objetivo do aprendizado.\n" +
-
-            "• Explicação passo a passo.\n" +
-
-            "• Linguagem clara e didática.\n" +
-
-            "• Exemplos práticos.\n" +
-
-            "• Comparações para facilitar o entendimento.\n" +
-
-            "• Exercícios ou perguntas para fixação.\n" +
-
-            "• Resumo final dos pontos principais.\n" +
-
-            "• Sugestões de aprofundamento, quando pertinente.";
-
-          break;
-
-        case "NEGÓCIOS":
-
-          instrucao =
-
-            "Você é um consultor empresarial, estrategista de negócios e especialista em empreendedorismo.\n\n" +
-
-            "Reescreva o texto do usuário transformando-o em um prompt profissional para planejamento e tomada de decisões empresariais.\n\n" +
-
-            "Inclua sempre:\n\n" +
-
-            "• Objetivo do negócio.\n" +
-
-            "• Público-alvo.\n" +
-
-            "• Estratégias recomendadas.\n" +
-
-            "• Plano de ação organizado.\n" +
-
-            "• Oportunidades de crescimento.\n" +
-
-            "• Possíveis riscos.\n" +
-
-            "• Sugestões práticas de implementação.\n" +
-
-            "• Indicadores de sucesso e resultados esperados.\n" +
-
-            "• Linguagem profissional, clara e objetiva.";
-
-          break;
-
-        case "SAÚDE":
-
-          instrucao =
-
-            "Você é um profissional especializado em educação em saúde.\n\n" +
-
-            "Reescreva o texto do usuário transformando-o em um prompt claro, responsável e bem estruturado.\n\n" +
-
-            "Inclua sempre:\n\n" +
-
-            "• Explicação objetiva do tema.\n" +
-
-            "• Possíveis causas quando apropriado.\n" +
-
-            "• Principais sintomas, quando aplicável.\n" +
-
-            "• Formas de prevenção.\n" +
-
-            "• Hábitos saudáveis relacionados.\n" +
-
-            "• Opções de tratamento normalmente utilizadas.\n" +
-
-            "• Quando é recomendável procurar um profissional de saúde.\n" +
-
-            "• Utilize linguagem clara, educativa e responsável.\n" +
-
-            "• Evite diagnósticos definitivos e incentive a consulta a profissionais habilitados quando necessário.";
-
-          break;
-
-        case "VIAGENS":
-
-          instrucao =
-
-            "Você é um consultor especializado em viagens nacionais e internacionais.\n\n" +
-
-            "Reescreva o texto do usuário transformando-o em um prompt profissional para planejamento de viagens.\n\n" +
-
-            "Inclua sempre:\n\n" +
-
-            "• Objetivo da viagem.\n" +
-
-            "• Destino e principais atrações.\n" +
-
-            "• Melhor época para viajar.\n" +
-
-            "• Sugestão de roteiro organizado por dias.\n" +
-
-            "• Opções de hospedagem.\n" +
-
-            "• Meios de transporte recomendados.\n" +
-
-            "• Estimativa de orçamento.\n" +
-
-            "• Dicas de segurança.\n" +
-
-            "• Curiosidades locais.\n" +
-
-            "• Sugestões para tornar a experiência inesquecível.\n" +
-
-            "• Utilize linguagem agradável, organizada e inspiradora.";
-
-          break;
-
-        default:
-          instrucao = "Prompt geral.";
-      }
-
       if (!texto.trim()) {
 
         mostrarToast("❌ Digite um prompt primeiro!");
@@ -3383,32 +2224,32 @@ onclick="filtrarDashboard('hoje')">
         return;
       }
 
-      mostrarToast("🧠 Tipo detectado: " + tipo);
-
-      console.log("INSTRUÇÃO:", instrucao);
-
       let melhorado =
 
-        "✨ PROMPT INTELIGENTE\n\n" +
+        "✨ Prompt otimizado:\n\n" +
 
-        "TIPO DETECTADO: " + tipo + "\n\n" +
+        "Seja extremamente detalhado, " +
 
-        instrucao + "\n\n" +
+        "profissional, criativo e envolvente.\n\n" +
 
-        "=== PROMPT ENRIQUECIDO ===\n\n" +
+        texto +
 
-        texto + "\n\n" +
+        "\n\nInclua exemplos práticos, " +
 
-        "Agora gere o melhor resultado possível com base nas instruções acima.";
+        "descrições avançadas, " +
+
+        "estrutura clara, tom profissional " +
+
+        "e respostas completas.";
+
       textarea.value = melhorado;
 
       mostrarToast("✨ Prompt melhorado!");
-
     }
 
     function salvarPrompt() {
       const categoria = document.getElementById("categoria").value;
-      const tags =
+      const colecao =
         document.getElementById("colecao").value;
       const status =
         document.getElementById("status").value;
@@ -3423,6 +2264,14 @@ onclick="filtrarDashboard('hoje')">
       if (dataInput > hoje) {
         alert("❌ Não é permitido usar data futura!");
         return;
+      }
+
+
+      let data = document.getElementById("dataPrompt").value;
+
+      if (!data) {
+        const hoje = new Date().toLocaleDateString("sv-SE");
+
       }
 
 
@@ -3445,7 +2294,7 @@ onclick="filtrarDashboard('hoje')">
         prompts[editandoIndex] = {
 
           categoria,
-          tags,
+          colecao,
           status,
           titulo,
           texto,
@@ -3456,9 +2305,6 @@ onclick="filtrarDashboard('hoje')">
           favorito:
             prompts[editandoIndex].favorito || false,
 
-          fixado:
-            prompts[editandoIndex].fixado || false,
-
           data: dataFinal
         };
 
@@ -3467,20 +2313,12 @@ onclick="filtrarDashboard('hoje')">
         editandoIndex = null;
       } else {
         prompts.push({
-
           categoria,
-          tags,
-          status,
           titulo,
           texto,
-
           favorito: false,
           fixado: false,
-
-          historico: [],
-
-          data: dataFinal
-
+          data: data
         });
 
       }
@@ -3491,21 +2329,18 @@ onclick="filtrarDashboard('hoje')">
       document.getElementById("categoria").value = "";
       document.getElementById("titulo").value = "";
       document.getElementById("prompt").value = "";
-      document.getElementById(
-        "prompt"
-      ).style.height =
-        "120px";
       document.getElementById("dataPrompt").value = "";
 
       document.getElementById("status").value =
         "ideias";
 
+      mostrarPrompts();
+
       verificarConquistas();
 
-      // Salva e atualiza toda a interface
-      salvarEAtualizar();
-
       mostrarToast("✅ Prompt salvo com sucesso!");
+
+
     }
 
     mostrarPrompts();
@@ -3570,6 +2405,7 @@ onclick="filtrarDashboard('hoje')">
 
       const blob = new Blob([dados], { type: "application/json" });
       const url = URL.createObjectURL(blob);
+
       const link = document.createElement("a");
       link.href = url;
       link.download = "promptkeeper_backup.json";
@@ -3600,119 +2436,6 @@ onclick="filtrarDashboard('hoje')">
       leitor.readAsText(arquivo);
     }
 
-    {
-
-      const input =
-        document.getElementById("colecao")
-          .value
-          .toLowerCase();
-
-      const lista =
-        document.getElementById(
-          "sugestoesPastas"
-        );
-
-      lista.innerHTML = "";
-
-      const pastas = [
-        ...new Set(
-
-          prompts
-            .flatMap(p => (p.tags || p.colecao || "")
-              .split(","))
-
-            .map(t => t.trim())
-
-            .filter(t => t !== "")
-
-        )
-
-      ].sort();
-
-      pastas.forEach(pasta => {
-
-        if (
-          pasta &&
-          pasta.toLowerCase()
-            .startsWith(input)
-        ) {
-
-          let item =
-            document.createElement("li");
-
-          item.style.padding = "10px";
-          item.style.cursor = "pointer";
-          item.style.background = "white";
-          item.style.color = "#333";
-          item.style.borderBottom =
-            "1px solid #eee";
-
-          item.textContent =
-            pasta;
-
-          item.onclick =
-            function () {
-
-              document.getElementById(
-                "colecao"
-              ).value =
-                pasta;
-
-              lista.innerHTML = "";
-
-            };
-
-          lista.appendChild(item);
-
-        }
-
-      });
-
-    }
-
-    function filtrarPorTag(tag) {
-
-      tagSelecionada = tag;
-
-      // deixa a busca livre vazia
-      document.getElementById("filtro").value = "";
-
-      const quantidade = prompts.filter(p =>
-        (p.tags || "")
-          .toLowerCase()
-          .includes(tag.toLowerCase())
-      ).length;
-
-      document.getElementById("infoFiltro").style.display = "block";
-
-      document.getElementById("infoFiltro").innerHTML =
-        "🏷 <b>Filtrando por:</b> <span style='color:#1B5E20'>" +
-        tag +
-        "</span> &nbsp;&nbsp;(" +
-        quantidade +
-        " prompt" +
-        (quantidade == 1 ? "" : "s") +
-        ")";
-
-      document.getElementById("btnLimparFiltro").style.display = "inline-block";
-
-      mostrarPrompts();
-
-    }
-
-    function limparFiltroTag() {
-
-      tagSelecionada = "";
-
-      document.getElementById("filtro").value = "";
-
-      document.getElementById("infoFiltro").style.display = "none";
-
-      document.getElementById("btnLimparFiltro").style.display = "none";
-
-      mostrarPrompts();
-
-    }
 
     function mostrarSugestoes() {
       const input = document.getElementById("categoria").value.toLowerCase();
@@ -3725,11 +2448,8 @@ onclick="filtrarDashboard('hoje')">
       if (!input) return;
 
       // pegar categorias já existentes
-      const categorias = [
-        ...new Set(
-          prompts.map(p => normalizarCategoria(p.categoria))
-        )
-      ].sort();
+      const categorias = [...new Set(prompts.map(p => p.categoria))];
+
       categorias.forEach(cat => {
         if (cat.toLowerCase().startsWith(input)) {
 
@@ -3994,7 +2714,7 @@ onclick="filtrarDashboard('hoje')">
         .style.display = "none";
     }
 
-    function filtrarFavoritos() {//
+    function filtrarFavoritos() {
 
       mostrarSomenteFavoritos =
         !mostrarSomenteFavoritos;
@@ -4025,45 +2745,18 @@ onclick="filtrarDashboard('hoje')">
         return;
       }
 
-      let contas = JSON.parse(
-        localStorage.getItem(
-          "contasPromptKeeper"
-        )
-      ) || [];
-
-      // evita usuário repetido
-      if (
-        contas.some(
-          c =>
-            c.usuario.toLowerCase() ===
-            usuario.toLowerCase()
-        )
-      ) {
-        alert(
-          "❌ Este usuário já existe!"
-        );
-        return;
-      }
-
-      contas.push({
+      const conta = {
         usuario,
         senha
-      });
+      };
 
       localStorage.setItem(
-        "contasPromptKeeper",
-        JSON.stringify(contas)
+        "contaPromptKeeper",
+        JSON.stringify(conta)
       );
 
       alert("✅ Conta criada com sucesso!");
     }
-    document.getElementById(
-      "telaCadastro"
-    ).style.display = "none";
-
-    document.getElementById(
-      "telaLogin"
-    ).style.display = "block";
 
     function fazerLogin() {
 
@@ -4073,142 +2766,105 @@ onclick="filtrarDashboard('hoje')">
       const senha =
         document.getElementById("senhaLogin").value;
 
-      const contas =
+      const contaSalva =
         JSON.parse(
           localStorage.getItem(
-            "contasPromptKeeper"
+            "contaPromptKeeper"
           )
-        ) || [];
-
-      const usuarioEncontrado =
-        contas.find(
-          conta =>
-            conta.usuario === usuario &&
-            conta.senha === senha
         );
 
-      if (!usuarioEncontrado) {
+      if (!contaSalva) {
 
-        alert(
-          "❌ Usuário ou senha incorretos"
-        );
-
+        alert("Crie uma conta primeiro 😄");
         return;
       }
-      localStorage.setItem(
-        "usuarioLogado",
-        "true"
-      );
 
+      if (
+        usuario === contaSalva.usuario &&
+        senha === contaSalva.senha
+      ) {
 
-      localStorage.setItem(
-        "nomeUsuario",
-        usuario
-      );
-
-      console.log(
-        "Maria entrou 😄"
-      );
-      setTimeout(() => {
-
-        alert(
-          "🎉 Bem-vinda de volta, " +
-          usuario +
-          "!"
+        localStorage.setItem(
+          "usuarioLogado",
+          "true"
         );
 
-      }, 300);
 
-      if (
-        !localStorage.getItem(
-          "cargoUsuario"
-        )
-      ) {
+        localStorage.setItem(
+          "nomeUsuario",
+          usuario
+        );
+
+        if (
+          !localStorage.getItem(
+            "cargoUsuario"
+          )
+        ) {
 
 
-        const cargo =
-          prompt(
-            "💼 Qual seu cargo?"
-          );
+          const cargo =
+            prompt(
+              "💼 Qual seu cargo?"
+            );
 
-        if (cargo) {
+          if (cargo) {
 
-          localStorage.setItem(
-            "cargoUsuario",
-            cargo
-          );
+            localStorage.setItem(
+              "cargoUsuario",
+              cargo
+            );
+          }
         }
-      }
 
-      if (
-        !localStorage.getItem(
-          "fraseUsuario"
-        )
-      ) {
+        if (
+          !localStorage.getItem(
+            "fraseUsuario"
+          )
+        ) {
 
-        const frase =
-          prompt(
-            "✨ Sua frase pessoal:"
-          );
+          const frase =
+            prompt(
+              "✨ Sua frase pessoal:"
+            );
 
-        if (frase) {
+          if (frase) {
 
-          localStorage.setItem(
-            "fraseUsuario",
-            frase
-          );
+            localStorage.setItem(
+              "fraseUsuario",
+              frase
+            );
+          }
         }
-      }
 
 
-      document.getElementById(
-        "nomePerfil"
-      ).innerHTML =
 
-        "👋 Olá, <strong>" +
-        usuario +
-        "</strong>";
+        alert("🚀 Login realizado!");
 
-      const popup =
         document.getElementById(
-          "boasVindas"
-        );
+          "nomePerfil"
+        ).innerHTML =
 
-      popup.innerHTML =
-        "🎉 Bem-vinda de volta, " +
-        usuario +
-        "!";
+          "👋 Olá, <strong>" +
+          usuario +
+          "</strong>";
 
-      popup.style.display =
-        "block";
+        verificarLogin();
 
-      setTimeout(() => {
+        mostrarPrompts();
 
-        popup.style.display =
-          "none";
+        setTimeout(() => {
+          mostrarPrompts();
+        }, 100);
 
-      }, 3000);
 
-      verificarLogin();
 
-      mostrarPrompts();
+      } else {
 
-      location.reload();
+        alert("❌ Usuário ou senha incorretos");
+      }
     }
 
-
     function verificarLogin() {
-
-      if (
-        localStorage.getItem(
-          "modoEscuro"
-        ) === "true"
-      ) {
-
-        document.body.classList.add(
-          "dark-mode"
-        );
-      }
 
       const logado =
         localStorage.getItem(
@@ -4258,56 +2914,6 @@ onclick="filtrarDashboard('hoje')">
       );
     }
 
-
-
-    function recuperarSenha() {
-
-      const usuario =
-        prompt(
-          "Digite seu usuário:"
-        );
-
-      if (!usuario) return;
-
-      let contas =
-        JSON.parse(
-          localStorage.getItem(
-            "contasPromptKeeper"
-          )
-        ) || [];
-
-      const conta =
-        contas.find(
-          c => c.usuario === usuario
-        );
-
-      if (!conta) {
-
-        alert(
-          "❌ Usuário não encontrado."
-        );
-
-        return;
-      }
-
-      const novaSenha =
-        prompt(
-          "Digite sua nova senha:"
-        );
-
-      if (!novaSenha) return;
-
-      conta.senha = novaSenha;
-
-      localStorage.setItem(
-        "contasPromptKeeper",
-        JSON.stringify(contas)
-      );
-
-      alert(
-        "✅ Senha alterada com sucesso!"
-      );
-    }
     function carregarFotoPerfil(event) {
 
       const arquivo =
@@ -4318,123 +2924,30 @@ onclick="filtrarDashboard('hoje')">
       const leitor =
         new FileReader();
 
-      leitor.onload =
-        function (e) {
+      leitor.onload = function (e) {
 
-          console.log(
-            "FOTO CARREGADA!"
-          );
+        const imagem =
+          e.target.result;
 
-          console.log(
-            e.target.result
-          );
-
-          document.getElementById("avatarUsuario").innerHTML =
-            `<img src="${e.target.result}"
-     style="
-       width:100%;
-       height:100%;
-       object-fit:cover;
-       border-radius:50%;
-     ">`;
-
-
-        };
-
-      leitor.readAsDataURL(
-        arquivo
-      );
-    }
-
-    function abrirFerramentas() {
-
-      const menu =
-        document.getElementById(
-          "menuFerramentas"
+        localStorage.setItem(
+          "fotoPerfil",
+          imagem
         );
 
-      const botao =
         document.getElementById(
-          "btnFerramentas"
-        );
+          "avatarUsuario"
+        ).innerHTML =
 
-      if (
-        menu.style.display === "none"
-      ) {
+          "<img src='" +
+          imagem +
+          "' style='width:100%;height:100%;object-fit:cover;border-radius:50%;'>";
+      };
 
-        menu.style.display = "block";
 
-        botao.innerHTML =
-          "⚙️ Ferramentas ▲";
-
-      } else {
-
-        menu.style.display = "none";
-
-        botao.innerHTML =
-          "⚙️ Ferramentas ▼";
-
-      }
-    }
-
-    function abrirMenuCategorias() {
-
-      const categorias = [
-        ...new Set(
-          prompts
-            .map(p => normalizarCategoria(p.categoria))
-            .filter(c => c && c.trim() !== "")
-        )
-      ].sort();
-
-      const lista = document.getElementById("listaCategorias");
-
-      if (!lista) {
-        console.log("listaCategorias não encontrada.");
-        return;
-      }
-
-      lista.innerHTML = "";
-
-      categorias.forEach(cat => {
-
-        const item = document.createElement("li");
-
-        item.textContent = cat;
-
-        item.onclick = function () {
-
-          console.log("CLICOU NA CATEGORIA:", cat);
-
-          categoriaSelecionada = normalizarCategoria(cat);
-
-          mostrarPrompts();
-
-          lista.style.display = "none";
-
-          //mostrarToast("🏷️ " + cat);
-
-        };
-
-        lista.appendChild(item);
-
-      });
-
-      lista.style.display = "block";
-
+      leitor.readAsDataURL(arquivo);
     }
 
     function filtrarDashboard(tipo) {
-
-      console.log(
-        "CLICOU:",
-        tipo
-      );
-
-      console.log(
-        "CHAMOU mostrarPrompts"
-      );
-
 
       mostrarSomenteFavoritos = false;
       mostrarSomenteFixados = false;
@@ -4449,13 +2962,6 @@ onclick="filtrarDashboard('hoje')">
           "⭐ Mostrando favoritos"
         );
 
-        document.getElementById(
-          "statusDashboard"
-        ).innerHTML =
-          "⭐ Exibindo: Favoritos";
-
-
-
       } else if (tipo === "fixados") {
 
         mostrarSomenteFixados = true;
@@ -4465,19 +2971,66 @@ onclick="filtrarDashboard('hoje')">
         );
       }
 
-
       else if (
         tipo === "categorias"
       ) {
 
-        document.getElementById("filtro").focus();
+        const categoriasUnicas =
+          [...new Set(
+            prompts.map(
+              p => p.categoria
+            )
+          )];
 
-        mostrarToast(
-          "🏷️ Digite a categoria no filtro."
+        let menu =
+          "🏷️ Escolha a categoria:\n\n";
+
+        categoriasUnicas.forEach(
+          (cat, index) => {
+
+            const quantidade =
+              prompts.filter(
+                p =>
+                  p.categoria === cat
+              ).length;
+
+            menu +=
+              (index + 1) +
+              " - " +
+              cat +
+              " (" +
+              quantidade +
+              ")\n";
+          }
         );
 
-        return;
+        const escolha =
+          prompt(menu);
 
+        if (!escolha) return;
+
+        const categoriaEscolhida =
+          categoriasUnicas[
+          parseInt(escolha) - 1
+          ];
+
+        if (!categoriaEscolhida) {
+
+          mostrarToast(
+            "❌ Categoria inválida"
+          );
+
+          return;
+        }
+
+        categoriaSelecionada =
+          categoriaEscolhida
+            .toLowerCase();
+
+        mostrarToast(
+          "🏷️ " +
+          categoriaEscolhida
+        );
       }
 
       else if (
@@ -4498,19 +3051,6 @@ onclick="filtrarDashboard('hoje')">
       }
 
       mostrarPrompts();
-
-      //setTimeout(() => {
-
-      //document
-      //.getElementById(
-      //  "lista"
-      //)
-      //?.scrollIntoView({
-      //behavior: "smooth",
-      //block: "start"
-      //});
-
-      //}, 150);
     }
 
     function editarCargo() {
@@ -4566,270 +3106,13 @@ onclick="filtrarDashboard('hoje')">
       );
     }
 
-    let estaNoFinal = false;
 
-    function alternarRolagem() {
-
-      if (!estaNoFinal) {
-
-        window.scrollTo({
-
-          top: document.body.scrollHeight,
-
-          behavior: "smooth"
-
-        });
-
-        document.getElementById("btnTopo").innerHTML = "⬆️";
-
-        estaNoFinal = true;
-
-      } else {
-
-        window.scrollTo({
-
-          top: 0,
-
-          behavior: "smooth"
-
-        });
-
-        document.getElementById("btnTopo").title =
-          "Voltar ao topo";
-
-        document.getElementById("btnTopo").innerHTML = "⬇️";
-
-        estaNoFinal = false;
-
-        document.getElementById("btnTopo").title =
-          "Ir para o final";
-
-      }
-
-    }
-
-    const palavrasChave = {
-
-      IMAGEM: {
-        imagem: 3,
-        foto: 3,
-        desenho: 2,
-        ilustração: 2,
-        render: 2,
-        "crie uma imagem": 5
-      },
-
-      PROGRAMAÇÃO: {
-        html: 1,
-        css: 1,
-        javascript: 1,
-        python: 1,
-        java: 1,
-        código: 2,
-        programação: 2
-      },
-
-      ESTUDOS: {
-        explique: 3,
-
-        explicar: 3,
-
-        ensine: 3,
-
-        ensinar: 3,
-
-        estudar: 2,
-
-        aprender: 2,
-
-        curso: 2,
-
-        iniciante: 2,
-
-        iniciantes: 2
-
-      },
-
-      NEGÓCIOS: {
-        empresa: 2,
-        negócio: 3,
-        marketing: 2,
-        cliente: 1,
-        vendas: 2
-      },
-
-      SAÚDE: {
-        saúde: 3,
-        tratamento: 2,
-        dor: 1,
-        doença: 2,
-        alimentação: 2
-      },
-
-      VIAGENS: {
-        viagem: 3,
-        hotel: 2,
-        turismo: 2,
-        país: 1,
-        cidade: 1
-      }
-
-    };
-
-    function detectarTipoPrompt(texto) {
-
-      const t = texto.toLowerCase();
-      let pontos = {
-
-        IMAGEM: 0,
-
-        PROGRAMAÇÃO: 0,
-
-        ESTUDOS: 0,
-
-        NEGÓCIOS: 0,
-
-        SAÚDE: 0,
-
-        VIAGENS: 0,
-
-        GERAL: 0
-
-      };
-
-      for (const categoria in palavrasChave) {
-
-        for (const palavra in palavrasChave[categoria]) {
-
-          if (t.includes(palavra)) {
-
-            pontos[categoria] += palavrasChave[categoria][palavra];
-
-          }
-
-        }
-
-      }
-
-      if (
-        t.includes("empresa") ||
-        t.includes("negócio") ||
-        t.includes("marketing") ||
-        t.includes("cliente") ||
-        t.includes("vendas")
-      ) {
-        pontos.NEGÓCIOS += 1;
-      }
-
-      if (
-        t.includes("saúde") ||
-        t.includes("tratamento") ||
-        t.includes("dor") ||
-        t.includes("doença") ||
-        t.includes("alimentação") ||
-        t.includes("alimentacao") ||
-        t.includes("médico") ||
-        t.includes("medico") ||
-        t.includes("remédio") ||
-        t.includes("remedio") ||
-        t.includes("exercício") ||
-        t.includes("exercicio") ||
-        t.includes("bem-estar") ||
-        t.includes("bem estar") ||
-        t.includes("sintoma")
-      ) {
-        pontos.SAÚDE += 1;
-      }
-      if (
-        t.includes("viagem") ||
-        t.includes("viajar") ||
-        t.includes("roteiro") ||
-        t.includes("hotel") ||
-        t.includes("turismo") ||
-        t.includes("destino") ||
-        t.includes("país") ||
-        t.includes("cidade") ||
-        t.includes("passagem") ||
-        t.includes("férias")
-      ) {
-        pontos.VIAGENS += 1;
-      }
-
-      let vencedor = "GERAL";
-
-      let maiorPontuacao = 0;
-
-      for (const categoria in pontos) {
-
-        if (pontos[categoria] > maiorPontuacao) {
-
-          maiorPontuacao = pontos[categoria];
-
-          vencedor = categoria;
-
-        }
-
-      }
-      console.table(pontos);
-
-      return vencedor;
-
-    }
-
-    function enriquecerPrompt(texto) {
-
-      let novoTexto = texto;
-
-      const tipo = detectarTipoPrompt(texto);
-
-      const melhoriasImagem = [
-
-        {
-          original: "garotinha",
-          novo: "garotinha de aproximadamente 10 anos"
-        },
-
-        {
-          original: "rica",
-          novo: "rica, elegante, sofisticada e de aparência luxuosa"
-        },
-
-        {
-          original: "Paris",
-          novo: "Paris, com arquitetura francesa clássica, ruas charmosas e atmosfera romântica"
-        },
-
-        {
-          original: "feliz",
-          novo: "feliz, sorridente e transmitindo alegria"
-        }
-
-      ];
-
-      let melhoriasAtivas = [];
-
-      if (tipo === "IMAGEM") {
-
-        melhoriasAtivas = melhoriasImagem;
-
-      }
-
-      melhoriasAtivas.forEach(item => {
-
-        const regex = new RegExp(item.original, "gi");
-
-        novoTexto = novoTexto.replace(regex, item.novo);
-
-      });
-      return novoTexto;
-
-    }
-    <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
+  <!-- Escreva a tag de fechamento para garantir que o script anterior terminou -->
   </script>
 
   <!-- O seu bloco Modo Foco continua aqui normalmente -->
   <div id="modoFoco">
-    <button onclick="fecharFoco()"> // ultimo 12/12 button onclic
+    <button onclick="fecharFoco()">
       ❌ Fechar
     </button>
     <div id="textoFoco"></div>
@@ -4867,140 +3150,30 @@ onclick="filtrarDashboard('hoje')">
       if (botaoEntrar && loginCard) {
         botaoEntrar.onclick = () => {
           loginCard.style.setProperty('display', 'none', 'important');
+          alert('Login efetuado com sucesso!');
         };
       }
     });
+  </script>
 
-    // 1. FUNÇÃO CENTRALIZADORA (O "Coração" da Reatividade do seu App)
-
-    function salvarEAtualizar() {
-         // Salva no LocalStorage
-        // Atualiza imediatamente a lista de prompts
-  mostrarPrompts();
-
-  // Atualiza o Dashboard
-  atualizarDashboard();
-}
-
-    // 2. EXEMPLO: Botão Favoritar/Desfavoritar atualizado
-    function alternarFavorito(idDoPrompt) {
-      const prompt = prompts.find(p => p.id === idDoPrompt);
-      if (prompt) {
-        prompt.favorito = !prompt.favorito;
-        console.log(prompt.favorito ? "Prompt favoritado" : "Prompt desfavoritado");
-
-        // REATIVIDADE INSTANTÂNEA: Chama a centralizadora
-        salvarEAtualizar();
-      }
-    }
-
-    // 3. EXEMPLO: Botão Fixar/Desfixar no Topo atualizado
-    function alternarFixar(idDoPrompt) {
-      const prompt = prompts.find(p => p.id === idDoPrompt);
-      if (prompt) {
-        prompt.fixado = !prompt.fixado; // Altera a propriedade de fixar
-        console.log(prompt.fixado ? "Prompt fixado no topo" : "Prompt desfixado");
-
-        // REATIVIDADE INSTANTÂNEA: Chama a mesma centralizadora
-        salvarEAtualizar();
-      }
-    }
-
-    function buscarPrompt() {
-
-      const texto = document.getElementById("filtro").value.trim().toLowerCase();
-
-      if (texto === "") {
-        document.getElementById("resultadoBusca").innerHTML = "";
-        document.getElementById("listaResultadosBusca").innerHTML = "";
-        mostrarPrompts();
-        return;
-      }
-
-      const resultados = prompts.filter(p => {
-
-        const conteudo = (
-          (p.titulo || "") + " " +
-          (p.categoria || "") + " " +
-          (p.texto || "")
-        ).toLowerCase();
-
-        console.log("Título:", p.titulo);
-        console.log("Categoria:", p.categoria);
-
-        return conteudo.includes(texto);
-
+    <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("../service-worker.js")
+        
+          .then(function () {
+            console.log("Service Worker registrado!");
+          })
+          .catch(function (erro) {
+            console.error("Erro no Service Worker:", erro);
+          });
       });
-
-      document.getElementById("resultadoBusca").innerHTML =
-        resultados.length + " resultado(s)";
-
-      const listaResultados =
-        document.getElementById("listaResultadosBusca");
-
-      listaResultados.innerHTML = "";
-
-      resultados.forEach((p, indiceOriginal) => {
-
-        const item = document.createElement("div");
-
-        item.className = "resultadoBusca";
-
-        item.innerHTML = "📄 <strong>" + p.titulo + "</strong>";
-
-        item.onclick = function () {
-
-          categoriaSelecionada = null;
-          mostrarSomenteFavoritos = false;
-          mostrarSomenteFixados = false;
-          mostrarSomenteHoje = false;
-
-          document.getElementById("filtro").value = "";
-
-          listaResultados.innerHTML = "";
-          document.getElementById("resultadoBusca").innerHTML = "";
-
-          mostrarPrompts();
-
-          setTimeout(function () {
-
-            const card = document.querySelector(
-              '[data-titulo="' + p.titulo + '"]'
-            );
-
-            if (card) {
-
-              card.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-              });
-
-              card.style.border = "3px solid #66BB6A";
-
-              setTimeout(function () {
-                card.style.border = "";
-              }, 2000);
-
-            }
-
-          }, 100);
-
-
-
-
-        };
-
-        listaResultados.appendChild(item);
-
-      });
-
     }
-
-
-
-
   </script>
 
 </body>
 
 </html>
+
+
+
