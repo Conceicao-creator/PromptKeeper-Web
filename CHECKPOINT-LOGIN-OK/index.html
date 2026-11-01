@@ -912,9 +912,11 @@
   <!-- Bloco de LOGIN -->
   <div id="telaLogin" class="card-autenticacao">
     <h1>🔒 PromptKeeper Login</h1>
-    <input type="text" placeholder="Usuário">
-    <input type="password" placeholder="Senha">
-    <button id="btnEntrar">✨ Entrar</button>
+
+  <input type="text" id="usuarioLogin" placeholder="Usuário">
+  <input type="password" id="senhaLogin" placeholder="Senha">    
+
+  <button id="btnEntrar">✨ Entrar</button>
     <hr>
     <p>Não tem conta? <a href="#" id="linkIrParaCadastro">Criar Conta</a></p>
   </div>
@@ -922,8 +924,10 @@
   <!-- Bloco de CADASTRO (Começa escondido) -->
   <div id="telaCadastro" class="card-autenticacao" style="display: none;">
     <h1>📝 Criar Conta</h1>
-    <input type="text" placeholder="Escolha um Usuário">
-    <input type="password" placeholder="Escolha uma Senha">
+
+  <input type="text" id="novoUsuario" placeholder="Escolha um Usuário">
+  <input type="password" id="novaSenha" placeholder="Escolha uma Senha"> 
+
     <button id="btnCadastrar">✨ Cadastrar</button>
     <hr>
     <p>Já tem conta? <a href="#" id="linkIrParaLogin">Fazer Login</a></p>
@@ -2721,137 +2725,96 @@ onclick="filtrarDashboard('hoje')">
     }
 
     function criarConta() {
+  const usuario = document.getElementById("novoUsuario").value.trim();
+  const senha = document.getElementById("novaSenha").value;
 
-      const usuario =
-        document.getElementById("novoUsuario").value;
+  if (!usuario || !senha) {
+    alert("Preencha usuário e senha 😄");
+    return;
+  }
 
-      const senha =
-        document.getElementById("novaSenha").value;
+  // Lê a lista de contas já existente
+  const contas = JSON.parse(
+    localStorage.getItem("contasPromptKeeper") || "[]"
+  );
 
-      if (!usuario || !senha) {
+  // Impede cadastrar o mesmo usuário novamente
+  const jaExiste = contas.some(
+    conta => conta.usuario.toLowerCase() === usuario.toLowerCase()
+  );
 
-        alert("Preencha usuário e senha 😄");
-        return;
-      }
+  if (jaExiste) {
+    alert("Esse usuário já está cadastrado!");
+    return;
+  }
 
-      const conta = {
-        usuario,
-        senha
-      };
+  // Acrescenta a nova conta sem apagar as anteriores
+  contas.push({ usuario, senha });
 
-      localStorage.setItem(
-        "contaPromptKeeper",
-        JSON.stringify(conta)
-      );
+  localStorage.setItem(
+    "contasPromptKeeper",
+    JSON.stringify(contas)
+  );
 
-      alert("✅ Conta criada com sucesso!");
+  alert("✅ Conta criada com sucesso!");
+}
+
+
+function fazerLogin() {
+  const usuario = document.getElementById("usuarioLogin").value.trim();
+  const senha = document.getElementById("senhaLogin").value;
+
+  // Lê todas as contas cadastradas
+  const contas = JSON.parse(
+    localStorage.getItem("contasPromptKeeper") || "[]"
+  );
+
+  // Procura o usuário e confere a senha
+  const contaSalva = contas.find(
+    conta =>
+      conta.usuario.toLowerCase() === usuario.toLowerCase() &&
+      conta.senha === senha
+  );
+
+  if (!contaSalva) {
+    alert("❌ Usuário ou senha incorretos");
+    return;
+  }
+
+  localStorage.setItem("usuarioLogado", "true");
+  localStorage.setItem("nomeUsuario", contaSalva.usuario);
+
+  if (!localStorage.getItem("cargoUsuario")) {
+    const cargo = prompt("💼 Qual seu cargo?");
+    if (cargo) {
+      localStorage.setItem("cargoUsuario", cargo);
     }
+  }
 
-    function fazerLogin() {
-
-      const usuario =
-        document.getElementById("usuarioLogin").value;
-
-      const senha =
-        document.getElementById("senhaLogin").value;
-
-      const contaSalva =
-        JSON.parse(
-          localStorage.getItem(
-            "contaPromptKeeper"
-          )
-        );
-
-      if (!contaSalva) {
-
-        alert("Crie uma conta primeiro 😄");
-        return;
-      }
-
-      if (
-        usuario === contaSalva.usuario &&
-        senha === contaSalva.senha
-      ) {
-
-        localStorage.setItem(
-          "usuarioLogado",
-          "true"
-        );
-
-
-        localStorage.setItem(
-          "nomeUsuario",
-          usuario
-        );
-
-        if (
-          !localStorage.getItem(
-            "cargoUsuario"
-          )
-        ) {
-
-
-          const cargo =
-            prompt(
-              "💼 Qual seu cargo?"
-            );
-
-          if (cargo) {
-
-            localStorage.setItem(
-              "cargoUsuario",
-              cargo
-            );
-          }
-        }
-
-        if (
-          !localStorage.getItem(
-            "fraseUsuario"
-          )
-        ) {
-
-          const frase =
-            prompt(
-              "✨ Sua frase pessoal:"
-            );
-
-          if (frase) {
-
-            localStorage.setItem(
-              "fraseUsuario",
-              frase
-            );
-          }
-        }
-
-
-
-        alert("🚀 Login realizado!");
-
-        document.getElementById(
-          "nomePerfil"
-        ).innerHTML =
-
-          "👋 Olá, <strong>" +
-          usuario +
-          "</strong>";
-
-        verificarLogin();
-
-        mostrarPrompts();
-
-        setTimeout(() => {
-          mostrarPrompts();
-        }, 100);
-
-
-
-      } else {
-
-        alert("❌ Usuário ou senha incorretos");
-      }
+  if (!localStorage.getItem("fraseUsuario")) {
+    const frase = prompt("✨ Sua frase pessoal:");
+    if (frase) {
+      localStorage.setItem("fraseUsuario", frase);
     }
+  }
+
+  alert("🚀 Login realizado!");
+
+  const nomePerfil = document.getElementById("nomePerfil");
+
+  if (nomePerfil) {
+    nomePerfil.textContent = "👋 Olá, " + contaSalva.usuario;
+  }
+
+  verificarLogin();
+  mostrarPrompts();
+
+  setTimeout(() => {
+    mostrarPrompts();
+  }, 100);
+
+
+      } 
 
     function verificarLogin() {
 
@@ -3118,6 +3081,7 @@ onclick="filtrarDashboard('hoje')">
       const irParaCadastro = document.getElementById('linkIrParaCadastro');
       const irParaLogin = document.getElementById('linkIrParaLogin');
       const botaoEntrar = document.getElementById('btnEntrar');
+      const botaoCadastrar = document.getElementById('btnCadastrar');
 
       // 🟢 Ação: Ir para a tela de Cadastro
       if (irParaCadastro && loginCard && cadastroCard) {
@@ -3137,12 +3101,12 @@ onclick="filtrarDashboard('hoje')">
         };
       }
 
-      // 🟢 Ação: Clicar em Entrar (Fecha a tela e libera o App)
-      if (botaoEntrar && loginCard) {
-        botaoEntrar.onclick = () => {
-          loginCard.style.setProperty('display', 'none', 'important');
-          alert('Login efetuado com sucesso!');
-        };
+      // 🟢 Ação: Clicar em Entrar (valida usuário e senha)
+      if (botaoEntrar) {
+        botaoEntrar.onclick = fazerLogin;
+      }
+      if (botaoCadastrar) {
+       botaoCadastrar.onclick = criarConta;
       }
     });
   </script>
