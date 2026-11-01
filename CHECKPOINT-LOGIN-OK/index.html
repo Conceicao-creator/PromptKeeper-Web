@@ -1152,35 +1152,23 @@
     }
 
 
-    function mostrarPrompts() {
+function mostrarPrompts() {
+  const nomeUsuario = localStorage.getItem("nomeUsuario");
 
-      const nomeUsuario =
-        localStorage.getItem(
-          "nomeUsuario"
-        );
-      if (nomeUsuario) {
+  if (nomeUsuario) {
+    document.getElementById("avatarUsuario").innerHTML =
+      nomeUsuario.charAt(0).toUpperCase();
 
-        document.getElementById(
-          "avatarUsuario"
-        ).innerHTML =
+    document.getElementById("nomePerfil").innerHTML =
+      "👋 Olá, <strong>" + nomeUsuario + "</strong>";
+  }
 
-          nomeUsuario.charAt(0).toUpperCase();
-      }
+  const fotoSalva = localStorage.getItem("fotoPerfil");
 
-      const fotoSalva =
-        localStorage.getItem(
-          "fotoPerfil"
-        );
-
-      if (fotoSalva) {
-
-        document.getElementById(
-          "avatarUsuario"
-        ).innerHTML =
-
-          `<img src="${fotoSalva}">`;
-      }
-
+  if (fotoSalva) {
+    document.getElementById("avatarUsuario").innerHTML =
+      `<img src="${fotoSalva}">`;
+  }
       function carregarFotoPerfil(event) {
 
 
@@ -1562,15 +1550,17 @@
     }
 
 
-    document.getElementById(
-      "listaBadges"
-    ).innerHTML =
+    const listaBadges = document.getElementById("listaBadges");
 
-      badges ||
+    if (listaBadges) {
+      listaBadges.innerHTML =
+
+        badges ||
 
       "<span class='badgeBloqueada'>" +
       "🔒 Sem badges ainda" +
       "</span>";
+    }
 
 
     // ===== BARRA DE CONQUISTAS =====
@@ -1589,7 +1579,6 @@
 
     if (total >= 50)
       badgesDesbloqueadas++;
-
     if (total >= 100)
       badgesDesbloqueadas++;
 
@@ -1597,19 +1586,19 @@
       (badgesDesbloqueadas /
         totalBadges) * 100;
 
-    document.getElementById(
-      "barraConquista"
-    ).style.width =
-      porcentagemBadge + "%";
 
 
+        
     const meta = 50;
 
     let progresso =
       Math.min((total / meta) * 100, 100);
 
-    document.getElementById("barraProgresso")
-      .style.width = progresso + "%";
+    const barraProgresso = document.getElementById("barraProgresso");
+
+    if (barraProgresso) {
+     barraProgresso.style.width = progresso + "%";
+  }
 
     document.getElementById("textoProgresso")
       .innerHTML =
@@ -2880,6 +2869,8 @@ onclick="filtrarDashboard('hoje')">
         document.getElementById(
           "appPromptKeeper"
         ).style.display = "block";
+
+        mostrarPrompts();
 
       } else {
 
