@@ -1,6 +1,5 @@
 
-const CACHE_NAME = "promptkeeper-v1";
-
+const CACHE_NAME = "promptkeeper-v5";
 const ARQUIVOS = [
   "./",
   "./index.html",

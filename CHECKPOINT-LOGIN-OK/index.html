@@ -1016,10 +1016,7 @@
 
           <input type="file" id="fotoPerfil" accept="image/*" onchange="carregarFotoPerfil(event)">
 
-
-
         </div>
-
 
       </div>
 
@@ -1126,7 +1123,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 
-
   <script>
     let editandoIndex = null;
     let mostrarSomenteFavoritos = false;
@@ -1134,8 +1130,7 @@
     let categoriaSelecionada = "";
     let mostrarSomenteHoje = false;
 
-    let prompts = JSON.parse(localStorage.getItem("prompts")) || [];
-
+    let prompts = [];
     let nomeUsuario = localStorage.getItem("nomeUsuario");
 
     if (!nomeUsuario) {
@@ -1145,6 +1140,122 @@
         localStorage.setItem("nomeUsuario", nomeUsuario);
       }
     }
+
+    function abrirBancoFotos() {
+  return new Promise((resolve, reject) => {
+    const pedido = indexedDB.open("PromptKeeperFotos", 1);
+
+    pedido.onupgradeneeded = function () {
+      const banco = pedido.result;
+
+      if (!banco.objectStoreNames.contains("fotos")) {
+        banco.createObjectStore("fotos", {
+          keyPath: "usuario"
+        });
+      }
+    };
+
+    pedido.onsuccess = () => resolve(pedido.result);
+    pedido.onerror = () => reject(pedido.error);
+  });
+}
+
+async function salvarFotoNoBanco(usuario, imagem) {
+  const banco = await abrirBancoFotos();
+
+  return new Promise((resolve, reject) => {
+    const transacao = banco.transaction("fotos", "readwrite");
+
+    transacao.objectStore("fotos").put({
+      usuario: usuario.trim().toLowerCase(),
+      imagem: imagem
+    });
+
+    transacao.oncomplete = () => resolve(true);
+    transacao.onerror = () => reject(transacao.error);
+  });
+}
+
+async function buscarFotoNoBanco(usuario) {
+  const banco = await abrirBancoFotos();
+
+  return new Promise((resolve, reject) => {
+    const transacao = banco.transaction("fotos", "readonly");
+
+    const pedido = transacao.objectStore("fotos").get(
+      usuario.trim().toLowerCase()
+    );
+
+    pedido.onsuccess = () => resolve(pedido.result?.imagem || null);
+    pedido.onerror = () => reject(pedido.error);
+  });
+}
+
+    function chaveUsuario(nome, dado) {
+      const identificador = encodeURIComponent(
+      nome.trim().toLowerCase()
+    );
+
+    return `promptkeeper_${identificador}_${dado}`;
+  }
+
+  function migrarDadosMaria() {
+    const dados = [
+    "prompts",
+    "cargoUsuario",
+    "fraseUsuario",
+    "conquistas",
+    "conquistasMostradas"
+  ];
+
+  const marcador = "promptkeeper_migracao_maria_v1";
+
+  if (localStorage.getItem(marcador)) return;
+
+  dados.forEach(dado => {
+    const original = localStorage.getItem(dado);
+    const destino = chaveUsuario("Maria", dado);
+
+    if (
+      original !== null &&
+      localStorage.getItem(destino) === null
+    ) {
+      localStorage.setItem(destino, original);
+    }
+  });
+
+  localStorage.setItem(marcador, "true");
+}
+
+    migrarDadosMaria();
+
+  function carregarPromptsUsuario() {
+    const nome = localStorage.getItem("nomeUsuario");
+
+  if (!nome) {
+    prompts = [];
+    return;
+  }
+
+  const chave = chaveUsuario(nome, "prompts");
+
+  prompts = JSON.parse(
+    localStorage.getItem(chave) || "[]"
+  );
+}
+
+  function salvarPromptsUsuario() {
+  const nome = localStorage.getItem("nomeUsuario");
+
+  if (!nome) return;
+
+  const chave = chaveUsuario(nome, "prompts");
+
+  localStorage.setItem(
+    chave,
+    JSON.stringify(prompts)
+  );
+}
 
     function normalizarTexto(texto) {
 
@@ -1173,22 +1284,6 @@ function mostrarPrompts() {
     document.getElementById("avatarUsuario").innerHTML =
       `<img src="${fotoSalva}">`;
   }
-      function carregarFotoPerfil(event) {
-
-
-        const perfil = document.getElementById("perfilUsuario");
-
-
-        if (nomeUsuario) {
-          document.getElementById(
-            "nomePerfil"
-          ).innerHTML =
-
-            "👋 Olá, <strong>" +
-            nomeUsuario +
-            "</strong>";
-        }
-      }
     }
 
 
@@ -1883,11 +1978,12 @@ onclick="filtrarDashboard('hoje')">
 
       botaoFixar.onclick = function () {
 
-        prompts[index].fixado = !prompts[index].fixado;
+      prompts[index].fixado = !prompts[index].fixado;
 
-        localStorage.setItem("prompts", JSON.stringify(prompts));
+      salvarPromptsUsuario();
+
         const rascunho =
-          localStorage.getItem("rascunhoPrompt");
+      localStorage.getItem("rascunhoPrompt");
 
         if (rascunho) {
 
@@ -1918,7 +2014,7 @@ onclick="filtrarDashboard('hoje')">
       botaoFav.onclick = function () {
         prompts[index].favorito = !prompts[index].favorito;
 
-        localStorage.setItem("prompts", JSON.stringify(prompts));
+      salvarPromptsUsuario();
         mostrarPrompts();
 
       };
@@ -1931,12 +2027,10 @@ onclick="filtrarDashboard('hoje')">
       botao.style.backgroundColor = "#f44336";
       botao.style.color = "white";
 
-
-
       botaoFav.onclick = function () {
         prompts[index].favorito = !prompts[index].favorito;
 
-        localStorage.setItem("prompts", JSON.stringify(prompts));
+      salvarPromptsUsuario();
         mostrarPrompts();
       };
 
@@ -1946,7 +2040,7 @@ onclick="filtrarDashboard('hoje')">
 
         setTimeout(() => {
           prompts.splice(index, 1);
-          localStorage.setItem("prompts", JSON.stringify(prompts));
+          salvarPromptsUsuario();
           mostrarPrompts();
         }, 400);
       };
@@ -1965,8 +2059,7 @@ onclick="filtrarDashboard('hoje')">
           [prompts[index], prompts[index - 1]] =
             [prompts[index - 1], prompts[index]];
 
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-
+          salvarPromptsUsuario();
           mostrarPrompts();
         }
       };
@@ -1985,8 +2078,7 @@ onclick="filtrarDashboard('hoje')">
           [prompts[index], prompts[index + 1]] =
             [prompts[index + 1], prompts[index]];
 
-          localStorage.setItem("prompts", JSON.stringify(prompts));
-
+          salvarPromptsUsuario();
           mostrarPrompts();
         }
       };
@@ -2069,8 +2161,7 @@ onclick="filtrarDashboard('hoje')">
 
         prompts.unshift(copia);
 
-        localStorage.setItem("prompts", JSON.stringify(prompts));
-
+        salvarPromptsUsuario();
         mostrarPrompts();
 
         mostrarToast("📋 Prompt duplicado!");
@@ -2306,17 +2397,19 @@ onclick="filtrarDashboard('hoje')">
         editandoIndex = null;
       } else {
         prompts.push({
-          categoria,
-          titulo,
-          texto,
-          favorito: false,
-          fixado: false,
-          data: data
-        });
+        categoria,
+        colecao,
+        status,
+        titulo,
+        texto,
+        favorito: false,
+        fixado: false,
+        data: data
+      });
 
       }
 
-      localStorage.setItem("prompts", JSON.stringify(prompts));
+      salvarPromptsUsuario();
       localStorage.removeItem("rascunhoPrompt");
 
       document.getElementById("categoria").value = "";
@@ -2421,8 +2514,7 @@ onclick="filtrarDashboard('hoje')">
         const dados = JSON.parse(e.target.result);
 
         prompts = dados;
-        localStorage.setItem("prompts", JSON.stringify(prompts));
-
+        salvarPromptsUsuario();
         mostrarPrompts();
       };
 
@@ -2784,20 +2876,24 @@ function fazerLogin() {
   localStorage.setItem("usuarioLogado", "true");
   localStorage.setItem("nomeUsuario", contaSalva.usuario);
 
-  if (!localStorage.getItem("cargoUsuario")) {
-    const cargo = prompt("💼 Qual seu cargo?");
-    if (cargo) {
-      localStorage.setItem("cargoUsuario", cargo);
-    }
-  }
+  carregarPromptsUsuario();
+  const chaveCargo = chaveUsuario(contaSalva.usuario, "cargoUsuario");
 
-  if (!localStorage.getItem("fraseUsuario")) {
-    const frase = prompt("✨ Sua frase pessoal:");
-    if (frase) {
-      localStorage.setItem("fraseUsuario", frase);
-    }
+if (!localStorage.getItem(chaveCargo)) {
+  const cargo = prompt("💼 Qual seu cargo?");
+  if (cargo) {
+    localStorage.setItem(chaveCargo, cargo);
   }
+}
 
+const chaveFrase = chaveUsuario(contaSalva.usuario, "fraseUsuario");
+
+if (!localStorage.getItem(chaveFrase)) {
+  const frase = prompt("✨ Sua frase pessoal:");
+  if (frase) {
+    localStorage.setItem(chaveFrase, frase);
+  }
+}
   alert("🚀 Login realizado!");
 
   const nomePerfil = document.getElementById("nomePerfil");
@@ -2806,7 +2902,6 @@ function fazerLogin() {
     nomePerfil.textContent = "👋 Olá, " + contaSalva.usuario;
   }
 
-  verificarLogin();
   mostrarPrompts();
 
   setTimeout(() => {
@@ -2824,6 +2919,8 @@ function fazerLogin() {
         );
 
       if (logado === "true") {
+
+        carregarPromptsUsuario();
 
         document.getElementById(
           "telaLogin"
@@ -2858,6 +2955,8 @@ function fazerLogin() {
       localStorage.removeItem(
         "nomeUsuario"
       );
+
+      prompts = [];
 
       verificarLogin();
 
@@ -3071,6 +3170,56 @@ function fazerLogin() {
     </button>
     <div id="textoFoco"></div>
   </div>
+
+  <button id="botaoRolagem" onclick="alternarRolagem()" style="
+  position: fixed;
+  top: 20px;
+  right: 5vw;
+  left: auto;
+  bottom: auto;
+  width: auto;
+  z-index: 9999;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: bold;
+">
+  ⬇️ Final
+</button>
+<script>
+  function atualizarBotaoRolagem() {
+    const botao = document.getElementById("botaoRolagem");
+
+    const estaNoFinal =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 50;
+
+    botao.innerHTML = estaNoFinal
+      ? "⬆️ Topo"
+      : "⬇️ Final";
+  }
+
+  function alternarRolagem() {
+    const estaNoFinal =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 50;
+
+    window.scrollTo({
+      top: estaNoFinal
+        ? 0
+        : document.documentElement.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+
+  window.addEventListener("scroll", atualizarBotaoRolagem);
+  window.addEventListener("load", atualizarBotaoRolagem);
+
+  atualizarBotaoRolagem();
+</script>
 
   <!-- 👇 AQUI ESTÁ O SEGREDO: Abrir uma NOVA tag script para o código funcionar -->
 
